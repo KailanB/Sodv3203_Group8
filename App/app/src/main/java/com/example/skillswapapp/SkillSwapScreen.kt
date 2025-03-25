@@ -15,17 +15,19 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.skillswapapp.ui.FriendsScreen
+import com.example.skillswapapp.view.FriendsScreen
 
 
-import com.example.skillswapapp.ui.HomeScreen
-import com.example.skillswapapp.ui.ProfileScreen
-import com.example.skillswapapp.ui.SwapsScreen
+import com.example.skillswapapp.view.HomeScreen
+import com.example.skillswapapp.view.ProfileScreen
+import com.example.skillswapapp.view.SwapsScreen
+import com.example.skillswapapp.viewModel.UsersViewModel
 
 @Composable
 fun SkillSwapNavBar(
@@ -78,7 +80,10 @@ fun SkillSwapApp(
 
         ) {
             composable(route = "home") {
+                val usersViewModel: UsersViewModel = viewModel()
+                usersViewModel.getAllUsers()
                 HomeScreen(
+                    viewModel = usersViewModel,
                     modifier = Modifier
                 )
             }
