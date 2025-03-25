@@ -52,6 +52,23 @@ class UsersViewModel (
         }
     }
 
+    fun getUserById() {
+        _usersUiState.value = UsersUiState.Loading
+
+        try {
+            // this is later where
+
+            // load dummy data user with pre-loaded list of skills
+            val user = DataSource().loadUserId1()
+
+            _usersUiState.value = UsersUiState.Success(
+                user = user
+            )
+        } catch (exception: Exception) {
+            _usersUiState.value = UsersUiState.Error
+        }
+    }
+
 
 
 }
