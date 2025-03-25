@@ -1,20 +1,22 @@
 package com.example.skillswapapp
 
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-
-
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -22,12 +24,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.skillswapapp.view.FriendsScreen
-
-
 import com.example.skillswapapp.view.HomeScreen
 import com.example.skillswapapp.view.ProfileScreen
 import com.example.skillswapapp.view.SwapsScreen
 import com.example.skillswapapp.viewModel.UsersViewModel
+
 
 @Composable
 fun SkillSwapNavBar(
@@ -38,17 +39,24 @@ fun SkillSwapNavBar(
     BottomAppBar(
 //        content = Text(text = "Header")
         actions = {
-            IconButton(onClick = { navController.navigate("home") }) {
-                Icon(Icons.Default.Home, contentDescription = "Home")
-            }
-            IconButton(onClick = { navController.navigate("profile") }) {
-                Icon(Icons.Default.AccountCircle, contentDescription = "Profile")
-            }
-            IconButton(onClick = { navController.navigate("swaps") }) {
-                Icon(Icons.Default.Done, contentDescription = "Swaps")
-            }
-            IconButton(onClick = { navController.navigate("friends") }) {
-                Icon(Icons.Default.Person, contentDescription = "Friends")
+            Row(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            )
+            {
+                IconButton(onClick = { navController.navigate("home") }) {
+                    Icon(Icons.Default.Home, contentDescription = "Home")
+                }
+                IconButton(onClick = { navController.navigate("profile") }) {
+                    Icon(Icons.Default.AccountCircle, contentDescription = "Profile")
+                }
+                IconButton(onClick = { navController.navigate("swaps") }) {
+                    Icon(Icons.Default.Done, contentDescription = "Swaps")
+                }
+                IconButton(onClick = { navController.navigate("friends") }) {
+                    Icon(Icons.Default.Person, contentDescription = "Friends")
+                }
             }
 
         },
@@ -88,7 +96,10 @@ fun SkillSwapApp(
                 )
             }
             composable(route = "profile") {
+                val usersViewModel: UsersViewModel = viewModel()
+                usersViewModel.getUserById()
                 ProfileScreen(
+                    viewModel = usersViewModel,
                     modifier = Modifier
                 )
             }
