@@ -3,10 +3,9 @@ package com.example.skillswapapp.dummyData
 import com.example.skillswapapp.model.Category
 import com.example.skillswapapp.model.Friendship
 import com.example.skillswapapp.model.Location
+import com.example.skillswapapp.model.AvailableSkill
 import com.example.skillswapapp.model.Skill
 import com.example.skillswapapp.model.SkillSwapRequest
-import com.example.skillswapapp.model.UserSeeksSkills
-import com.example.skillswapapp.model.UserSkills
 import com.example.skillswapapp.model.Users
 
 class DataSource {
@@ -29,20 +28,20 @@ class DataSource {
         )
     }
 
-    fun loadSkills(): List<Skill> {
+    fun loadSkills(): List<AvailableSkill> {
         return listOf(
             // Trades
-            Skill(1, "Electrician", 1, "Expert in electrical wiring", "2024-03-10 08:00:00", "2024-03-10 12:00:00", true),
-            Skill(2, "Plumbing", 1, "Experienced plumber", "2024-03-11 09:00:00", "2024-03-11 13:00:00", true),
+            AvailableSkill(1, "Electrician", 1, "Expert in electrical wiring", "2024-03-10 08:00:00", "2024-03-10 12:00:00", true),
+            AvailableSkill(2, "Plumbing", 1, "Experienced plumber", "2024-03-11 09:00:00", "2024-03-11 13:00:00", true),
 
             // Computer Science
-            Skill(3, "C#", 2, "Software development in C#", "2024-03-12 10:00:00", "2024-03-12 14:00:00", true),
-            Skill(4, "C++", 2, "Expert in C++ programming", "2024-03-13 11:00:00", "2024-03-13 15:00:00", true),
-            Skill(5, "Python", 2, "Machine Learning & AI", "2024-03-14 12:00:00", "2024-03-14 16:00:00", true),
+            AvailableSkill(3, "C#", 2, "Software development in C#", "2024-03-12 10:00:00", "2024-03-12 14:00:00", true),
+            AvailableSkill(4, "C++", 2, "Expert in C++ programming", "2024-03-13 11:00:00", "2024-03-13 15:00:00", true),
+            AvailableSkill(5, "Python", 2, "Machine Learning & AI", "2024-03-14 12:00:00", "2024-03-14 16:00:00", true),
 
             // Sports
-            Skill(6, "Soccer", 3, "Professional soccer coach", "2024-03-15 13:00:00", "2024-03-15 17:00:00", true),
-            Skill(7, "Football", 3, "Football tactics and strategy", "2024-03-16 14:00:00", "2024-03-16 18:00:00", true)
+            AvailableSkill(6, "Soccer", 3, "Professional soccer coach", "2024-03-15 13:00:00", "2024-03-15 17:00:00", true),
+            AvailableSkill(7, "Football", 3, "Football tactics and strategy", "2024-03-16 14:00:00", "2024-03-16 18:00:00", true)
         )
     }
 
@@ -56,52 +55,113 @@ class DataSource {
         )
     }
 
-    fun loadUserSkills(): List<UserSkills> {
+    fun loadUserSkills(): List<Skill> {
         return listOf(
-            UserSkills(3, 1, "Alice codes in C# professionally"),
-            UserSkills(4, 1, "Alice has deep knowledge in C++"),
-            UserSkills(5, 1, "Alice uses Python for AI projects"),
+            Skill(3, 1, "C#", "Alice codes in C# professionally"),
+            Skill(4, 1, "C++", "Alice has deep knowledge in C++"),
+            Skill(5, 1, "Python", "Alice uses Python for AI projects"),
 
-            UserSkills(2, 2, "Bob is a master plumber"),
-            UserSkills(1, 2, "Bob also does electrical work"),
-            UserSkills(6, 2, "Bob plays soccer as a hobby"),
+            Skill(2, 2, "Plumbing", "Bob is a master plumber"),
+            Skill(1, 2, "Electrician", "Bob also does electrical work"),
+            Skill(6, 2, "Soccer", "Bob plays soccer as a hobby"),
 
-            UserSkills(7, 3, "Charlie coaches soccer professionally"),
-            UserSkills(6, 3, "Charlie is also good at football"),
-            UserSkills(2, 3, "Charlie has plumbing experience"),
+            Skill(7, 3, "Football", "Charlie coaches soccer professionally"),
+            Skill(6, 3, "Soccer", "Charlie is also good at football"),
+            Skill(2, 3, "Plumbing", "Charlie has plumbing experience"),
 
-            UserSkills(5, 4, "David is a Python data scientist"),
-            UserSkills(4, 4, "David also teaches C++"),
-            UserSkills(3, 4, "David develops C# applications"),
+            Skill(5, 4, "Python", "David is a Python data scientist"),
+            Skill(4, 4, "C++", "David also teaches C++"),
+            Skill(3, 4, "C#", "David develops C# applications"),
 
-            UserSkills(1, 5, "Eve is an expert electrician"),
-            UserSkills(2, 5, "Eve is also a skilled plumber"),
-            UserSkills(6, 5, "Eve enjoys soccer coaching")
+            Skill(1, 5, "Electrician", "Eve is an expert electrician"),
+            Skill(2, 5, "Plumbing", "Eve is also a skilled plumber"),
+            Skill(6, 5, "Soccer", "Eve enjoys soccer coaching")
         )
     }
 
-    fun loadUserSeeksSkills(): List<UserSeeksSkills> {
+    fun loadUserSkillsId(id: Int): List<Skill> {
+        return when(id) {
+            1 -> listOf(
+                Skill(3, 1, "C#", "Alice codes in C# professionally"),
+                Skill(4, 1, "C++", "Alice has deep knowledge in C++"),
+                Skill(5, 1, "Python", "Alice uses Python for AI projects")
+            )
+            2 -> listOf(
+                Skill(2, 2, "Plumbing", "Bob is a master plumber"),
+                Skill(1, 2, "Electrician", "Bob also does electrical work"),
+                Skill(6, 2, "Soccer", "Bob plays soccer as a hobby")
+            )
+            3 -> listOf(
+                Skill(7, 3, "Football", "Charlie coaches soccer professionally"),
+                Skill(6, 3, "Soccer", "Charlie is also good at football"),
+                Skill(2, 3, "Plumbing", "Charlie has plumbing experience")
+            )
+            4 -> listOf(
+                Skill(5, 4, "Python", "David is a Python data scientist"),
+                Skill(4, 4, "C++", "David also teaches C++"),
+                Skill(3, 4, "C#", "David develops C# applications")
+            )
+            5 -> listOf(
+                Skill(1, 5, "Electrician", "Eve is an expert electrician"),
+                Skill(2, 5, "Plumbing", "Eve is also a skilled plumber"),
+                Skill(6, 5, "Soccer", "Eve enjoys soccer coaching")
+            )
+            else -> emptyList() // Return an empty list if the id doesn't match
+        }
+    }
+
+            fun loadUserSeeksSkills(): List<Skill> {
         return listOf(
-            UserSeeksSkills(1, 1, "Alice wants to learn electrical work"),
-            UserSeeksSkills(2, 1, "Alice wants to understand plumbing"),
-            UserSeeksSkills(7, 1, "Alice is interested in soccer training"),
+            Skill(1, 1, "Electrician", "Alice wants to learn electrical work"),
+            Skill(2, 1, "Plumbing", "Alice wants to understand plumbing"),
+            Skill(7, 1, "Football", "Alice is interested in soccer training"),
 
-            UserSeeksSkills(3, 2, "Bob wants to learn C#"),
-            UserSeeksSkills(4, 2, "Bob is curious about C++"),
-            UserSeeksSkills(5, 2, "Bob wants to try Python"),
+            Skill(3, 2, "C#", "Bob wants to learn C#"),
+            Skill(4, 2, "C++", "Bob is curious about C++"),
+            Skill(5, 2, "Python", "Bob wants to try Python"),
 
-            UserSeeksSkills(1, 3, "Charlie wants to become an electrician"),
-            UserSeeksSkills(3, 3, "Charlie wants to develop in C#"),
-            UserSeeksSkills(5, 3, "Charlie is interested in Python for analytics"),
+            Skill(1, 3, "Electrician", "Charlie wants to become an electrician"),
+            Skill(3, 3, "C#", "Charlie wants to develop in C#"),
+            Skill(5, 3, "Python", "Charlie is interested in Python for analytics"),
 
-            UserSeeksSkills(6, 4, "David wants to get better at soccer"),
-            UserSeeksSkills(7, 4, "David is learning football strategy"),
-            UserSeeksSkills(2, 4, "David wants to pick up plumbing skills"),
+            Skill(6, 4, "Soccer", "David wants to get better at soccer"),
+            Skill(7, 4, "Football", "David is learning football strategy"),
+            Skill(2, 4, "Plumbing", "David wants to pick up plumbing skills"),
 
-            UserSeeksSkills(3, 5, "Eve wants to explore C# coding"),
-            UserSeeksSkills(4, 5, "Eve is interested in C++"),
-            UserSeeksSkills(5, 5, "Eve wants to learn Python for automation")
+            Skill(3, 5, "C#", "Eve wants to explore C# coding"),
+            Skill(4, 5, "C++", "Eve is interested in C++"),
+            Skill(5, 5, "Python", "Eve wants to learn Python for automation")
         )
+    }
+    fun loadUserSeeksSkillsId(id: Int): List<Skill> {
+        return when(id) {
+            1 -> listOf(
+                Skill(1, 1, "Electrician", "Alice wants to learn electrical work"),
+                Skill(2, 1, "Plumbing", "Alice wants to understand plumbing"),
+                Skill(7, 1, "Football", "Alice is interested in soccer training")
+            )
+            2 -> listOf(
+                Skill(3, 2, "C#", "Bob wants to learn C#"),
+                Skill(4, 2, "C++", "Bob is curious about C++"),
+                Skill(5, 2, "Python", "Bob wants to try Python")
+            )
+            3 -> listOf(
+                Skill(1, 3, "Electrician", "Charlie wants to become an electrician"),
+                Skill(3, 3, "C#", "Charlie wants to develop in C#"),
+                Skill(5, 3, "Python", "Charlie is interested in Python for analytics")
+            )
+            4 -> listOf(
+                Skill(6, 4, "Soccer", "David wants to get better at soccer"),
+                Skill(7, 4, "Football", "David is learning football strategy"),
+                Skill(2, 4, "Plumbing", "David wants to pick up plumbing skills")
+            )
+            5 -> listOf(
+                Skill(3, 5, "C#", "Eve wants to explore C# coding"),
+                Skill(4, 5, "C++", "Eve is interested in C++"),
+                Skill(5, 5, "Python", "Eve wants to learn Python for automation")
+            )
+            else -> emptyList() // Return an empty list if the id doesn't match
+        }
     }
 
     fun loadFriendships(): List<Friendship> {
