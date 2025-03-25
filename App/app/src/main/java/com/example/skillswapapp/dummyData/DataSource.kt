@@ -6,7 +6,8 @@ import com.example.skillswapapp.model.Location
 import com.example.skillswapapp.model.AvailableSkill
 import com.example.skillswapapp.model.Skill
 import com.example.skillswapapp.model.SkillSwapRequest
-import com.example.skillswapapp.model.Users
+import com.example.skillswapapp.model.User
+
 
 class DataSource {
 
@@ -45,14 +46,32 @@ class DataSource {
         )
     }
 
-    fun loadUsers(): List<Users> {
+    fun loadUsers(): List<User> {
         return listOf(
-            Users(1, "Alice", "alice@example.com", "pass123", "Software Engineer", "Loves coding in C++", "Prefers remote learning", 1, byteArrayOf(0x00)),
-            Users(2, "Bob", "bob@example.com", "securepass", "Plumbing Expert", "Has 10 years of experience", "Prefers in-person training", 2, byteArrayOf(0x00)),
-            Users(3, "Charlie", "charlie@example.com", "mypassword", "Football Coach", "Played professionally for 5 years", "Prefers hands-on learning", 3, byteArrayOf(0x00)),
-            Users(4, "David", "david@example.com", "strongpass", "Data Scientist", "Python enthusiast", "Prefers video tutorials", 4, byteArrayOf(0x00)),
-            Users(5, "Eve", "eve@example.com", "evepass", "Electrician & Mentor", "Loves teaching trade skills", "Enjoys one-on-one mentoring", 5, byteArrayOf(0x00))
+            User(1, "Alice", "alice@example.com", "pass123", "Software Engineer", "Loves coding in C++", "Prefers remote learning", 1, byteArrayOf(0x00)),
+            User(2, "Bob", "bob@example.com", "securepass", "Plumbing Expert", "Has 10 years of experience", "Prefers in-person training", 2, byteArrayOf(0x00)),
+            User(3, "Charlie", "charlie@example.com", "mypassword", "Football Coach", "Played professionally for 5 years", "Prefers hands-on learning", 3, byteArrayOf(0x00)),
+            User(4, "David", "david@example.com", "strongpass", "Data Scientist", "Python enthusiast", "Prefers video tutorials", 4, byteArrayOf(0x00)),
+            User(5, "Eve", "eve@example.com", "evepass", "Electrician & Mentor", "Loves teaching trade skills", "Enjoys one-on-one mentoring", 5, byteArrayOf(0x00))
         )
+    }
+
+    fun loadUserId1(): User {
+        return User(1, "Alice", "alice@example.com", "pass123", "Software Engineer", "Loves coding in C++", "Prefers remote learning", 1, byteArrayOf(0x00),
+            listOf(
+            Skill(3, 1, "C#", "Alice codes in C# professionally"),
+            Skill(4, 1, "C++", "Alice has deep knowledge in C++"),
+            Skill(5, 1, "Python", "Alice uses Python for AI projects")
+            ),
+            listOf (
+                Skill(1, 1, "Electrician", "Alice wants to learn electrical work"),
+                Skill(2, 1, "Plumbing", "Alice wants to understand plumbing"),
+                Skill(7, 1, "Football", "Alice is interested in soccer training")
+            )
+        )
+
+
+
     }
 
     fun loadUserSkills(): List<Skill> {
