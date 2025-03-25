@@ -1,4 +1,4 @@
-package com.example.skillswapapp.ui
+package com.example.skillswapapp.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
@@ -7,12 +7,12 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun SwapsScreen(
+fun FriendsScreen(
     modifier: Modifier = Modifier
 ){
     Column(){
         Text(
-            text = "Swaps"
+            text = "Friends"
         )
     }
 }
