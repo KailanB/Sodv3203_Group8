@@ -21,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.skillswapapp.model.Users
 import com.example.skillswapapp.viewModel.UsersViewModel
 
 
@@ -38,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.skillswapapp.R
 import com.example.skillswapapp.model.Skill
+import com.example.skillswapapp.model.User
 import com.example.skillswapapp.state.UsersUiState
 
 
@@ -58,7 +58,7 @@ fun HomeScreen(
     ){
         Text(
             text = "Home",
-            color = MaterialTheme.colorScheme.primaryContainer,
+            color = MaterialTheme.colorScheme.inversePrimary,
             style = MaterialTheme.typography.displayLarge
         )
         TextField(
@@ -76,21 +76,19 @@ fun HomeScreen(
             is UsersUiState.Success -> {
 
                 // filter by user having skill.name of searchInput
-                val filteredUsers = state.users.filter { user ->
-                    user.userSkills.any { skill ->
-                        skill.name == searchInput
+                val filteredUsers = if (searchInput.isNotEmpty()) {
+                    state.users.filter { user ->
+                        user.userSkills.any { skill ->
+                            skill.name.contains(searchInput, ignoreCase = true)
+                        }
                     }
+                }
+                else {
+                    state.users
                 }
                 UserList(filteredUsers)
             }
             is UsersUiState.Error -> ErrorScreen( modifier = modifier.fillMaxSize())
-        }
-
-
-        if (uiState is UsersUiState.Success)
-        {
-            val users = (uiState as UsersUiState.Success).users
-            UserList(usersList = users)
         }
     }
 
@@ -99,7 +97,7 @@ fun HomeScreen(
 
 @Composable
 fun UserList(
-    usersList: List<Users>,
+    usersList: List<User>,
     modifier: Modifier = Modifier
 ){
 
@@ -115,7 +113,7 @@ fun UserList(
 }
 
 @Composable
-fun UserCard (user: Users, modifier: Modifier = Modifier){
+fun UserCard (user: User, modifier: Modifier = Modifier){
 
     Card(
         modifier = modifier
@@ -145,10 +143,7 @@ fun UserCard (user: Users, modifier: Modifier = Modifier){
                 style = MaterialTheme.typography.titleLarge,
                 modifier = modifier
             )
-
             SkillList(user.userSkills, "My Skills:", modifier)
-
-
             SkillList(user.userSeeksSkills, "Seeking Skills:", modifier)
 
         }
@@ -203,7 +198,7 @@ fun SkillCard(
     ) {
         Text(
             text = skill.name,
-            color = Color.White,
+            // color = Color.White,
             // modifier = Modifier.align(Alignment.Center)
         )
     }
