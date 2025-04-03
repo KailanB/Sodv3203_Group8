@@ -15,8 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -25,12 +23,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.skillswapapp.data.dao.FriendshipDao
 import com.example.skillswapapp.view.FriendsScreen
 import com.example.skillswapapp.view.HomeScreen
 import com.example.skillswapapp.view.ProfileScreen
 import com.example.skillswapapp.view.SwapsScreen
-import com.example.skillswapapp.viewModel.FriendsViewModel
 import com.example.skillswapapp.viewModel.UsersViewModel
 
 
@@ -112,15 +108,8 @@ fun SkillSwapApp(
                     modifier = Modifier
                 )
             }
-
-            composable(route = "friends?user_id={user_id}") { backStackEntry ->
-                val userId = backStackEntry.arguments?.getString("user_id")?.toInt() ?: 0
-                val friendsViewModel: FriendsViewModel = viewModel()
-
-                // Pass the necessary parameters to FriendsScreen
+            composable(route = "friends") {
                 FriendsScreen(
-                    viewModel = friendsViewModel,
-                    userId = userId,
                     modifier = Modifier
                 )
             }

@@ -2,6 +2,7 @@ package com.example.skillswapapp.view
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,14 +39,14 @@ class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            RegistrationScreen()
+            CreateAccount()
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistrationScreen() {
+fun CreateAccount() {
     val context = LocalContext.current
 
     // State variables to store input values
@@ -71,12 +72,12 @@ fun RegistrationScreen() {
         topBar = {
             TopAppBar(title = { Text("Create New Account") })
         }
-    ) { contentPadding -> // Accepts contentPadding parameter
+    ) { contentPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .padding(contentPadding), // Apply content padding
+                .padding(contentPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             OutlinedTextField(value = fullName, onValueChange = { fullName = it }, label = { Text("Full Name") })
@@ -101,7 +102,7 @@ fun RegistrationScreen() {
                         .padding(8.dp)
                 )
             } ?: Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground), // Default placeholder
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = "Upload Icon",
                 modifier = Modifier
                     .size(100.dp)
@@ -139,3 +140,5 @@ fun RegistrationScreen() {
 fun AsyncImage(model: Uri, contentDescription: String, modifier: Modifier) {
     TODO("Not yet implemented")
 }
+
+
