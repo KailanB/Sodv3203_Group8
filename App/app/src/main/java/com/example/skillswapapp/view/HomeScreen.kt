@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -90,6 +91,28 @@ fun HomeScreen(
             }
             is UsersUiState.Error -> ErrorScreen( modifier = modifier.fillMaxSize())
         }
+
+        // Add Sign Up and Login buttons
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        Row(
+//            horizontalArrangement = Arrangement.Center,
+//            modifier = Modifier.fillMaxWidth().padding(16.dp)
+//        ) {
+//            Button(
+//                onClick = { /* Handle Sign Up here */ },
+//                modifier = Modifier.padding(8.dp)
+//            ) {
+//                Text(text = "Sign Up")
+//            }
+//
+//            Button(
+//                onClick = { /* Handle Login here */ },
+//                modifier = Modifier.padding(8.dp)
+//            ) {
+//                Text(text = "Login")
+//            }
+//        }
     }
 
 }
