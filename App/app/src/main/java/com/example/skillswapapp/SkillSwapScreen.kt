@@ -5,15 +5,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.Alignment
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -23,6 +28,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.skillswapapp.ui.screens.LoginScreen
+import com.example.skillswapapp.view.CreateAccount
 import com.example.skillswapapp.view.FriendsScreen
 import com.example.skillswapapp.view.HomeScreen
 import com.example.skillswapapp.view.ProfileScreen
@@ -30,12 +37,15 @@ import com.example.skillswapapp.view.SwapsScreen
 import com.example.skillswapapp.viewModel.UsersViewModel
 
 
+
 @Composable
 fun SkillSwapNavBar(
     navController: NavController,
+
     //navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ){
+
     BottomAppBar(
 //        content = Text(text = "Header")
         actions = {
@@ -69,12 +79,40 @@ fun SkillSwapNavBar(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SkillSwapApp(
     //viewModel: OrderViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ){
+
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "SkillSwap") },
+                actions = {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(end = 16.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                navController.navigate("CreateAccount") },
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            Text(text = "Sign Up")
+                        }
+                        Button(
+                            onClick = { navController.navigate("LoginScreen") },
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            Text(text = "Login")
+                        }
+                    }
+                }
+            )
+        },
         bottomBar = {
             SkillSwapNavBar(
                 navController = navController,
@@ -113,10 +151,18 @@ fun SkillSwapApp(
                     modifier = Modifier
                 )
             }
+            composable(route = "createAccount") {
+                CreateAccount()
+            }
+            composable(route = "loginScreen") {
+                LoginScreen()
+            }
 
         }
 
     }
 
+
 }
+
 
