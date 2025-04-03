@@ -48,4 +48,8 @@ interface UserDao {
         "SELECT * FROM user WHERE user_id = :id"
     )
     fun getUser(id:Int): Flow<User>
+
+    // added part for user login -KK
+    @Query("SELECT * FROM user WHERE email = :email AND password = :password")
+    suspend fun getUserByEmailAndPassword(email: String, password: String): User?
 }
