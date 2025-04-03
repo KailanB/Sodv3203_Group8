@@ -15,11 +15,46 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.skillswapapp.data.dao.FriendshipDao
+import com.example.skillswapapp.data.entities.Friendship
+import kotlinx.coroutines.flow.collect
+import com.example.skillswapapp.data.entities.relations.UserFriendList
+import com.example.skillswapapp.data.repository.FriendshipRepository
+import com.example.skillswapapp.viewModel.FriendViewModelFactory
+import com.example.skillswapapp.viewModel.FriendsViewModel
+
+
 
 @Composable
-fun FriendsScreen(modifier: Modifier = Modifier) {
-    var friends by remember { mutableStateOf(listOf("Eleanor Shellstrop", "Sophie Hatter", "Tommy Wiseau", "Kate Dibiasky")) }
-    var friendRequests by remember { mutableStateOf(listOf("Jake Peralta")) }
+fun FriendsScreen(
+    userId: Int,
+    viewModel: FriendsViewModel,
+    modifier: Modifier = Modifier
+) {
+
+    var friends by remember { mutableStateOf<List<UserFriendList>>(emptyList()) }
+    var friendRequests by remember { mutableStateOf <List<String>>(emptyList())}
+
+
+    // Collect the friends and friend requests
+    LaunchedEffect(userId) {
+        viewModel.getAllFriends(userId).collect { friendList ->
+            friends = friendList ?: emptyList()
+        }
+    }
+
+    LaunchedEffect(userId) {
+        viewModel.getFriendship(userId).collect { friendList ->
+            val validFriendList = friendList as? List<Friendship> ?: emptyList()
+            if (validFriendList.isNotEmpty()) {
+                friendRequests = validFriendList
+                    .filter { it.status == "pending" }
+                    .map { it.friend_id.toString() }
+            }
+        }
+    }
+
 
     Column(modifier = modifier.padding(16.dp)) {
         Text(
@@ -34,8 +69,7 @@ fun FriendsScreen(modifier: Modifier = Modifier) {
             Text(text = "New Friend Request!", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
             friendRequests.forEach { request ->
                 FriendRequestItem(request) {
-                    friends = friends + request
-                    friendRequests = friendRequests - request
+                    viewModel.acceptFriendRequest(userId, request.toInt())
                 }
             }
         }
@@ -44,9 +78,13 @@ fun FriendsScreen(modifier: Modifier = Modifier) {
 
         // My Friends List Section
         Text(text = "My Friends", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-        friends.forEach { friend ->
-            FriendItem(friend) {
-                friends = friends - friend
+        if (friends.isEmpty()) {
+            Text(text = "No friends yet", fontSize = 16.sp, color = Color.Gray)
+        } else {
+            friends.forEach { friend ->
+                FriendItem(friend.name) {
+                    viewModel.deleteFriend(userId, friend.user_id)
+                }
             }
         }
     }
