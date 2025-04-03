@@ -1,10 +1,11 @@
 package com.example.skillswapapp.data.repository
 
+import com.example.skillswapapp.data.dao.FriendshipDao
 import com.example.skillswapapp.data.entities.Friendship
 import com.example.skillswapapp.data.entities.relations.UserFriendList
 import kotlinx.coroutines.flow.Flow
 
-interface FriendshipRepository {
+interface FriendshipRepository{
 
     suspend fun insertFriendship(friendship: Friendship)
     suspend fun updateFriendship(friendship: Friendship)
@@ -12,5 +13,8 @@ interface FriendshipRepository {
 
     fun getAllFriendshipsByIdStream(id:Int): Flow<List<UserFriendList>>
     fun getFriendshipStream(id:Int): Flow<Friendship?>
+
+    suspend fun acceptFriendRequest(userId: Int, friendId: Int)
+    suspend fun deleteFriend(userId: Int, friendId: Int)
 
 }
