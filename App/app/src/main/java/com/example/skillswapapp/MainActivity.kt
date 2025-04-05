@@ -17,8 +17,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             SkillSwapAppTheme {
                 SkillSwapApp()
-               // LoginScreen()
-
             }
         }
     }
