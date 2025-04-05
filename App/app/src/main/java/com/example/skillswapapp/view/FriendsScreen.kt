@@ -1,35 +1,24 @@
 package com.example.skillswapapp.view
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.skillswapapp.data.dao.FriendshipDao
-import com.example.skillswapapp.data.entities.Friendship
-import kotlinx.coroutines.flow.collect
 import com.example.skillswapapp.data.entities.relations.UserFriendList
-import com.example.skillswapapp.data.repository.FriendshipRepository
-import com.example.skillswapapp.viewModel.FriendViewModelFactory
 import com.example.skillswapapp.viewModel.FriendsViewModel
-
 
 
 @Composable
 fun FriendsScreen(
-    userId: Int,
-    viewModel: FriendsViewModel,
+    userId: Int, //for now just to check
+    viewModel: FriendsViewModel? = null, //ViewModel optional for testing,
     modifier: Modifier = Modifier
 ) {
 
@@ -38,23 +27,47 @@ fun FriendsScreen(
 
 
     // Collect the friends and friend requests
-    LaunchedEffect(userId) {
-        viewModel.getAllFriends(userId).collect { friendList ->
-            friends = friendList ?: emptyList()
-        }
-    }
+//    LaunchedEffect(userId) {
+//        viewModel.getAllFriends(userId).collect { friendList ->
+//            friends = friendList ?: emptyList()
+//        }
+//    }
+//
+//    LaunchedEffect(userId) {
+//        viewModel.getFriendship(userId).collect { friendList ->
+//            val validFriendList = friendList as? List<Friendship> ?: emptyList()
+//            if (validFriendList.isNotEmpty()) {
+//                friendRequests = validFriendList
+//                    .filter { it.status == "pending" }
+//                    .map { it.friend_id.toString() }
+//            }
+//        }
+//    }
 
     LaunchedEffect(userId) {
-        viewModel.getFriendship(userId).collect { friendList ->
-            val validFriendList = friendList as? List<Friendship> ?: emptyList()
-            if (validFriendList.isNotEmpty()) {
-                friendRequests = validFriendList
-                    .filter { it.status == "pending" }
-                    .map { it.friend_id.toString() }
+        val allFriendships = loadFriendships()
+        println("Loaded Friendships: $allFriendships") // Debug log
+
+        // Filtering accepted friends for userId = 1
+        friends = allFriendships
+            .filter { it.user_Id == userId && it.status == "accepted" }
+            .map {
+                UserFriendList(
+                    user_id = it.friend_Id,
+                    name = "Friend ${it.friend_Id}",
+                    email = "friend${it.friend_Id}@example.com",
+                    profile_intro = "Intro for friend ${it.friend_Id}"
+                )
             }
-        }
-    }
 
+        // Filtering pending requests for userId = 1
+        friendRequests = allFriendships
+            .filter { it.user_Id == userId && it.status == "pending" }
+            .map { it.friend_Id.toString() }
+
+        println("Friends: $friends")
+        println("Friend Requests: $friendRequests")
+    }
 
     Column(modifier = modifier.padding(16.dp)) {
         Text(
@@ -69,7 +82,8 @@ fun FriendsScreen(
             Text(text = "New Friend Request!", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
             friendRequests.forEach { request ->
                 FriendRequestItem(request) {
-                    viewModel.acceptFriendRequest(userId, request.toInt())
+//                    viewModel.acceptFriendRequest(userId, request.toInt())
+                    println("Accepted friend request from user $request") //test
                 }
             }
         }
@@ -83,11 +97,22 @@ fun FriendsScreen(
         } else {
             friends.forEach { friend ->
                 FriendItem(friend.name) {
-                    viewModel.deleteFriend(userId, friend.user_id)
+//                    viewModel.deleteFriend(userId, friend.user_id)
+                    println("Deleted friend ${friend.user_id}")
                 }
             }
         }
     }
+}
+
+fun loadFriendships(): List<com.example.skillswapapp.model.Friendship> {
+    return listOf(
+        com.example.skillswapapp.model.Friendship(1, 2, "accepted"),
+        com.example.skillswapapp.model.Friendship(1, 3, "pending"),
+        com.example.skillswapapp.model.Friendship(2, 4, "accepted"),
+        com.example.skillswapapp.model.Friendship(3, 5, "rejected"),
+        com.example.skillswapapp.model.Friendship(4, 5, "accepted")
+    )
 }
 
 @Composable
