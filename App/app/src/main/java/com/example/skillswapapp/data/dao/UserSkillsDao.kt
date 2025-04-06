@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.Flow
 interface UserSkillsDao {
 
     @Insert
+    suspend fun insertUserSkills(userSkillsList: List<UserSkills>)
+
+    @Insert
     suspend fun insert(userSkills: UserSkills)
 
     @Update

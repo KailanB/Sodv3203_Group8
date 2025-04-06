@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.Flow
 interface SkillSwapRequestDao {
 
     @Insert
+    suspend fun insertSkillSwaps(skillSwapRequests: List<SkillSwapRequest>)
+
+    @Insert
     suspend fun insert(skillSwapRequest: SkillSwapRequest)
 
     @Update

@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.Flow
 interface FriendshipDao {
 
     @Insert
+    suspend fun insertFriendships(friendships: List<Friendship>)
+
+    @Insert
     suspend fun insert(friendship: Friendship)
 
     @Update

@@ -1,13 +1,21 @@
 package com.example.skillswapapp.data.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
+import com.example.skillswapapp.data.entities.Category
 import com.example.skillswapapp.data.entities.Skill
 import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface SkillDao {
+
+    @Insert
+    suspend fun insertSkill(skills: Skill)
+
+    @Insert
+    suspend fun insertSkills(skills: List<Skill>)
 
     @Query(
         "SELECT * FROM skill"

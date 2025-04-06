@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserSeeksSkillsDao {
 
+    @Insert
+    suspend fun insertUserSeeks(userSeeksSkillsList: List<UserSeeksSkills>)
 
     @Insert
     suspend fun insert(userSeeksSkills: UserSeeksSkills)
