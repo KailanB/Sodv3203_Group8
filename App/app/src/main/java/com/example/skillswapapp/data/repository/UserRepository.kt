@@ -1,6 +1,7 @@
 package com.example.skillswapapp.data.repository
 
 import com.example.skillswapapp.data.entities.User
+import com.example.skillswapapp.data.entities.relations.UserWithoutSecureInfo
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
@@ -9,10 +10,10 @@ interface UserRepository {
     suspend fun updateUser(user: User)
     suspend fun deleteUser(user: User)
 
-    fun getAllUsersBySkillIdStream(id:Int): Flow<List<User>>
+    fun getAllUsersBySkillIdStream(id:Int): Flow<List<UserWithoutSecureInfo>>
 
-    fun getAllUsersByLocationIdStream(id:Int): Flow<List<User>>
-    fun getUserStream(id:Int): Flow<User?>
-    fun getAllUsersStream(): Flow<List<User>>
+    fun getAllUsersByLocationIdStream(id:Int): Flow<List<UserWithoutSecureInfo>>
+    fun getUserStream(id:Int): Flow<UserWithoutSecureInfo?>
+    fun getAllUsersStream(): Flow<List<UserWithoutSecureInfo>>
 
 }
