@@ -6,18 +6,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.skillswapapp.data.entities.Skill
 import com.example.skillswapapp.data.repository.CategoryRepository
+import com.example.skillswapapp.data.repository.SkillRepository
 import com.example.skillswapapp.data.repository.UserRepository
 import com.example.skillswapapp.dummyData.DataSource
+import com.example.skillswapapp.model.UserWithSkills
 import com.example.skillswapapp.state.HomeUiState
 import com.example.skillswapapp.state.UsersUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class UsersViewModel (
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val skillRepository: SkillRepository
 ): ViewModel() {
 
     private val _usersUiState = MutableStateFlow<UsersUiState>(UsersUiState.Loading)
@@ -35,11 +40,39 @@ class UsersViewModel (
         // ******************* METHOD TO PULL FROM DATABASE *************
         viewModelScope.launch {
             try {
-                userRepository.getAllUsersStream().map { UsersUiState.Success(users = it) }
-                    .collect { uiState ->
-                        Log.d("UserList123", "Users: ${uiState.users}")
-                        _usersUiState.value = uiState
+                val usersFlow = userRepository.getAllUsersStream()
+
+                usersFlow.collect{userList ->
+                    val usersWithSkills = userList.map { user ->
+                        val skills = skillRepository.getAllSkillByUserIdStream(user.user_id)
+                        val seeksSkills = skillRepository.getAllSeeksSkillByUserIdStream(user.user_id)
+                        var skillList = emptyList<Skill>()
+                        var seekSkillList = emptyList<Skill>()
+                        skills.collect { sList ->
+                            skillList = sList
+                        }
+                        seeksSkills.collect { sList ->
+                            seekSkillList = sList
+                        }
+                        UserWithSkills(user, skillList, seekSkillList)
+
                     }
+                    _usersUiState.value = UsersUiState.Success(users = usersWithSkills)
+
+                    
+                    
+                }
+
+                
+
+
+
+
+//                { UsersUiState.Success(users = it) }
+//                    .collect { uiState ->
+//                        Log.d("UserList123", "Users: ${uiState.users}")
+//                        _usersUiState.value = uiState
+//                    }
 
 
             } catch (exception: Exception) {
