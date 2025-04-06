@@ -23,6 +23,18 @@ interface SkillDao {
     fun getAllSkill(): Flow<List<Skill>>
 
     @Query(
+        "SELECT * FROM skill s JOIN userSkills us ON s.skill_id = us.skill_id " +
+                "WHERE us.user_id = :id"
+    )
+    fun getAllSkillByUserId(id: Int): Flow<List<Skill>>
+
+    @Query(
+        "SELECT * FROM skill s JOIN userSeeksSkills uss ON s.skill_id = uss.skill_id " +
+                "WHERE uss.user_id = :id"
+    )
+    fun getAllSeeksSkillByUserId(id: Int): Flow<List<Skill>>
+
+    @Query(
         "SELECT s.skill_id, s.skill_name, s.skill_description, s.category_id FROM skill s " +
                 "WHERE s.category_id = :id"
     )

@@ -10,4 +10,8 @@ interface SkillRepository {
     fun getAllSkillByCategoryIdStream(id:Int): Flow<List<Skill>>
 
     fun getSkillByIdStream(id:Int): Flow<Skill?>
+
+    fun getAllSkillByUserIdStream(id:Int): Flow<List<Skill>>
+
+    fun getAllSeeksSkillByUserIdStream(id:Int): Flow<List<Skill>>
 }
