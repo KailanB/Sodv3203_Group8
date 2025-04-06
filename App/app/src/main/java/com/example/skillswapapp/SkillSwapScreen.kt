@@ -119,16 +119,15 @@ fun SkillSwapApp(
 
         ) {
             composable(route = "home") {
-                val usersViewModel: UsersViewModel = viewModel()
-                usersViewModel.getAllUsers()
+//                val usersViewModel: UsersViewModel = viewModel()
+//                usersViewModel.getAllUsers()
                 HomeScreen(
-                    viewModel = usersViewModel,
                     modifier = Modifier
                 )
             }
             composable(route = "profile") {
                 val usersViewModel: UsersViewModel = viewModel()
-                usersViewModel.getUserById()
+                // usersViewModel.getUserById()
                 ProfileScreen(
                     viewModel = usersViewModel,
                     modifier = Modifier
