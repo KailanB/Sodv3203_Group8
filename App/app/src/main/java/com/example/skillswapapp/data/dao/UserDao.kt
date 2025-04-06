@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserDao {
 
+    @Insert
+    suspend fun insertUsers(users: List<User>)
 
     @Insert
     suspend fun insert(user:User)
@@ -23,13 +25,15 @@ interface UserDao {
     suspend fun delete(user:User)
 
     @Query(
-        "SELECT * FROM user"
+        "SELECT u.user_id, u.name, u.email, u.profile_intro, l.province, l.city, u.profile_picture FROM user u " +
+                "JOIN location l ON l.location_id = u.location_id "
+
     )
-    fun getAllUsers(): Flow<List<User>>
+    fun getAllUsers(): Flow<List<UserWithoutSecureInfo>>
 
     // get users by skill
     @Query(
-        "SELECT u.user_id, u.name, u.email, u.profile_intro, u.profile_picture, l.province, l.city FROM user u JOIN userSkills us ON us.user_id = u.user_id " +
+        "SELECT u.user_id, u.name, u.email, u.profile_intro, l.province, l.city, u.profile_picture FROM user u JOIN userSkills us ON us.user_id = u.user_id " +
                 "JOIN skill s ON s.skill_id = us.skill_id " +
                 "JOIN location l ON l.location_id = u.location_id " +
                 "WHERE us.skill_id = :id"
@@ -45,9 +49,11 @@ interface UserDao {
     fun getAllUsersByLocationId(id:Int): Flow<List<UserWithoutSecureInfo>>
 
     @Query(
-        "SELECT * FROM user WHERE user_id = :id"
+        "SELECT u.user_id, u.name, u.email, u.profile_intro, u.profile_picture, l.province, l.city FROM user u " +
+                "JOIN location l ON l.location_id = u.location_id " +
+                "WHERE u.user_id = :id"
     )
-    fun getUser(id:Int): Flow<User>
+    fun getUser(id:Int): Flow<UserWithoutSecureInfo>
 
     // added part for user login -KK
     @Query("SELECT * FROM user WHERE email = :email AND password = :password")
