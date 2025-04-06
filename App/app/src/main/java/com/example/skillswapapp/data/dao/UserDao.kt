@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.skillswapapp.data.entities.User
-import com.example.skillswapapp.data.entities.relations.UserWithoutSecureInfo
+import com.example.skillswapapp.data.relations.UserWithoutSecureInfo
 import kotlinx.coroutines.flow.Flow
 
 
@@ -23,6 +23,7 @@ interface UserDao {
 
     @Update
     suspend fun delete(user:User)
+
 
     @Query(
         "SELECT u.user_id, u.name, u.email, u.profile_intro, l.province, l.city, u.profile_picture FROM user u " +

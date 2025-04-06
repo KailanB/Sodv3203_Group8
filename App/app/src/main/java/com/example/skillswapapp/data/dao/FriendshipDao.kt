@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.skillswapapp.data.entities.Friendship
-import com.example.skillswapapp.data.entities.relations.UserFriendList
+import com.example.skillswapapp.data.relations.UserFriendList
 import kotlinx.coroutines.flow.Flow
 
 @Dao

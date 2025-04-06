@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.skillswapapp.data.entities.UserSeeksSkills
-import com.example.skillswapapp.data.entities.relations.UserSkillDetails
+import com.example.skillswapapp.data.relations.UserSkillDetails
 import kotlinx.coroutines.flow.Flow
 
 

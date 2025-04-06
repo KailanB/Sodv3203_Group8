@@ -20,7 +20,8 @@ object AppViewModelProvider {
 
         initializer {
             UsersViewModel(
-                skillSwapApplication().container.userRepository
+                skillSwapApplication().container.userRepository,
+                skillSwapApplication().container.skillRepository
             )
         }
     }

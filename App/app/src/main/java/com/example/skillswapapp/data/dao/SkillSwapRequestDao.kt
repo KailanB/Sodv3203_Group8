@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.skillswapapp.data.entities.SkillSwapRequest
-import com.example.skillswapapp.data.entities.relations.SkillSwapRequestDetails
+import com.example.skillswapapp.data.relations.SkillSwapRequestDetails
 import kotlinx.coroutines.flow.Flow
 
 @Dao
