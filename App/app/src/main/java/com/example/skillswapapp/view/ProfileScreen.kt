@@ -25,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.skillswapapp.R
-import com.example.skillswapapp.data.entities.relations.UserWithoutSecureInfo
+import com.example.skillswapapp.data.relations.UserWithoutSecureInfo
 import com.example.skillswapapp.model.Skill
 import com.example.skillswapapp.model.User
 import com.example.skillswapapp.state.UsersUiState

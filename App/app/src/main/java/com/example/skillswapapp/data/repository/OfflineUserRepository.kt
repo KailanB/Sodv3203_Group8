@@ -7,7 +7,7 @@ import com.example.skillswapapp.data.dao.CategoryDao
 import com.example.skillswapapp.data.dao.UserDao
 import com.example.skillswapapp.data.entities.Category
 import com.example.skillswapapp.data.entities.User
-import com.example.skillswapapp.data.entities.relations.UserWithoutSecureInfo
+import com.example.skillswapapp.data.relations.UserWithoutSecureInfo
 import kotlinx.coroutines.flow.Flow
 
 data class OfflineUserRepository(

@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.skillswapapp.AppViewModelProvider
 import com.example.skillswapapp.R
-import com.example.skillswapapp.data.entities.relations.UserWithoutSecureInfo
+import com.example.skillswapapp.data.relations.UserWithoutSecureInfo
 import com.example.skillswapapp.model.Skill
 import com.example.skillswapapp.model.User
 import com.example.skillswapapp.state.HomeUiState

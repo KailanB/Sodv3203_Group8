@@ -1,7 +1,9 @@
-package com.example.skillswapapp.data.entities
+package com.example.skillswapapp.data.relations
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.example.skillswapapp.data.entities.SkillSwapRequest
+import com.example.skillswapapp.data.entities.User
 
 data class SkillSwapRequestUserDetails(
     @Embedded val request: SkillSwapRequest,

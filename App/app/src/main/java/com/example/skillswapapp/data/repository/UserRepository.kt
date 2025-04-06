@@ -1,7 +1,7 @@
 package com.example.skillswapapp.data.repository
 
 import com.example.skillswapapp.data.entities.User
-import com.example.skillswapapp.data.entities.relations.UserWithoutSecureInfo
+import com.example.skillswapapp.data.relations.UserWithoutSecureInfo
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {

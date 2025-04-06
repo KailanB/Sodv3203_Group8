@@ -2,7 +2,7 @@ package com.example.skillswapapp.data.repository
 
 import com.example.skillswapapp.data.dao.FriendshipDao
 import com.example.skillswapapp.data.entities.Friendship
-import com.example.skillswapapp.data.entities.relations.UserFriendList
+import com.example.skillswapapp.data.relations.UserFriendList
 import kotlinx.coroutines.flow.Flow
 
 interface FriendshipRepository{

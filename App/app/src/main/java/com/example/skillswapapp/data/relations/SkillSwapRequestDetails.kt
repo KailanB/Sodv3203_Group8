@@ -1,4 +1,4 @@
-package com.example.skillswapapp.data.entities.relations
+package com.example.skillswapapp.data.relations
 
 data class SkillSwapRequestDetails(
 
