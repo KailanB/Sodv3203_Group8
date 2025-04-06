@@ -36,19 +36,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.skillswapapp.AppViewModelProvider
 import com.example.skillswapapp.R
+import com.example.skillswapapp.data.entities.relations.UserWithoutSecureInfo
 import com.example.skillswapapp.model.Skill
 import com.example.skillswapapp.model.User
+import com.example.skillswapapp.state.HomeUiState
 import com.example.skillswapapp.state.UsersUiState
+import com.example.skillswapapp.viewModel.HomeViewModel
 
 
 @Composable
 fun HomeScreen(
-    viewModel: UsersViewModel,
-    modifier: Modifier = Modifier
-){
+    viewModelUser: UsersViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    modifier: Modifier = Modifier,
+    viewModelHome: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 
-    val uiState by viewModel.usersUiState.collectAsState()
+){
+    val homeUiState by viewModelHome.homeUiState.collectAsState()
+    val userUiState by viewModelUser.usersUiState.collectAsState()
+
     var searchInput by remember { mutableStateOf("") }
 
 
@@ -71,23 +79,64 @@ fun HomeScreen(
         )
 
 
+        // ****************** TESTING ONLY ************************
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ){
+            Text(
+                text = "TESTING ONLY",
+                color = MaterialTheme.colorScheme.inversePrimary,
+                style = MaterialTheme.typography.displaySmall
+            )
+
+            when(val currentState = homeUiState)
+            {
+                is HomeUiState.Success -> {
+                    Text(text = currentState.categories[0].category)
+                    Text(text = "Success?")
+                }
+
+
+                is HomeUiState.Loading -> {Text(text = "Loading")}
+                is HomeUiState.Error -> {Text(text = "Error?")}
+
+            }
+            Text(
+                text = "TESTING ONLY",
+                color = MaterialTheme.colorScheme.inversePrimary,
+                style = MaterialTheme.typography.displaySmall
+            )
+
+        }
+
+        // ****************** TESTING ONLY ************************
+
+
+
+
+
+
+
         Spacer(modifier = Modifier.height(16.dp))
-        when (val state = uiState) {
+        when (val state = userUiState) {
             is UsersUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
             is UsersUiState.Success -> {
 
                 // filter by user having skill.name of searchInput
                 val filteredUsers = if (searchInput.isNotEmpty()) {
-                    state.users.filter { user ->
-                        user.userSkills.any { skill ->
-                            skill.name.contains(searchInput, ignoreCase = true)
-                        }
-                    }
+                    state.users
+//                        .filter { user ->
+//                        user.userSkills.any { skill ->
+//                            skill.name.contains(searchInput, ignoreCase = true)
+//                        }
+//                    }
                 }
                 else {
                     state.users
                 }
-                UserList(filteredUsers)
+                UserList(state.users)
             }
             is UsersUiState.Error -> ErrorScreen( modifier = modifier.fillMaxSize())
         }
@@ -120,7 +169,7 @@ fun HomeScreen(
 
 @Composable
 fun UserList(
-    usersList: List<User>,
+    usersList: List<UserWithoutSecureInfo>,
     modifier: Modifier = Modifier
 ){
 
@@ -136,7 +185,7 @@ fun UserList(
 }
 
 @Composable
-fun UserCard (user: User, modifier: Modifier = Modifier){
+fun UserCard (user: UserWithoutSecureInfo, modifier: Modifier = Modifier){
 
     Card(
         modifier = modifier
@@ -150,7 +199,7 @@ fun UserCard (user: User, modifier: Modifier = Modifier){
                 )
         ) {
             Text(
-                text =  user.name + " - User ID: " + user.userId,
+                text =  user.name + " - User ID: " + user.user_id,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = modifier
             )
@@ -162,12 +211,12 @@ fun UserCard (user: User, modifier: Modifier = Modifier){
             )
 
             Text(
-                text =  "Description: " + user.description,
+                text =  "Description: " + user.profile_intro,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = modifier
             )
-            SkillList(user.userSkills, "My Skills:", modifier)
-            SkillList(user.userSeeksSkills, "Seeking Skills:", modifier)
+            //SkillList(user.userSkills, "My Skills:", modifier)
+            //SkillList(user.userSeeksSkills, "Seeking Skills:", modifier)
 
         }
     }
