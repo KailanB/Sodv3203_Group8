@@ -17,6 +17,7 @@ data class OfflineUserRepository(
     override fun getUserStream(id: Int): Flow<UserWithoutSecureInfo?> = userDao.getUser(id)
     override fun getAllUsersBySkillIdStream(id: Int): Flow<List<UserWithoutSecureInfo>> = userDao.getAllUsersBySkillId(id)
     override fun getAllUsersByLocationIdStream(id: Int): Flow<List<UserWithoutSecureInfo>> = userDao.getAllUsersByLocationId(id)
+    override fun getUserAllInfoStream(id: Int): Flow<User> = userDao.getUserAllInfo(id)
 
     override suspend fun insertUser(user: User) = userDao.insert(user)
     override suspend fun deleteUser(user: User) = userDao.delete(user)

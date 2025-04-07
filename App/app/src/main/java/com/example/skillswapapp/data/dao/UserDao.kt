@@ -56,6 +56,11 @@ interface UserDao {
     )
     fun getUser(id:Int): Flow<UserWithoutSecureInfo>
 
+    @Query(
+        "SELECT * FROM user WHERE user_id = :id"
+    )
+    fun getUserAllInfo(id:Int): Flow<User>
+
     // added part for user login -KK
     @Query("SELECT * FROM user WHERE email = :email AND password = :password")
     suspend fun getUserByEmailAndPassword(email: String, password: String): User?
