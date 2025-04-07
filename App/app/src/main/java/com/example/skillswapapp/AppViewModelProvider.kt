@@ -5,12 +5,21 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.skillswapapp.viewModel.HomeViewModel
+import com.example.skillswapapp.viewModel.ProfileViewModel
 import com.example.skillswapapp.viewModel.UsersViewModel
+import com.example.skillswapappimport.SessionViewModel
 
 
 object AppViewModelProvider {
 
     val Factory = viewModelFactory {
+        initializer {
+            SessionViewModel(
+                skillSwapApplication().container.userRepository,
+                skillSwapApplication().container.skillRepository
+            )
+        }
+
         initializer {
             HomeViewModel(
                 skillSwapApplication().container.categoryRepository
@@ -22,6 +31,12 @@ object AppViewModelProvider {
             UsersViewModel(
                 skillSwapApplication().container.userRepository,
                 skillSwapApplication().container.skillRepository
+            )
+        }
+
+        initializer {
+            ProfileViewModel(
+                skillSwapApplication().container.userRepository
             )
         }
     }
