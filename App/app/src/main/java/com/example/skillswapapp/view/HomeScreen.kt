@@ -40,17 +40,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.skillswapapp.AppViewModelProvider
 import com.example.skillswapapp.R
 import com.example.skillswapapp.data.relations.UserWithoutSecureInfo
-import com.example.skillswapapp.model.Skill
-import com.example.skillswapapp.model.User
+import com.example.skillswapapp.data.entities.Skill
+import com.example.skillswapapp.model.UserWithSkills
 import com.example.skillswapapp.state.HomeUiState
 import com.example.skillswapapp.state.UsersUiState
 import com.example.skillswapapp.viewModel.HomeViewModel
+import com.example.skillswapappimport.SessionViewModel
 
 
 @Composable
 fun HomeScreen(
-    viewModelUser: UsersViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    sessionViewModel: SessionViewModel,
     modifier: Modifier = Modifier,
+    viewModelUser: UsersViewModel = viewModel(factory = AppViewModelProvider.Factory),
     viewModelHome: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 
 ){
@@ -59,6 +61,7 @@ fun HomeScreen(
 
     var searchInput by remember { mutableStateOf("") }
 
+    val currentUser by sessionViewModel.currentUser.collectAsState()
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -86,25 +89,17 @@ fun HomeScreen(
             modifier = Modifier.fillMaxWidth()
         ){
             Text(
-                text = "TESTING ONLY",
+                text = "**** TESTING ONLY ****",
                 color = MaterialTheme.colorScheme.inversePrimary,
                 style = MaterialTheme.typography.displaySmall
             )
-
-            when(val currentState = homeUiState)
-            {
-                is HomeUiState.Success -> {
-                    Text(text = currentState.categories[0].category)
-                    Text(text = "Success?")
-                }
-
-
-                is HomeUiState.Loading -> {Text(text = "Loading")}
-                is HomeUiState.Error -> {Text(text = "Error?")}
-
+            currentUser?.let {
+                Text(
+                    text= currentUser!!.user.name
+                )
             }
             Text(
-                text = "TESTING ONLY",
+                text = "*************************",
                 color = MaterialTheme.colorScheme.inversePrimary,
                 style = MaterialTheme.typography.displaySmall
             )
@@ -169,14 +164,14 @@ fun HomeScreen(
 
 @Composable
 fun UserList(
-    usersList: List<UserWithoutSecureInfo>,
+    usersList: List<UserWithSkills>,
     modifier: Modifier = Modifier
 ){
 
     LazyColumn {
         items(items = usersList) { user ->
             UserCard(
-                user = user,
+                userWithSkills = user,
                 modifier = Modifier.padding(8.dp)
             )
         }
@@ -185,7 +180,7 @@ fun UserList(
 }
 
 @Composable
-fun UserCard (user: UserWithoutSecureInfo, modifier: Modifier = Modifier){
+fun UserCard (userWithSkills: UserWithSkills, modifier: Modifier = Modifier){
 
     Card(
         modifier = modifier
@@ -199,24 +194,24 @@ fun UserCard (user: UserWithoutSecureInfo, modifier: Modifier = Modifier){
                 )
         ) {
             Text(
-                text =  user.name + " - User ID: " + user.user_id,
+                text =  userWithSkills.user.name + " - User ID: " + userWithSkills.user.user_id,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = modifier
             )
 
             Text(
-                text =  user.email,
+                text =  userWithSkills.user.email,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = modifier
             )
 
             Text(
-                text =  "Description: " + user.profile_intro,
+                text =  "Description: " + userWithSkills.user.profile_intro,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = modifier
             )
-            //SkillList(user.userSkills, "My Skills:", modifier)
-            //SkillList(user.userSeeksSkills, "Seeking Skills:", modifier)
+            SkillList(userWithSkills.skills, "My Skills:", modifier)
+            SkillList(userWithSkills.seeksSkills, "Seeking Skills:", modifier)
 
         }
     }
@@ -269,7 +264,7 @@ fun SkillCard(
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(
-            text = skill.name,
+            text = skill.skill_name,
             // color = Color.White,
             // modifier = Modifier.align(Alignment.Center)
         )

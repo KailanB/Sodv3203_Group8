@@ -16,6 +16,7 @@ import com.example.skillswapapp.state.HomeUiState
 import com.example.skillswapapp.state.UsersUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -44,17 +45,10 @@ class UsersViewModel (
 
                 usersFlow.collect{userList ->
                     val usersWithSkills = userList.map { user ->
-                        val skills = skillRepository.getAllSkillByUserIdStream(user.user_id)
-                        val seeksSkills = skillRepository.getAllSeeksSkillByUserIdStream(user.user_id)
-                        var skillList = emptyList<Skill>()
-                        var seekSkillList = emptyList<Skill>()
-                        skills.collect { sList ->
-                            skillList = sList
-                        }
-                        seeksSkills.collect { sList ->
-                            seekSkillList = sList
-                        }
-                        UserWithSkills(user, skillList, seekSkillList)
+                        val skills = skillRepository.getAllSkillByUserIdStream(user.user_id).first()
+                        val seeksSkills = skillRepository.getAllSeeksSkillByUserIdStream(user.user_id).first()
+
+                        UserWithSkills(user, skills, seeksSkills)
 
                     }
                     _usersUiState.value = UsersUiState.Success(users = usersWithSkills)

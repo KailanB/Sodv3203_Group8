@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -32,7 +33,7 @@ import com.example.skillswapapp.view.FriendsScreen
 import com.example.skillswapapp.view.HomeScreen
 import com.example.skillswapapp.view.ProfileScreen
 import com.example.skillswapapp.view.SwapsScreen
-import com.example.skillswapapp.viewModel.UsersViewModel
+import com.example.skillswapappimport.SessionViewModel
 
 
 @Composable
@@ -76,9 +77,10 @@ fun SkillSwapNavBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SkillSwapApp(
-    //viewModel: OrderViewModel = viewModel(),
+    sessionViewModel: SessionViewModel = viewModel(factory = AppViewModelProvider.Factory),
     navController: NavHostController = rememberNavController()
 ){
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -122,14 +124,15 @@ fun SkillSwapApp(
 //                val usersViewModel: UsersViewModel = viewModel()
 //                usersViewModel.getAllUsers()
                 HomeScreen(
+                    sessionViewModel = sessionViewModel,
                     modifier = Modifier
                 )
             }
             composable(route = "profile") {
-                val usersViewModel: UsersViewModel = viewModel()
+                // val usersViewModel: UsersViewModel = viewModel()
                 // usersViewModel.getUserById()
                 ProfileScreen(
-                    viewModel = usersViewModel,
+                    sessionViewModel = sessionViewModel,
                     modifier = Modifier
                 )
             }
