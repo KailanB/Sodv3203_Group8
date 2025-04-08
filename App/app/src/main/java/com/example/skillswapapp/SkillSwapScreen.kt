@@ -33,6 +33,7 @@ import com.example.skillswapapp.view.FriendsScreen
 import com.example.skillswapapp.view.HomeScreen
 import com.example.skillswapapp.view.ProfileScreen
 import com.example.skillswapapp.view.SwapsScreen
+import com.example.skillswapapp.view.UserEntryScreen
 import com.example.skillswapappimport.SessionViewModel
 
 
@@ -132,10 +133,18 @@ fun SkillSwapApp(
                 // val usersViewModel: UsersViewModel = viewModel()
                 // usersViewModel.getUserById()
                 ProfileScreen(
+                    navigateToEditUser = {navController.navigate(route = "userEntryScreen")},
                     sessionViewModel = sessionViewModel,
                     modifier = Modifier
                 )
             }
+            composable(route = "userEntryScreen"){
+                val currentUser = sessionViewModel.currentUser.collectAsState()
+                UserEntryScreen(
+                    currentUser = currentUser.value?.user
+                )
+            }
+
             composable(route = "swaps") {
                 SwapsScreen(
                     modifier = Modifier

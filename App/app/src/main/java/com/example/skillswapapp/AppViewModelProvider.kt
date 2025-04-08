@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.skillswapapp.viewModel.HomeViewModel
 import com.example.skillswapapp.viewModel.ProfileViewModel
+import com.example.skillswapapp.viewModel.UserEntryViewModel
 import com.example.skillswapapp.viewModel.UsersViewModel
 import com.example.skillswapappimport.SessionViewModel
 
@@ -19,6 +20,13 @@ object AppViewModelProvider {
                 skillSwapApplication().container.skillRepository
             )
         }
+
+        initializer {
+            UserEntryViewModel(
+                skillSwapApplication().container.userRepository
+            )
+        }
+
 
         initializer {
             HomeViewModel(

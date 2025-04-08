@@ -8,7 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +30,7 @@ import com.example.skillswapappimport.SessionViewModel
 
 @Composable
 fun ProfileScreen(
+    navigateToEditUser: (User?) -> Unit,
     sessionViewModel: SessionViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -38,6 +43,14 @@ fun ProfileScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
+        FloatingActionButton(
+            onClick = {navigateToEditUser(currentUser?.user)}
+        ) {
+            Icon(
+                imageVector = Icons.Default.Edit,
+                contentDescription = "Edit Profile"
+            )
+        }
         Text(
             text = "Profile",
             color = MaterialTheme.colorScheme.inversePrimary,
