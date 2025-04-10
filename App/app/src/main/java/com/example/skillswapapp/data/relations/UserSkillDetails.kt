@@ -1,9 +1,11 @@
 package com.example.skillswapapp.data.relations
 
-data class UserSkillDetails(
+import androidx.room.Embedded
+import com.example.skillswapapp.data.entities.UserSkills
 
-    val skill_id: Int,
+
+data class UserSkillDetails(
+    @Embedded val userSkills: UserSkills,
     val skill_name: String,
-    val skill_details: String?
 
 )
