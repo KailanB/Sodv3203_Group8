@@ -16,15 +16,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.skillswapapp.data.entities.Skill
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.skillswapapp.AppViewModelProvider
 import com.example.skillswapapp.data.entities.User
-import com.example.skillswapapp.model.CurrentUser
+import com.example.skillswapapp.model.UiUserProfileDisplay
+import com.example.skillswapapp.model.UiDisplaySkill
+import com.example.skillswapapp.ui.components.SkillCard
+import com.example.skillswapapp.viewModel.ProfileViewModel
 import com.example.skillswapappimport.SessionViewModel
 
 
@@ -32,11 +36,22 @@ import com.example.skillswapappimport.SessionViewModel
 fun ProfileScreen(
     navigateToEditUser: (User?) -> Unit,
     sessionViewModel: SessionViewModel,
+    profileViewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
     modifier: Modifier = Modifier
 ) {
 
-    // val uiState by viewModel.usersUiState.collectAsState()
     val currentUser by sessionViewModel.currentUser.collectAsState()
+    currentUser?.let { user ->
+        LaunchedEffect(user) {
+            profileViewModel.setUser(user)
+            profileViewModel.setMySkills(user.skills)
+            profileViewModel.setSkillsSeeking(user.seeksSkills)
+        }
+    }
+
+    val mySkills by profileViewModel.mySkills.collectAsState(initial = emptyList())
+    val skillsSeeking by profileViewModel.skillsSeeking.collectAsState(initial = emptyList())
+
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -58,7 +73,7 @@ fun ProfileScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         currentUser?.let {
-            ProfileCard(currentUser!!)
+            ProfileCard(currentUser!!, mySkills, skillsSeeking)
         }
 
 
@@ -81,7 +96,11 @@ fun ProfileScreen(
 
 
 @Composable
-fun ProfileCard(currentUser: CurrentUser, modifier: Modifier = Modifier) {
+fun ProfileCard(
+    currentUser: UiUserProfileDisplay,
+    mySkills: List<UiDisplaySkill>,
+    skillsSeeking: List<UiDisplaySkill>,
+    modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
     ) {
@@ -110,8 +129,8 @@ fun ProfileCard(currentUser: CurrentUser, modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.titleLarge,
                 modifier = modifier
             )
-            ProfileSkillList(currentUser.skills, "My Skills:", modifier)
-            ProfileSkillList(currentUser.seeksSkills, "Seeking Skills:", modifier)
+            ProfileSkillList(mySkills, "My Skills:", modifier)
+            ProfileSkillList(skillsSeeking, "Seeking Skills:", modifier)
 
         }
     }
@@ -120,8 +139,8 @@ fun ProfileCard(currentUser: CurrentUser, modifier: Modifier = Modifier) {
 
 @Composable
 fun ProfileSkillList(
-    skills: List<Skill>,
-    description: String,
+    skills: List<UiDisplaySkill>,
+    skillListTitle: String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -131,7 +150,7 @@ fun ProfileSkillList(
     )
     {
         Text(
-            text = description,
+            text = skillListTitle,
             style = MaterialTheme.typography.titleLarge
         )
         Row(
