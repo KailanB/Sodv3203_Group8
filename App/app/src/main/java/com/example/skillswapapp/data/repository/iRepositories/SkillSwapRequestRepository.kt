@@ -1,4 +1,4 @@
-package com.example.skillswapapp.data.repository
+package com.example.skillswapapp.data.repository.iRepositories
 
 import com.example.skillswapapp.data.entities.SkillSwapRequest
 import kotlinx.coroutines.flow.Flow

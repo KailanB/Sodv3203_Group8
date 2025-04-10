@@ -1,6 +1,5 @@
-package com.example.skillswapapp.data.repository
+package com.example.skillswapapp.data.repository.iRepositories
 
-import com.example.skillswapapp.data.dao.FriendshipDao
 import com.example.skillswapapp.data.entities.Friendship
 import com.example.skillswapapp.data.relations.UserFriendList
 import kotlinx.coroutines.flow.Flow
