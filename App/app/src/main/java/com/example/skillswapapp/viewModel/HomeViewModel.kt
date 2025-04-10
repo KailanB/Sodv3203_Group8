@@ -3,17 +3,11 @@ package com.example.skillswapapp.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.skillswapapp.data.repository.CategoryRepository
-import com.example.skillswapapp.dummyData.DataSource
+import com.example.skillswapapp.data.repository.iRepositories.CategoryRepository
 import com.example.skillswapapp.state.HomeUiState
-import com.example.skillswapapp.state.UsersUiState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel (

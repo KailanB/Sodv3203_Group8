@@ -35,7 +35,7 @@ abstract class SkillSwapDatabase: RoomDatabase() {
     abstract fun skillDao(): SkillDao
     abstract fun skillSwapRequestDao(): SkillSwapRequestDao
     abstract fun userDao(): UserDao
-    abstract fun userSeeksSkills(): UserSeeksSkillsDao
+    abstract fun userSeeksSkillsDao(): UserSeeksSkillsDao
     abstract fun userSkillsDao(): UserSkillsDao
 
     companion object {
@@ -275,7 +275,7 @@ class DatabaseInitializer(private val context: Context) {
             database.locationDao().insertLocations(locations)
             database.userDao().insertUsers(users)
             database.userSkillsDao().insertUserSkills(userSkills)
-            database.userSeeksSkills().insertUserSeeks(userSeeksSkills)
+            database.userSeeksSkillsDao().insertUserSeeks(userSeeksSkills)
             database.friendshipDao().insertFriendships(friendships)
             database.skillSwapRequestDao().insertSkillSwaps(skillSwapRequests)
 

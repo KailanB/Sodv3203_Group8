@@ -4,7 +4,6 @@ package com.example.skillswapapp.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.skillswapapp.data.dao.FriendshipDao
-import com.example.skillswapapp.data.repository.FriendshipRepository
 import com.example.skillswapapp.data.repository.OfflineFriendshipRepository
 
 class FriendViewModelFactory(private val friendshipDao: FriendshipDao) : ViewModelProvider.Factory {

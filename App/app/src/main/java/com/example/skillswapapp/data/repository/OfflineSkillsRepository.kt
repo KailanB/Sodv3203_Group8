@@ -2,6 +2,7 @@ package com.example.skillswapapp.data.repository
 
 import com.example.skillswapapp.data.dao.SkillDao
 import com.example.skillswapapp.data.entities.Skill
+import com.example.skillswapapp.data.repository.iRepositories.SkillRepository
 import kotlinx.coroutines.flow.Flow
 
 data class OfflineSkillRepository(

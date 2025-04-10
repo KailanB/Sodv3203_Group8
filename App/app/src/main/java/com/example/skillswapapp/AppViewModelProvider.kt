@@ -17,13 +17,17 @@ object AppViewModelProvider {
         initializer {
             SessionViewModel(
                 skillSwapApplication().container.userRepository,
-                skillSwapApplication().container.skillRepository
+                skillSwapApplication().container.userSkillRepository,
+                skillSwapApplication().container.userSeeksSkillsRepository
             )
         }
 
         initializer {
             UserEntryViewModel(
-                skillSwapApplication().container.userRepository
+                skillSwapApplication().container.userRepository,
+                skillSwapApplication().container.locationRepository,
+                skillSwapApplication().container.userSkillRepository,
+                skillSwapApplication().container.userSeeksSkillsRepository
             )
         }
 
@@ -38,13 +42,16 @@ object AppViewModelProvider {
         initializer {
             UsersViewModel(
                 skillSwapApplication().container.userRepository,
-                skillSwapApplication().container.skillRepository
+                skillSwapApplication().container.userSkillRepository,
+                skillSwapApplication().container.userSeeksSkillsRepository
             )
         }
 
         initializer {
             ProfileViewModel(
-                skillSwapApplication().container.userRepository
+                userRepository = skillSwapApplication().container.userRepository,
+                userSkillsRepository = skillSwapApplication().container.userSkillRepository,
+                userSeeksSkillsRepository = skillSwapApplication().container.userSeeksSkillsRepository
             )
         }
     }

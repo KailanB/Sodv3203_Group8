@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.skillswapapp.data.entities.UserSeeksSkills
+import com.example.skillswapapp.data.relations.UserSeeksSkillsDetails
 import com.example.skillswapapp.data.relations.UserSkillDetails
 import kotlinx.coroutines.flow.Flow
 
@@ -26,9 +27,9 @@ interface UserSeeksSkillsDao {
 
     // should return a list of all skills of a user
     @Query(
-        "SELECT s.skill_id, s.skill_name, uss.skill_seekers_description AS skill_details FROM userSeeksSkills uss JOIN Skill s ON uss.skill_id = s.skill_id " +
+        "SELECT uss.skill_id, uss.user_id, uss.skill_seekers_description, s.skill_name FROM userSeeksSkills uss JOIN Skill s ON uss.skill_id = s.skill_id " +
                 "JOIN user u ON u.user_id = uss.user_id " +
                 "WHERE u.user_id = :id"
     )
-    fun getAllUserSeeksSkillsById(id:Int): Flow<List<UserSkillDetails>>
+    fun getAllUserSeeksSkillsById(id:Int): Flow<List<UserSeeksSkillsDetails>>
 }

@@ -26,7 +26,7 @@ interface UserSkillsDao {
 
     // should return a list of all skills of a user
     @Query(
-        "SELECT s.skill_id, s.skill_name, us.skill_description AS skill_details FROM userSkills us JOIN Skill s ON us.skill_id = s.skill_id " +
+        "SELECT us.skill_id, us.user_id, us.skill_description, s.skill_name FROM userSkills us JOIN Skill s ON us.skill_id = s.skill_id " +
                 "JOIN user u ON u.user_id = us.user_id " +
                 "WHERE u.user_id = :id"
     )
