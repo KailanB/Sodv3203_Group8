@@ -1,29 +1,25 @@
 package com.example.skillswapapp.viewModel
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.skillswapapp.data.entities.Skill
-import com.example.skillswapapp.data.repository.CategoryRepository
-import com.example.skillswapapp.data.repository.SkillRepository
-import com.example.skillswapapp.data.repository.UserRepository
-import com.example.skillswapapp.dummyData.DataSource
-import com.example.skillswapapp.model.UserWithSkills
-import com.example.skillswapapp.state.HomeUiState
+import com.example.skillswapapp.data.relations.UserSeeksSkillsDetails
+import com.example.skillswapapp.data.relations.UserSkillDetails
+import com.example.skillswapapp.data.repository.iRepositories.UserRepository
+import com.example.skillswapapp.data.repository.iRepositories.UserSeeksSkillsRepository
+import com.example.skillswapapp.data.repository.iRepositories.UserSkillsRepository
+import com.example.skillswapapp.model.UiDisplaySkill
+import com.example.skillswapapp.model.UiUserDisplay
 import com.example.skillswapapp.state.UsersUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.forEach
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class UsersViewModel (
     private val userRepository: UserRepository,
-    private val skillRepository: SkillRepository
+    private val userSkillsRepository: UserSkillsRepository,
+    private val userSeeksSkillsRepository: UserSeeksSkillsRepository
 ): ViewModel() {
 
     private val _usersUiState = MutableStateFlow<UsersUiState>(UsersUiState.Loading)
@@ -45,19 +41,21 @@ class UsersViewModel (
 
                 usersFlow.collect{userList ->
                     val usersWithSkills = userList.map { user ->
-                        val skills = skillRepository.getAllSkillByUserIdStream(user.user_id).first()
-                        val seeksSkills = skillRepository.getAllSeeksSkillByUserIdStream(user.user_id).first()
+                        val skills =
+                            userSkillsRepository.getAllUserSkillsByIdStream(user.user_id).first()
+                        val seeksSkills =
+                            userSeeksSkillsRepository.getAllUserSeeksSkillsByIdStream(user.user_id)
+                                .first()
 
-                        UserWithSkills(user, skills, seeksSkills)
+                        val uiSkills = skills.map { it.toUiDisplaySkill() }
+                        val uiSkillsSeeking = seeksSkills.map { it.toUiDisplaySkill() }
+                            UiUserDisplay(user, uiSkills, uiSkillsSeeking)
 
-                    }
-                    _usersUiState.value = UsersUiState.Success(users = usersWithSkills)
+                        }
+                        _usersUiState.value = UsersUiState.Success(users = usersWithSkills)
 
-                    
-                    
+
                 }
-
-                
 
 
 
@@ -105,6 +103,21 @@ class UsersViewModel (
 //        } catch (exception: Exception) {
 //            _usersUiState.value = UsersUiState.Error
 //        }
+    }
+
+    fun UserSkillDetails.toUiDisplaySkill(): UiDisplaySkill {
+        return UiDisplaySkill(
+            skillId = userSkills.skill_id,
+            skillName = skill_name,
+            description = userSkills.skill_description
+        )
+    }
+    fun UserSeeksSkillsDetails.toUiDisplaySkill(): UiDisplaySkill {
+        return UiDisplaySkill(
+            skillId = userSeeksSkills.skill_id,
+            skillName = skill_name,
+            description = userSeeksSkills.skill_seekers_description
+        )
     }
 
 //    fun getUserById() {
