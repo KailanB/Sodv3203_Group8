@@ -1,13 +1,9 @@
 package com.example.skillswapapp.data.repository
 
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
-import com.example.skillswapapp.data.dao.CategoryDao
 import com.example.skillswapapp.data.dao.UserDao
-import com.example.skillswapapp.data.entities.Category
 import com.example.skillswapapp.data.entities.User
 import com.example.skillswapapp.data.relations.UserWithoutSecureInfo
+import com.example.skillswapapp.data.repository.iRepositories.UserRepository
 import kotlinx.coroutines.flow.Flow
 
 data class OfflineUserRepository(

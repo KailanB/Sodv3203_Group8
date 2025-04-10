@@ -122,16 +122,12 @@ fun SkillSwapApp(
 
         ) {
             composable(route = "home") {
-//                val usersViewModel: UsersViewModel = viewModel()
-//                usersViewModel.getAllUsers()
                 HomeScreen(
                     sessionViewModel = sessionViewModel,
                     modifier = Modifier
                 )
             }
             composable(route = "profile") {
-                // val usersViewModel: UsersViewModel = viewModel()
-                // usersViewModel.getUserById()
                 ProfileScreen(
                     navigateToEditUser = {navController.navigate(route = "userEntryScreen")},
                     sessionViewModel = sessionViewModel,

@@ -3,6 +3,7 @@ package com.example.skillswapapp.data.repository
 import com.example.skillswapapp.data.dao.FriendshipDao
 import com.example.skillswapapp.data.entities.Friendship
 import com.example.skillswapapp.data.relations.UserFriendList
+import com.example.skillswapapp.data.repository.iRepositories.FriendshipRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
