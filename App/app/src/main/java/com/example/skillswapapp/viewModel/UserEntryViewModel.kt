@@ -5,9 +5,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.skillswapapp.data.entities.User
-import com.example.skillswapapp.data.repository.UserRepository
+import com.example.skillswapapp.data.repository.iRepositories.LocationRepository
+import com.example.skillswapapp.data.repository.iRepositories.UserRepository
+import com.example.skillswapapp.data.repository.iRepositories.UserSeeksSkillsRepository
+import com.example.skillswapapp.data.repository.iRepositories.UserSkillsRepository
 
-class UserEntryViewModel(private val userRepository: UserRepository) :ViewModel() {
+class UserEntryViewModel(
+    private val userRepository: UserRepository,
+    private val locationRepository: LocationRepository,
+    private val userSkillRepository: UserSkillsRepository,
+    private val userSeeksSkillsRepository: UserSeeksSkillsRepository
+) :ViewModel() {
 
     var userUiState by mutableStateOf(UserUiState())
         private set
