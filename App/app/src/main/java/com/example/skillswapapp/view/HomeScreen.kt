@@ -41,10 +41,16 @@ import com.example.skillswapapp.AppViewModelProvider
 import com.example.skillswapapp.R
 import com.example.skillswapapp.data.relations.UserWithoutSecureInfo
 import com.example.skillswapapp.data.entities.Skill
+import com.example.skillswapapp.data.relations.UserSeeksSkillsDetails
+import com.example.skillswapapp.data.relations.UserSkillDetails
+import com.example.skillswapapp.model.UiDisplaySkill
+import com.example.skillswapapp.model.UiUserDisplay
 import com.example.skillswapapp.model.UserWithSkills
 import com.example.skillswapapp.state.HomeUiState
 import com.example.skillswapapp.state.UsersUiState
+import com.example.skillswapapp.ui.components.SkillCard
 import com.example.skillswapapp.viewModel.HomeViewModel
+import com.example.skillswapapp.viewModel.ProfileViewModel
 import com.example.skillswapappimport.SessionViewModel
 
 
@@ -83,28 +89,25 @@ fun HomeScreen(
 
 
         // ****************** TESTING ONLY ************************
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text(
-                text = "**** TESTING ONLY ****",
-                color = MaterialTheme.colorScheme.inversePrimary,
-                style = MaterialTheme.typography.displaySmall
-            )
-            currentUser?.let {
-                Text(
-                    text= currentUser!!.user.name
-                )
-            }
-            Text(
-                text = "*************************",
-                color = MaterialTheme.colorScheme.inversePrimary,
-                style = MaterialTheme.typography.displaySmall
-            )
 
-        }
+        // HOLDS CURRENT LOGGED IN USER VALUE
+//        Column(
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//            modifier = Modifier.fillMaxWidth()
+//        ){
+//            Text(
+//                text = "**** TESTING ONLY ****",
+//                color = MaterialTheme.colorScheme.inversePrimary,
+//                style = MaterialTheme.typography.displaySmall
+//            )
+//            currentUser?.let {
+//                Text(
+//                    text= currentUser!!.user.name
+//                )
+//            }
+//
+//        }
 
         // ****************** TESTING ONLY ************************
 
@@ -164,7 +167,7 @@ fun HomeScreen(
 
 @Composable
 fun UserList(
-    usersList: List<UserWithSkills>,
+    usersList: List<UiUserDisplay>,
     modifier: Modifier = Modifier
 ){
 
@@ -180,7 +183,7 @@ fun UserList(
 }
 
 @Composable
-fun UserCard (userWithSkills: UserWithSkills, modifier: Modifier = Modifier){
+fun UserCard (userWithSkills: UiUserDisplay, modifier: Modifier = Modifier){
 
     Card(
         modifier = modifier
@@ -212,7 +215,6 @@ fun UserCard (userWithSkills: UserWithSkills, modifier: Modifier = Modifier){
             )
             SkillList(userWithSkills.skills, "My Skills:", modifier)
             SkillList(userWithSkills.seeksSkills, "Seeking Skills:", modifier)
-
         }
     }
 
@@ -220,8 +222,8 @@ fun UserCard (userWithSkills: UserWithSkills, modifier: Modifier = Modifier){
 
 @Composable
 fun SkillList(
-    skills: List<Skill>,
-    description: String,
+    skills: List<UiDisplaySkill>,
+    skillListTitle: String,
     modifier: Modifier = Modifier
 )
 {
@@ -232,7 +234,7 @@ fun SkillList(
     )
     {
         Text(
-            text = description,
+            text = skillListTitle,
             style = MaterialTheme.typography.titleLarge
         )
         Row(
@@ -249,27 +251,7 @@ fun SkillList(
 }
 
 
-@Composable
-fun SkillCard(
-    skill: Skill
-)
-{
-    Box(
-        modifier = Modifier
-            .padding(4.dp)
-            .background(
-                color = MaterialTheme.colorScheme.tertiaryContainer,
-                shape = RoundedCornerShape(16.dp)
-            )
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        Text(
-            text = skill.skill_name,
-            // color = Color.White,
-            // modifier = Modifier.align(Alignment.Center)
-        )
-    }
-}
+
 
 @Composable
 fun ErrorScreen(modifier: Modifier) {
