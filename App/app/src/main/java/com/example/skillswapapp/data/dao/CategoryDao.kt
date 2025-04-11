@@ -3,7 +3,9 @@ package com.example.skillswapapp.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.skillswapapp.data.entities.Category
+import com.example.skillswapapp.data.relations.CategoryWithSkills
 import kotlinx.coroutines.flow.Flow
 
 
@@ -25,4 +27,8 @@ interface CategoryDao {
         "SELECT * FROM category WHERE category_id = :id"
     )
     fun getCategory(id:Int): Flow<Category>
+
+    @Transaction
+    @Query("SELECT * FROM Category")
+    fun getCategoriesWithSkills(): Flow<List<CategoryWithSkills>>
 }
