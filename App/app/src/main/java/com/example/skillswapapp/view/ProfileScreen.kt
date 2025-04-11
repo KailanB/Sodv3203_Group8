@@ -2,15 +2,20 @@ package com.example.skillswapapp.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,8 +41,7 @@ import com.example.skillswapappimport.SessionViewModel
 fun ProfileScreen(
     navigateToEditUser: (User?) -> Unit,
     sessionViewModel: SessionViewModel,
-    profileViewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    modifier: Modifier = Modifier
+    profileViewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
 
     val currentUser by sessionViewModel.currentUser.collectAsState()
@@ -51,46 +55,45 @@ fun ProfileScreen(
 
     val mySkills by profileViewModel.mySkills.collectAsState(initial = emptyList())
     val skillsSeeking by profileViewModel.skillsSeeking.collectAsState(initial = emptyList())
+    val scrollState = rememberScrollState()
 
-
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+                .verticalScroll(scrollState)
+        ) {
+            Text(
+                text = "My Profile",
+                // color = MaterialTheme.colorScheme.inversePrimary,
+                style = MaterialTheme.typography.displayLarge
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            currentUser?.let {
+                ProfileCard(currentUser!!, mySkills, skillsSeeking, modifier = Modifier.padding(20.dp))
+            }
+        }
+
         FloatingActionButton(
-            onClick = {navigateToEditUser(currentUser?.user)}
+            onClick = {navigateToEditUser(currentUser?.user)},
+            containerColor = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+
+
         ) {
             Icon(
                 imageVector = Icons.Default.Edit,
                 contentDescription = "Edit Profile"
             )
         }
-        Text(
-            text = "Profile",
-            color = MaterialTheme.colorScheme.inversePrimary,
-            style = MaterialTheme.typography.displayLarge
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        currentUser?.let {
-            ProfileCard(currentUser!!, mySkills, skillsSeeking)
-        }
 
 
-//        when (val state = uiState) {
-//            is UsersUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
-//            is UsersUiState.Success -> {
-//                if(state.user != null)
-//                {
-//                    ProfileCard(
-//                        state.user
-//                    )
-//                }
-//
-//            }
-//
-//            is UsersUiState.Error -> ErrorScreen(modifier = modifier.fillMaxSize())
-//        }
     }
 }
 
@@ -102,35 +105,53 @@ fun ProfileCard(
     skillsSeeking: List<UiDisplaySkill>,
     modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-                .background(
-                    color = MaterialTheme.colorScheme.primaryContainer
-                )
+            modifier = modifier
+
         ) {
             Text(
-                text = currentUser.user.name + " - User ID: " + currentUser.user.user_id,
+                text = currentUser.user.name,
                 style = MaterialTheme.typography.titleLarge,
-                modifier = modifier
             )
 
             Text(
                 text = currentUser.user.email,
                 style = MaterialTheme.typography.titleLarge,
-                modifier = modifier
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = "About Me: " + currentUser.user.profile_intro,
+                style = MaterialTheme.typography.titleLarge,
             )
 
-            Text(
-                text = "Description: " + currentUser.user.profile_intro,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = modifier
-            )
-            ProfileSkillList(mySkills, "My Skills:", modifier)
-            ProfileSkillList(skillsSeeking, "Seeking Skills:", modifier)
+            if(currentUser.user.description != null ||  currentUser.user.description != ""){
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text =  "Description: " + currentUser.user.description,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = modifier
+                )
+            }
+            if(currentUser.user.preferences != null ||  currentUser.user.preferences != ""){
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text =  "Description: " + currentUser.user.preferences,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = modifier
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+            ProfileSkillList(mySkills, "My Skills:")
+            Spacer(modifier = Modifier.height(20.dp))
+            ProfileSkillList(skillsSeeking, "Seeking Skills:")
 
         }
     }
@@ -144,21 +165,35 @@ fun ProfileSkillList(
     modifier: Modifier = Modifier
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+//        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
+
     )
     {
         Text(
             text = skillListTitle,
             style = MaterialTheme.typography.titleLarge
         )
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.padding(4.dp)
-        ) {
+        Column( ) {
             skills.forEach { skill ->
-                SkillCard(skill)
+                Column(){
+
+                    Row(){
+                        SkillCard(skill)
+                    }
+                    if(skill.description != "" && skill.description != null)
+                    {
+                        Row(){
+                            Text (
+                                text = skill.description
+                            )
+                        }
+                    }
+
+                }
+
+
             }
 
         }
