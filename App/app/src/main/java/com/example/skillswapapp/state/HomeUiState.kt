@@ -1,14 +1,15 @@
 package com.example.skillswapapp.state
 
-import com.example.skillswapapp.data.entities.Category
+import com.example.skillswapapp.model.UiUserDisplay
+
+
 
 sealed interface HomeUiState {
-
     data class Success(
-        val categories: List<Category> = emptyList()
+        val users: List<UiUserDisplay> = emptyList()
+
     ): HomeUiState
     object Error: HomeUiState
-    object Loading: HomeUiState
-
+    object Loading : HomeUiState
 
 }
