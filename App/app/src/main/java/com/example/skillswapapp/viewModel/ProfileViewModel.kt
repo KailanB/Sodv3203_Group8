@@ -46,21 +46,7 @@ class ProfileViewModel(
         _skillsSeeking.value = skills.map { it.toUiDisplaySkill() }
     }
 
-    fun deleteMySkill(skill: UiDisplaySkill) {
-        viewModelScope.launch {
-            val currentUserId = currentUser.value?.user?.user_id
-            // just a safety check to be sure.
-            // however a user should not have access to profile page or profile view model unless logged in
-            // this check will be handled before a user navigates to profile
-            if(currentUserId != null)
-            {
-                val entity = skill.toUserSkills(currentUserId)
-                userSkillsRepository.deleteUserSkills(entity)
 
-            }
-
-        }
-    }
 
 
 
