@@ -1,6 +1,7 @@
 package com.example.skillswapapp.data.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -21,7 +22,7 @@ interface UserDao {
     @Update
     suspend fun update(user:User)
 
-    @Update
+    @Delete
     suspend fun delete(user:User)
 
 
@@ -50,7 +51,7 @@ interface UserDao {
     fun getAllUsersByLocationId(id:Int): Flow<List<UserWithoutSecureInfo>>
 
     @Query(
-        "SELECT u.user_id, u.name, u.email, u.profile_intro, u.profile_picture, l.province, l.city FROM user u " +
+        "SELECT u.user_id, u.name, u.email, u.profile_intro, u.profile_picture, u.description, u.preferences, l.province, l.city FROM user u " +
                 "JOIN location l ON l.location_id = u.location_id " +
                 "WHERE u.user_id = :id"
     )

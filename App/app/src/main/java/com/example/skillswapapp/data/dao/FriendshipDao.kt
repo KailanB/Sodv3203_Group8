@@ -1,6 +1,7 @@
 package com.example.skillswapapp.data.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -20,7 +21,7 @@ interface FriendshipDao {
     @Update
     suspend fun update(friendship: Friendship)
 
-    @Update
+    @Delete
     suspend fun delete(friendship: Friendship)
 
     // in theory should return a list of names and emails etc. of :id's friends

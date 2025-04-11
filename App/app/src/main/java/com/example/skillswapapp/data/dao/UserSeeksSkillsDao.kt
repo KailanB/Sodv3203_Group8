@@ -1,6 +1,7 @@
 package com.example.skillswapapp.data.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -22,7 +23,7 @@ interface UserSeeksSkillsDao {
     @Update
     suspend fun update(userSeeksSkills: UserSeeksSkills)
 
-    @Update
+    @Delete
     suspend fun delete(userSeeksSkills: UserSeeksSkills)
 
     // should return a list of all skills of a user
