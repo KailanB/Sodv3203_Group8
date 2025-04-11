@@ -13,6 +13,6 @@ data class OfflineLocationRepository(
     override suspend fun updateLocation(location: Location) = locationDao.update(location)
     override suspend fun deleteLocation(location: Location) = locationDao.delete(location)
 
-    override fun getUserLocationStream(id: Int): Flow<Location?> = locationDao.getUserLocation(id)
+    override fun getUserLocationStream(id: Int): Flow<Location> = locationDao.getUserLocation(id)
 
 }

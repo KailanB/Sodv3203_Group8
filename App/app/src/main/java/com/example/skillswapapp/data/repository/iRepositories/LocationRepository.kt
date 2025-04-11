@@ -9,5 +9,5 @@ interface LocationRepository {
     suspend fun updateLocation(location: Location)
     suspend fun deleteLocation(location: Location)
 
-    fun getUserLocationStream(id:Int): Flow<Location?>
+    fun getUserLocationStream(id:Int): Flow<Location>
 }
