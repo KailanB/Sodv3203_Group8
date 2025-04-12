@@ -9,6 +9,7 @@ import com.example.skillswapapp.data.repository.iRepositories.UserRepository
 import com.example.skillswapapp.state.FriendsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class FriendViewModel(
@@ -22,11 +23,10 @@ class FriendViewModel(
         viewModelScope.launch {
             _friendsUiState.value = FriendsUiState.Loading
 
+
             try {
-                val friendList = mutableListOf<UserFriendList>()
-                friendshipRepository.getAllFriendshipsByIdStream(userId).collect { friends ->
-                    friendList.addAll(friends)
-                }
+                val friendList = friendshipRepository.getAllFriendshipsByIdStream(userId).first()
+                    .filter { it.status == "accepted" }
                 val pendingRequests = friendshipRepository.getPendingFriendRequests(userId)
 
                 _friendsUiState.value = FriendsUiState.Success(
