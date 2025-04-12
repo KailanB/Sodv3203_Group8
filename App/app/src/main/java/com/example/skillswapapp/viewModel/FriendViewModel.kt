@@ -23,16 +23,11 @@ class FriendViewModel(
             _friendsUiState.value = FriendsUiState.Loading
 
             try {
-                val userWithFriends = friendshipRepository.getUserWithFriends(userId)
-                val pendingRequests = friendshipRepository.getPendingFriendRequests(userId)
-                val friendList = userWithFriends.friends.map {
-                    UserFriendList(
-                        user_id = it.user_id,
-                        name = it.name,
-                        email = it.email,
-                        profile_intro = it.profile_intro
-                    )
+                val friendList = mutableListOf<UserFriendList>()
+                friendshipRepository.getAllFriendshipsByIdStream(userId).collect { friends ->
+                    friendList.addAll(friends)
                 }
+                val pendingRequests = friendshipRepository.getPendingFriendRequests(userId)
 
                 _friendsUiState.value = FriendsUiState.Success(
                     friendList = friendList,
