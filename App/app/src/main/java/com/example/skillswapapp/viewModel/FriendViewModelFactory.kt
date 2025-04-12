@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.skillswapapp.data.dao.FriendshipDao
 import com.example.skillswapapp.data.repository.OfflineFriendshipRepository
-
+//not in use
 class FriendViewModelFactory(private val friendshipDao: FriendshipDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FriendsViewModel::class.java)) {
