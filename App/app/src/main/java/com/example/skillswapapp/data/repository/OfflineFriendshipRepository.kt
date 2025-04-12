@@ -51,7 +51,8 @@ data class OfflineFriendshipRepository(
     }
 
     override suspend fun getUserWithFriends(userId: Int): UserWithFriends {
-        return friendshipDao.getUserWithFriends(userId).first() // Collect the first value emitted by the Flow
+        val friendsList = friendshipDao.getUserWithFriends(userId).first() // Collect the first value emitted by the Flow
+        return friendsList.firstOrNull() ?: throw Exception("No friends found for the user")
     }
 
     override suspend fun getPendingFriendRequests(userId: Int): List<UserFriendList> {
