@@ -21,56 +21,6 @@ import com.example.skillswapapp.viewModel.FriendViewModel
 import com.example.skillswapapp.viewModel.FriendsViewModel
 import com.example.skillswapappimport.SessionViewModel
 
-//    Column(modifier = modifier.padding(16.dp)) {
-//        Text(
-//            text = "Friends",
-//            fontSize = 24.sp,
-//            fontWeight = FontWeight.Bold,
-//            modifier = Modifier.padding(bottom = 16.dp)
-//        )
-//
-//        // New Friend Requests Section
-//        if (friendRequests.isNotEmpty()) {
-//            Text(text = "New Friend Request!", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-//            friendRequests.forEach { request ->
-//                FriendRequestItem(request) {
-////                   viewModel.acceptFriendRequest(userId, request.toInt())
-//
-//                    val index = allFriendships.indexOfFirst {
-//                        it.user_Id == userId && it.friend_Id.toString() == request
-//                    }
-//                    if (index != -1) {
-//                        allFriendships[index] = allFriendships[index].copy(status = "accepted")
-//                        updateFriendAndRequestLists(userId, allFriendships, { friends = it }, { friendRequests = it })
-//                    }
-//                    println("Accepted friend request from user $request")
-//                }
-//            }
-//        }
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        // My Friends List Section
-//        Text(text = "My Friends", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-//        if (friends.isEmpty()) {
-//            Text(text = "No friends yet", fontSize = 16.sp, color = Color.Gray)
-//        } else {
-//            friends.forEach { friend ->
-//                FriendItem(friend.name) {
-////                    viewModel.deleteFriend(userId, friend.user_id)
-//                    val index = allFriendships.indexOfFirst {
-//                        it.user_Id == userId && it.friend_Id == friend.user_id
-//                    }
-//                    if (index != -1) {
-//                        allFriendships.removeAt(index)
-//                        updateFriendAndRequestLists(userId, allFriendships, { friends = it }, { friendRequests = it })
-//                    }
-//                    println("Deleted friend ${friend.user_id}")
-//                }
-//            }
-//        }
-//    }
-//}
 @Composable
 fun FriendsScreen(
     navigateToEditUser: () -> Unit,
