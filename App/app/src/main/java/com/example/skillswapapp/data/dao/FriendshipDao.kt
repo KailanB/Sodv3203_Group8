@@ -30,10 +30,10 @@ interface FriendshipDao {
     // the join is because a users ID MAY be on the friend ID side or the user ID side
     // so we get a list of all users connected to user_id x, where they are on either side of the foreign key relationship
     @Query(
-        "SELECT u.name, u.email, u.profile_intro, u.user_id FROM friendship f JOIN user u ON f.friend_id = u.user_id" +
+        "SELECT u.name, u.email, u.profile_intro, u.user_id, f.status FROM friendship f JOIN user u ON f.friend_id = u.user_id" +
                 " WHERE f.user_id = :id" +
                 " UNION " +
-                "SELECT u.name, u.email, u.profile_intro, u.user_id FROM friendship f JOIN user u ON f.user_id = u.user_id" +
+                "SELECT u.name, u.email, u.profile_intro, u.user_id, f.status FROM friendship f JOIN user u ON f.user_id = u.user_id" +
                 " WHERE f.friend_id = :id"
 
     )
@@ -52,10 +52,10 @@ interface FriendshipDao {
                 "UNION " +
                 "SELECT u.* FROM friendship f JOIN user u ON f.user_id = u.user_id WHERE f.friend_id = :userId"
     )
-    fun getUserWithFriends(userId: Int): Flow<UserWithFriends>
+    fun getUserWithFriends(userId: Int): Flow<List<UserWithFriends>>
     // Get all pending friend requests (assuming 'status' is a column in your 'Friendship' entity)
     @Query(
-        "SELECT u.user_id, u.name, u.email, u.profile_intro FROM friendship f " +
+        "SELECT u.user_id, u.name, u.email, u.profile_intro, f.status FROM friendship f " +
                 "JOIN user u ON f.friend_id = u.user_id " +
                 "WHERE f.user_id = :userId AND f.status = 'pending'"
     )
