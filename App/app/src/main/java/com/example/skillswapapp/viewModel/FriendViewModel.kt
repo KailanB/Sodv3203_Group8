@@ -45,4 +45,22 @@ class FriendViewModel(
             }
         }
     }
+    fun acceptFriendRequest(userId: Int, friendId: Int) {
+        viewModelScope.launch {
+            try {
+                friendshipRepository.acceptFriendRequest(userId, friendId, "accepted")
+                _friendsUiState.value = FriendsUiState.Loading
+                loadFriends(userId)
+            } catch (e: Exception) {
+                _friendsUiState.value = FriendsUiState.Error(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun deleteFriend(userId: Int, friendId: Int) {
+        viewModelScope.launch {
+            friendshipRepository.deleteFriend(userId, friendId)
+            loadFriends(userId)
+        }
+    }
 }
