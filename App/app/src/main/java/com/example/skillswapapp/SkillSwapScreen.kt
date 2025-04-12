@@ -94,7 +94,7 @@ fun SkillSwapNavBar(
                     )
                 }
                 IconButton(
-                    onClick = { navController.navigate("friends/1") }
+                    onClick = { navController.navigate("friends") }
                 ) {
                     Icon(
                         Icons.Default.Person,
@@ -195,26 +195,19 @@ fun SkillSwapApp(
                 )
             }
 
+            composable(route = "friends") {
+                    FriendsScreen(
+//                        userId = user.id,
+                        navigateToEditUser = { navController.navigate("userEntryScreen") },
+                        sessionViewModel = sessionViewModel
+                    )
+                }
 
-
-            composable(route = "swaps") {
+                composable(route = "swaps") {
                 SwapsScreen(
                     modifier = Modifier
                 )
             }
-//            composable(route = "friends") {
-//                FriendsScreen(
-//                    modifier = Modifier
-//                )
-//            }
-            composable(route = "friends/{userId}") { backStackEntry ->
-                val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull() ?: 0
-                FriendsScreen(
-                    userId = userId,
-                    modifier = Modifier
-                )
-            }
-
         }
 
     }
