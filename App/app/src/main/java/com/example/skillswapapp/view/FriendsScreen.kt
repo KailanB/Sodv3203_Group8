@@ -19,6 +19,7 @@ import com.example.skillswapapp.model.Friendship
 import com.example.skillswapapp.state.FriendsUiState
 import com.example.skillswapapp.viewModel.FriendViewModel
 import com.example.skillswapapp.viewModel.FriendsViewModel
+import com.example.skillswapappimport.SessionViewModel
 
 //
 //@Composable
@@ -113,14 +114,17 @@ import com.example.skillswapapp.viewModel.FriendsViewModel
 //}
 @Composable
 fun FriendsScreen(
-    userId: Int,
+    navigateToEditUser: () -> Unit,
+    sessionViewModel: SessionViewModel,
     viewModel: FriendViewModel = viewModel(factory = AppViewModelProvider.Factory),
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.friendsUiState.collectAsState()
+    val currentUser by sessionViewModel.currentUser.collectAsState()
+    val userId = currentUser?.user?.user_id
 
     LaunchedEffect(userId) {
-        viewModel.loadFriends(userId)
+        userId?.let { viewModel.loadFriends(it) }
     }
 
     Column(modifier = modifier.padding(16.dp)) {
@@ -148,9 +152,10 @@ fun FriendsScreen(
                     Text("New Friend Request!", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                     friendRequests.forEach { friend ->
                         FriendRequestItem(friend.name) {
-                            // Handle Accept
-                            viewModel.acceptFriendRequest(userId, friend.user_id)
-                            println("Accepted friend request from ${friend.user_id}")
+                            userId?.let {
+                                viewModel.acceptFriendRequest(it, friend.user_id)
+                                println("Accepted friend request from ${friend.user_id}")
+                            }
                         }
                     }
                 }
@@ -163,9 +168,10 @@ fun FriendsScreen(
                 } else {
                     friends.forEach { friend ->
                         FriendItem(friend.name) {
-                            // Handle Delete
-                            viewModel.deleteFriend(userId, friend.user_id)
-                            println("Deleted friend ${friend.user_id}")
+                            userId?.let {
+                                viewModel.deleteFriend(it, friend.user_id)
+                                println("Deleted friend ${friend.user_id}")
+                            }
                         }
                     }
                 }
@@ -174,30 +180,31 @@ fun FriendsScreen(
     }
 }
 
-fun updateFriendAndRequestLists(
-    userId: Int,
-    friendships: List<Friendship>,
-    onFriendsUpdated: (List<UserFriendList>) -> Unit,
-    onRequestsUpdated: (List<String>) -> Unit
-) {
-    val updatedFriends = friendships
-        .filter { it.user_Id == userId && it.status == "accepted" }
-        .map {
-            UserFriendList(
-                user_id = it.friend_Id,
-                name = "Friend ${it.friend_Id}",
-                email = "friend${it.friend_Id}@example.com",
-                profile_intro = "Intro for friend ${it.friend_Id}"
-            )
-        }
 
-    val updatedRequests = friendships
-        .filter { it.user_Id == userId && it.status == "pending" }
-        .map { it.friend_Id.toString() }
-
-    onFriendsUpdated(updatedFriends)
-    onRequestsUpdated(updatedRequests)
-}
+//fun updateFriendAndRequestLists(
+//    userId: Int,
+//    friendships: List<Friendship>,
+//    onFriendsUpdated: (List<UserFriendList>) -> Unit,
+//    onRequestsUpdated: (List<String>) -> Unit
+//) {
+//    val updatedFriends = friendships
+//        .filter { it.user_Id == userId && it.status == "accepted" }
+//        .map {
+//            UserFriendList(
+//                user_id = it.friend_Id,
+//                name = "Friend ${it.friend_Id}",
+//                email = "friend${it.friend_Id}@example.com",
+//                profile_intro = "Intro for friend ${it.friend_Id}"
+//            )
+//        }
+//
+//    val updatedRequests = friendships
+//        .filter { it.user_Id == userId && it.status == "pending" }
+//        .map { it.friend_Id.toString() }
+//
+//    onFriendsUpdated(updatedFriends)
+//    onRequestsUpdated(updatedRequests)
+//}
 
 @Composable
 fun FriendRequestItem(name: String, onAccept: () -> Unit) {
