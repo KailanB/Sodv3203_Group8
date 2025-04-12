@@ -6,6 +6,7 @@ import com.example.skillswapapp.data.relations.UserWithoutSecureInfo
 import com.example.skillswapapp.data.repository.iRepositories.UserRepository
 import kotlinx.coroutines.flow.Flow
 
+
 class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
 
     override suspend fun insertUser(user: User) {
