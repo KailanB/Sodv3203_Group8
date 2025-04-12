@@ -4,10 +4,12 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.skillswapapp.viewModel.FriendViewModel
 import com.example.skillswapapp.viewModel.ProfileViewModel
 import com.example.skillswapapp.viewModel.UserEntryViewModel
 import com.example.skillswapapp.viewModel.HomeViewModel
 import com.example.skillswapapp.viewModel.ViewUserProfileViewModel
+//import com.example.skillswapapp.viewModel.FriendViewModel
 import com.example.skillswapappimport.SessionViewModel
 
 
@@ -57,6 +59,12 @@ object AppViewModelProvider {
                 userRepository = skillSwapApplication().container.userRepository,
                 userSkillsRepository = skillSwapApplication().container.userSkillRepository,
                 userSeeksSkillsRepository = skillSwapApplication().container.userSeeksSkillsRepository
+            )
+        }
+
+        initializer {
+            FriendViewModel(
+                friendshipRepository = skillSwapApplication().container.friendsRepository
             )
         }
     }

@@ -2,6 +2,7 @@ package com.example.skillswapapp.data.repository.iRepositories
 
 import com.example.skillswapapp.data.entities.Friendship
 import com.example.skillswapapp.data.relations.UserFriendList
+import com.example.skillswapapp.data.relations.UserWithFriends
 import kotlinx.coroutines.flow.Flow
 
 interface FriendshipRepository{
@@ -15,5 +16,8 @@ interface FriendshipRepository{
 
     suspend fun acceptFriendRequest(userId: Int, friendId: Int)
     suspend fun deleteFriend(userId: Int, friendId: Int)
+
+    suspend fun getUserWithFriends(userId: Int): UserWithFriends
+    suspend fun getPendingFriendRequests(userId: Int): List<UserFriendList>
 
 }

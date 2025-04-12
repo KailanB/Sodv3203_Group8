@@ -11,50 +11,116 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.skillswapapp.AppViewModelProvider
 import com.example.skillswapapp.data.relations.UserFriendList
 import com.example.skillswapapp.model.Friendship
+import com.example.skillswapapp.state.FriendsUiState
+import com.example.skillswapapp.viewModel.FriendViewModel
 import com.example.skillswapapp.viewModel.FriendsViewModel
 
-
-@Composable
-fun FriendsScreen(
-    userId: Int, //for now just to check
-    viewModel: FriendsViewModel? = null, //ViewModel optional for testing,
-    modifier: Modifier = Modifier
-) {
-
-    val allFriendships = remember { mutableStateListOf<Friendship>() }
-    var friends by remember { mutableStateOf<List<UserFriendList>>(emptyList()) }
-    var friendRequests by remember { mutableStateOf <List<String>>(emptyList())}
-//    var refreshTrigger by remember { mutableStateOf(0) }
-
-    // Collect the friends and friend requests
-//    LaunchedEffect(userId) {
-//        viewModel.getAllFriends(userId).collect { friendList ->
-//            friends = friendList ?: emptyList()
-//        }
-//    }
+//
+//@Composable
+//fun FriendsScreen(
+//    userId: Int, //for now just to check
+//    viewModel: FriendsViewModel? = null, //ViewModel optional for testing,
+//    modifier: Modifier = Modifier
+//) {
+//
+//    val allFriendships = remember { mutableStateListOf<Friendship>() }
+//    var friends by remember { mutableStateOf<List<UserFriendList>>(emptyList()) }
+//    var friendRequests by remember { mutableStateOf <List<String>>(emptyList())}
+////    var refreshTrigger by remember { mutableStateOf(0) }
+//
+//    // Collect the friends and friend requests
+////    LaunchedEffect(userId) {
+////        viewModel.getAllFriends(userId).collect { friendList ->
+////            friends = friendList ?: emptyList()
+////        }
+////    }
+////
+////    LaunchedEffect(userId) {
+////        viewModel.getFriendship(userId).collect { friendList ->
+////            val validFriendList = friendList as? List<Friendship> ?: emptyList()
+////            if (validFriendList.isNotEmpty()) {
+////                friendRequests = validFriendList
+////                    .filter { it.status == "pending" }
+////                    .map { it.friend_id.toString() }
+////            }
+////        }
+////    }
 //
 //    LaunchedEffect(userId) {
-//        viewModel.getFriendship(userId).collect { friendList ->
-//            val validFriendList = friendList as? List<Friendship> ?: emptyList()
-//            if (validFriendList.isNotEmpty()) {
-//                friendRequests = validFriendList
-//                    .filter { it.status == "pending" }
-//                    .map { it.friend_id.toString() }
+//        allFriendships.clear()
+//        allFriendships.addAll(loadFriendships())
+//        updateFriendAndRequestLists(
+//            userId,
+//            allFriendships,
+//            { friends = it },
+//            { friendRequests = it }
+//        ) }
+//
+//    Column(modifier = modifier.padding(16.dp)) {
+//        Text(
+//            text = "Friends",
+//            fontSize = 24.sp,
+//            fontWeight = FontWeight.Bold,
+//            modifier = Modifier.padding(bottom = 16.dp)
+//        )
+//
+//        // New Friend Requests Section
+//        if (friendRequests.isNotEmpty()) {
+//            Text(text = "New Friend Request!", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+//            friendRequests.forEach { request ->
+//                FriendRequestItem(request) {
+////                   viewModel.acceptFriendRequest(userId, request.toInt())
+//
+//                    val index = allFriendships.indexOfFirst {
+//                        it.user_Id == userId && it.friend_Id.toString() == request
+//                    }
+//                    if (index != -1) {
+//                        allFriendships[index] = allFriendships[index].copy(status = "accepted")
+//                        updateFriendAndRequestLists(userId, allFriendships, { friends = it }, { friendRequests = it })
+//                    }
+//                    println("Accepted friend request from user $request")
+//                }
+//            }
+//        }
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        // My Friends List Section
+//        Text(text = "My Friends", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+//        if (friends.isEmpty()) {
+//            Text(text = "No friends yet", fontSize = 16.sp, color = Color.Gray)
+//        } else {
+//            friends.forEach { friend ->
+//                FriendItem(friend.name) {
+////                    viewModel.deleteFriend(userId, friend.user_id)
+//                    val index = allFriendships.indexOfFirst {
+//                        it.user_Id == userId && it.friend_Id == friend.user_id
+//                    }
+//                    if (index != -1) {
+//                        allFriendships.removeAt(index)
+//                        updateFriendAndRequestLists(userId, allFriendships, { friends = it }, { friendRequests = it })
+//                    }
+//                    println("Deleted friend ${friend.user_id}")
+//                }
 //            }
 //        }
 //    }
+//}
+@Composable
+fun FriendsScreen(
+    userId: Int,
+    viewModel: FriendViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    modifier: Modifier = Modifier
+) {
+    val uiState by viewModel.friendsUiState.collectAsState()
 
     LaunchedEffect(userId) {
-        allFriendships.clear()
-        allFriendships.addAll(loadFriendships())
-        updateFriendAndRequestLists(
-            userId,
-            allFriendships,
-            { friends = it },
-            { friendRequests = it }
-        ) }
+        viewModel.loadFriends(userId)
+    }
 
     Column(modifier = modifier.padding(16.dp)) {
         Text(
@@ -64,43 +130,41 @@ fun FriendsScreen(
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // New Friend Requests Section
-        if (friendRequests.isNotEmpty()) {
-            Text(text = "New Friend Request!", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-            friendRequests.forEach { request ->
-                FriendRequestItem(request) {
-//                   viewModel.acceptFriendRequest(userId, request.toInt())
-
-                    val index = allFriendships.indexOfFirst {
-                        it.user_Id == userId && it.friend_Id.toString() == request
-                    }
-                    if (index != -1) {
-                        allFriendships[index] = allFriendships[index].copy(status = "accepted")
-                        updateFriendAndRequestLists(userId, allFriendships, { friends = it }, { friendRequests = it })
-                    }
-                    println("Accepted friend request from user $request")
-                }
+        when (uiState) {
+            is FriendsUiState.Loading -> {
+                Text("Loading...")
             }
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            is FriendsUiState.Error -> {
+                Text("Error: ${(uiState as FriendsUiState.Error).message}", color = Color.Red)
+            }
 
-        // My Friends List Section
-        Text(text = "My Friends", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-        if (friends.isEmpty()) {
-            Text(text = "No friends yet", fontSize = 16.sp, color = Color.Gray)
-        } else {
-            friends.forEach { friend ->
-                FriendItem(friend.name) {
-//                    viewModel.deleteFriend(userId, friend.user_id)
-                    val index = allFriendships.indexOfFirst {
-                        it.user_Id == userId && it.friend_Id == friend.user_id
+            is FriendsUiState.Success -> {
+                val friends = (uiState as FriendsUiState.Success).friendList
+                val friendRequests = (uiState as FriendsUiState.Success).pendingFriendRequests
+
+                if (friendRequests.isNotEmpty()) {
+                    Text("New Friend Request!", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                    friendRequests.forEach { friend ->
+                        FriendRequestItem(friend.name) {
+                            // Handle Accept
+                            println("Accepted friend request from ${friend.user_id}")
+                        }
                     }
-                    if (index != -1) {
-                        allFriendships.removeAt(index)
-                        updateFriendAndRequestLists(userId, allFriendships, { friends = it }, { friendRequests = it })
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text("My Friends", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                if (friends.isEmpty()) {
+                    Text("No friends yet", fontSize = 16.sp, color = Color.Gray)
+                } else {
+                    friends.forEach { friend ->
+                        FriendItem(friend.name) {
+                            // Handle Delete
+                            println("Deleted friend ${friend.user_id}")
+                        }
                     }
-                    println("Deleted friend ${friend.user_id}")
                 }
             }
         }
@@ -130,16 +194,6 @@ fun updateFriendAndRequestLists(
 
     onFriendsUpdated(updatedFriends)
     onRequestsUpdated(updatedRequests)
-}
-
-fun loadFriendships(): List<Friendship> {
-    return listOf(
-        Friendship(1, 2, "accepted"),
-        Friendship(1, 3, "pending"),
-        Friendship(2, 4, "accepted"),
-        Friendship(3, 5, "rejected"),
-        Friendship(4, 5, "accepted")
-    )
 }
 
 @Composable

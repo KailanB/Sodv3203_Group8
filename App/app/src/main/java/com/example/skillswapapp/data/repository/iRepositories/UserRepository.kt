@@ -16,5 +16,4 @@ interface UserRepository {
     fun getUserStream(id:Int): Flow<UserWithoutSecureInfo>
     fun getAllUsersStream(): Flow<List<UserWithoutSecureInfo>>
     fun getUserAllInfoStream(id:Int): Flow<User>
-
 }

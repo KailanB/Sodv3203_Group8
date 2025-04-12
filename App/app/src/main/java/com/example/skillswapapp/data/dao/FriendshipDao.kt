@@ -6,7 +6,9 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.skillswapapp.data.entities.Friendship
+import com.example.skillswapapp.data.entities.User
 import com.example.skillswapapp.data.relations.UserFriendList
+import com.example.skillswapapp.data.relations.UserWithFriends
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -44,4 +46,19 @@ interface FriendshipDao {
 
     @Query("SELECT * FROM friendship WHERE user_id = :userId AND friend_id = :friendId")
     fun getFriendshipByUserIdAndFriendId(userId: Int, friendId: Int):  Flow<Friendship>
+
+    @Query(
+        "SELECT u.* FROM friendship f JOIN user u ON f.friend_id = u.user_id WHERE f.user_id = :userId " +
+                "UNION " +
+                "SELECT u.* FROM friendship f JOIN user u ON f.user_id = u.user_id WHERE f.friend_id = :userId"
+    )
+    fun getUserWithFriends(userId: Int): Flow<UserWithFriends>
+    // Get all pending friend requests (assuming 'status' is a column in your 'Friendship' entity)
+    @Query(
+        "SELECT u.user_id, u.name, u.email, u.profile_intro FROM friendship f " +
+                "JOIN user u ON f.friend_id = u.user_id " +
+                "WHERE f.user_id = :userId AND f.status = 'pending'"
+    )
+    fun getPendingFriendRequests(userId: Int): Flow<List<UserFriendList>>
+
 }
