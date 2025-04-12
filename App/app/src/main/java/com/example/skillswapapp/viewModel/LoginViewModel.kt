@@ -10,13 +10,13 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    private val _loginResult = MutableStateFlow<User?>(null)
-    val loginResult: StateFlow<User?> = _loginResult
+    private val _loginState = MutableStateFlow<User?>(null)
+    val loginState: StateFlow<User?> = _loginState
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
             val user = userRepository.loginUser(email, password)
-            _loginResult.value = user
+            _loginState.value = user
         }
     }
 }
