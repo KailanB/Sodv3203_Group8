@@ -3,22 +3,45 @@ package com.example.skillswapapp.ui.screens
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.skillswapapp.data.AppDatabase
+import com.example.skillswapapp.data.repository.UserRepositoryImpl
+import com.example.skillswapapp.viewModel.LoginViewModel
+import com.example.skillswapapp.viewModel.LoginViewModelFactory
 
 @Composable
 fun LoginScreen() {
-    var email = TextFieldValue("")
-    var password = TextFieldValue("")
 
     val context = LocalContext.current
 
+    var email by remember { mutableStateOf(TextFieldValue("")) }
+    var password by remember { mutableStateOf(TextFieldValue("")) }
+
+    // Set up ViewModel with factory
+    val userDao = AppDatabase.getDatabase(context).userDao()
+    val userRepository = UserRepositoryImpl(userDao)
+    val loginViewModel: LoginViewModel = viewModel(
+        factory = LoginViewModelFactory(userRepository)
+    )
+
+    val loginState by loginViewModel.loginState.collectAsState()
+
+    LaunchedEffect(loginState) {
+        loginState?.let {
+            Toast.makeText(context, "Welcome ${it.name}", Toast.LENGTH_LONG).show()
+            // Navigate to next screen here
+        } ?: run {
+
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,7 +78,8 @@ fun LoginScreen() {
         // Login Button
         Button(
             onClick = {
-                Toast.makeText(context, "Logging in...", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "Logging in...", Toast.LENGTH_SHORT).show()
+                loginViewModel.login(email.text, password.text)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
