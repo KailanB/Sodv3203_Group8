@@ -21,47 +21,6 @@ import com.example.skillswapapp.viewModel.FriendViewModel
 import com.example.skillswapapp.viewModel.FriendsViewModel
 import com.example.skillswapappimport.SessionViewModel
 
-//
-//@Composable
-//fun FriendsScreen(
-//    userId: Int, //for now just to check
-//    viewModel: FriendsViewModel? = null, //ViewModel optional for testing,
-//    modifier: Modifier = Modifier
-//) {
-//
-//    val allFriendships = remember { mutableStateListOf<Friendship>() }
-//    var friends by remember { mutableStateOf<List<UserFriendList>>(emptyList()) }
-//    var friendRequests by remember { mutableStateOf <List<String>>(emptyList())}
-////    var refreshTrigger by remember { mutableStateOf(0) }
-//
-//    // Collect the friends and friend requests
-////    LaunchedEffect(userId) {
-////        viewModel.getAllFriends(userId).collect { friendList ->
-////            friends = friendList ?: emptyList()
-////        }
-////    }
-////
-////    LaunchedEffect(userId) {
-////        viewModel.getFriendship(userId).collect { friendList ->
-////            val validFriendList = friendList as? List<Friendship> ?: emptyList()
-////            if (validFriendList.isNotEmpty()) {
-////                friendRequests = validFriendList
-////                    .filter { it.status == "pending" }
-////                    .map { it.friend_id.toString() }
-////            }
-////        }
-////    }
-//
-//    LaunchedEffect(userId) {
-//        allFriendships.clear()
-//        allFriendships.addAll(loadFriendships())
-//        updateFriendAndRequestLists(
-//            userId,
-//            allFriendships,
-//            { friends = it },
-//            { friendRequests = it }
-//        ) }
-//
 //    Column(modifier = modifier.padding(16.dp)) {
 //        Text(
 //            text = "Friends",
