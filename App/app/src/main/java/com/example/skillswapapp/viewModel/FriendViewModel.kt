@@ -23,12 +23,8 @@ class FriendViewModel(
             _friendsUiState.value = FriendsUiState.Loading
 
             try {
-                // Get user with friends from the repository
                 val userWithFriends = friendshipRepository.getUserWithFriends(userId)
-                // Get pending requests from the repository
                 val pendingRequests = friendshipRepository.getPendingFriendRequests(userId)
-
-                // Map the userWithFriends.friends to List<UserFriendList>
                 val friendList = userWithFriends.friends.map {
                     UserFriendList(
                         user_id = it.user_id,
@@ -39,8 +35,8 @@ class FriendViewModel(
                 }
 
                 _friendsUiState.value = FriendsUiState.Success(
-                    friendList = friendList, // Now it's List<UserFriendList>
-                    pendingFriendRequests = pendingRequests // This should already be of type List<UserFriendList>
+                    friendList = friendList,
+                    pendingFriendRequests = pendingRequests
                 )
             } catch (e: Exception) {
                 _friendsUiState.value = FriendsUiState.Error(
