@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.skillswapapp.AppViewModelProvider
 import com.example.skillswapapp.data.relations.UserFriendList
+import com.example.skillswapapp.data.repository.iRepositories.FriendshipRepository
 import com.example.skillswapapp.model.Friendship
 import com.example.skillswapapp.state.FriendsUiState
 import com.example.skillswapapp.viewModel.FriendViewModel
@@ -148,6 +149,7 @@ fun FriendsScreen(
                     friendRequests.forEach { friend ->
                         FriendRequestItem(friend.name) {
                             // Handle Accept
+                            viewModel.acceptFriendRequest(userId, friend.user_id)
                             println("Accepted friend request from ${friend.user_id}")
                         }
                     }
@@ -162,6 +164,7 @@ fun FriendsScreen(
                     friends.forEach { friend ->
                         FriendItem(friend.name) {
                             // Handle Delete
+                            viewModel.deleteFriend(userId, friend.user_id)
                             println("Deleted friend ${friend.user_id}")
                         }
                     }
