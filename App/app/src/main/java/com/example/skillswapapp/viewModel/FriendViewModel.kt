@@ -1,11 +1,8 @@
 package com.example.skillswapapp.viewModel
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.skillswapapp.data.relations.UserFriendList
 import com.example.skillswapapp.data.repository.iRepositories.FriendshipRepository
-import com.example.skillswapapp.data.repository.iRepositories.UserRepository
 import com.example.skillswapapp.state.FriendsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
