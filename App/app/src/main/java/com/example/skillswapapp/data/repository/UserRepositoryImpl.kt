@@ -10,35 +10,35 @@ import kotlinx.coroutines.flow.Flow
 class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
 
     override suspend fun insertUser(user: User) {
-        userDao.insertUser(user)
+        userDao.insert(user)
     }
 
     override suspend fun updateUser(user: User) {
-        userDao.updateUser(user)
+        userDao.update(user)
     }
 
     override suspend fun deleteUser(user: User) {
-        userDao.deleteUser(user)
+        userDao.delete(user)
     }
 
     override fun getAllUsersBySkillIdStream(id: Int): Flow<List<UserWithoutSecureInfo>> {
-        return userDao.getAllUsersBySkillIdStream(id)
+        return userDao.getAllUsersBySkillId(id)
     }
 
     override fun getAllUsersByLocationIdStream(id: Int): Flow<List<UserWithoutSecureInfo>> {
-        return userDao.getAllUsersByLocationIdStream(id)
+        return userDao.getAllUsersByLocationId(id)
     }
 
     override fun getUserStream(id: Int): Flow<UserWithoutSecureInfo> {
-        return userDao.getUserStream(id)
+        return userDao.getUser(id)
     }
 
     override fun getAllUsersStream(): Flow<List<UserWithoutSecureInfo>> {
-        return userDao.getAllUsersStream()
+        return userDao.getAllUsers()
     }
 
     override fun getUserAllInfoStream(id: Int): Flow<User> {
-        return userDao.getUserAllInfoStream(id)
+        return userDao.getUserAllInfo(id)
     }
 
     // login part
