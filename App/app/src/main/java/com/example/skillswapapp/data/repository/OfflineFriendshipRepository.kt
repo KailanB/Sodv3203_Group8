@@ -35,14 +35,13 @@ data class OfflineFriendshipRepository(
     }
 
     // Accept a friend request by updating the status of the friendship
-    override suspend fun acceptFriendRequest(userId: Int, friendId: Int) {
+    override suspend fun acceptFriendRequest(userId: Int, friendId: Int, status: String) {
         val friendship = friendshipDao.getFriendshipByUserIdAndFriendId(userId, friendId).first()
         if (friendship != null) {
-            val updatedFriendship = friendship.copy(status = "accepted")
+            val updatedFriendship = friendship.copy(status = status)
             friendshipDao.update(updatedFriendship)
         }
     }
-
     // Delete a friendship by user ID and friend ID
     override suspend fun deleteFriend(userId: Int, friendId: Int) {
         val friendship = friendshipDao.getFriendshipByUserIdAndFriendId(userId, friendId).first()
