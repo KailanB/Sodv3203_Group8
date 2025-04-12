@@ -10,7 +10,6 @@ sealed interface FriendsUiState {
         val friendList: List<UserFriendList> = emptyList(),
         val pendingFriendRequests: List<UserFriendList> = emptyList(),
     ): FriendsUiState
-    //    object Error: FriendsUiState
     data class Error(val message: String) : FriendsUiState
     object Loading : FriendsUiState
 }
