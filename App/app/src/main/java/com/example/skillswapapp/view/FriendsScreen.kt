@@ -180,32 +180,6 @@ fun FriendsScreen(
     }
 }
 
-
-//fun updateFriendAndRequestLists(
-//    userId: Int,
-//    friendships: List<Friendship>,
-//    onFriendsUpdated: (List<UserFriendList>) -> Unit,
-//    onRequestsUpdated: (List<String>) -> Unit
-//) {
-//    val updatedFriends = friendships
-//        .filter { it.user_Id == userId && it.status == "accepted" }
-//        .map {
-//            UserFriendList(
-//                user_id = it.friend_Id,
-//                name = "Friend ${it.friend_Id}",
-//                email = "friend${it.friend_Id}@example.com",
-//                profile_intro = "Intro for friend ${it.friend_Id}"
-//            )
-//        }
-//
-//    val updatedRequests = friendships
-//        .filter { it.user_Id == userId && it.status == "pending" }
-//        .map { it.friend_Id.toString() }
-//
-//    onFriendsUpdated(updatedFriends)
-//    onRequestsUpdated(updatedRequests)
-//}
-
 @Composable
 fun FriendRequestItem(name: String, onAccept: () -> Unit) {
     Row(
