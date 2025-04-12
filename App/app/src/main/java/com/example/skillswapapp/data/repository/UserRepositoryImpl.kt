@@ -41,7 +41,7 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
         return userDao.getUserAllInfoStream(id)
     }
 
-    // ✅ Add the login function here
+    // login part
     override suspend fun loginUser(email: String, password: String): User? {
         return userDao.getUserByEmailAndPassword(email, password)
     }
