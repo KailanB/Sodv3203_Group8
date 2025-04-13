@@ -12,13 +12,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.skillswapapp.data.AppDatabase
 import com.example.skillswapapp.data.repository.UserRepositoryImpl
 import com.example.skillswapapp.viewModel.LoginViewModel
 import com.example.skillswapapp.viewModel.LoginViewModelFactory
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavHostController = rememberNavController()) {
 
     val context = LocalContext.current
 
@@ -37,7 +39,7 @@ fun LoginScreen() {
     LaunchedEffect(loginState) {
         loginState?.let {
             Toast.makeText(context, "Welcome ${it.name}", Toast.LENGTH_LONG).show()
-            // Navigate to next screen here
+            navController.navigate("HomeScreen")
         } ?: run {
 
         }
@@ -100,5 +102,5 @@ fun LoginScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen()
+    LoginScreen(navController = rememberNavController())
 }
