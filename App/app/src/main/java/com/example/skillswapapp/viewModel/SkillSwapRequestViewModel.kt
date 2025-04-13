@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
@@ -28,4 +29,27 @@ class SkillSwapRequestViewModel(
                 }
         }
     }
+
+    fun acceptSwapRequest(swapId: Int) {
+        _swapUiState.update { currentState ->
+            if (currentState is SwapUiState.Success) {
+                val updatedSwaps = currentState.swapRequests.map {
+                    if (it.request_id == swapId) it.copy(request_status = "accepted") else it
+                }
+                SwapUiState.Success(updatedSwaps)
+            } else currentState
+        }
+    }
+
+    fun declineSwapRequest(swapId: Int) {
+        _swapUiState.update { currentState ->
+            if (currentState is SwapUiState.Success) {
+                val updatedSwaps = currentState.swapRequests.map {
+                    if (it.request_id == swapId) it.copy(request_status = "declined") else it
+                }
+                SwapUiState.Success(updatedSwaps)
+            } else currentState
+        }
+    }
 }
+
