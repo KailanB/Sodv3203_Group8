@@ -197,7 +197,6 @@ fun SkillSwapApp(
 
             composable(route = "friends") {
                     FriendsScreen(
-//                        userId = user.id,
                         navigateToEditUser = { navController.navigate("userEntryScreen") },
                         sessionViewModel = sessionViewModel
                     )
