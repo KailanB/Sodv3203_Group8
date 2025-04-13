@@ -36,11 +36,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.skillswapapp.AppViewModelProvider
 import com.example.skillswapapp.state.SwapUiState
-import com.example.skillswapapp.viewModel.FriendViewModel
 import com.example.skillswapapp.viewModel.SkillSwapRequestViewModel
 import com.example.skillswapappimport.SessionViewModel
 import java.text.SimpleDateFormat
@@ -50,6 +48,7 @@ import java.util.Locale
 @Composable
 fun SwapsScreen(
     navigateToEditUser: () -> Unit,
+    navigateToViewUserProfile: (Int) -> Unit,
     modifier: Modifier = Modifier,
     sessionViewModel: SessionViewModel,
     viewModel: SkillSwapRequestViewModel = viewModel(factory = AppViewModelProvider.Factory),
@@ -112,9 +111,8 @@ fun SwapsScreen(
                             offering = "Offering Skill ID: ${swap.user_id_from}",
                             requesting = "Requesting Skill ID: ${swap.user_id_to}",
                             dateTime = formatTime(swap.appointment_time),
-                            onViewProfile = {
-                                // navigateToProfile(swap.user_id_to)
-                            }
+                            userId = swap.user_id_from,
+                            onViewProfile = navigateToViewUserProfile
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                     }
@@ -134,8 +132,14 @@ fun formatTime(timeMillis: Long): String {
 }
 
 @Composable
-fun SwapRequestCard(name: String, offering: String, requesting: String, dateTime: String, message: String, onAccept: (() -> Unit)? = null,
-                    onDecline: (() -> Unit)? = null) {
+fun SwapRequestCard(
+    name: String,
+    offering: String,
+    requesting: String,
+    dateTime: String,
+    message: String,
+    onAccept: (() -> Unit)? = null,
+    onDecline: (() -> Unit)? = null) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -202,7 +206,8 @@ fun AcceptedSwapCard(
     offering: String,
     requesting: String,
     dateTime: String,
-    onViewProfile: () -> Unit
+    userId: Int,
+    onViewProfile: (Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -238,51 +243,11 @@ fun AcceptedSwapCard(
                     Text(text = "Looking forward to this swap!")
                     Spacer(modifier = Modifier.height(8.dp))
                     Button(
-                        onClick = onViewProfile,
+                        onClick = { onViewProfile(userId) },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFBBDEFB))
                     ) {
                         Text("View Profile")
                     }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun UpcomingSwapCard(name: String, offering: String, requesting: String, dateTime: String) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Card(
-        shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF1F8E9))
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = name, style = MaterialTheme.typography.titleMedium)
-                IconButton(onClick = { expanded = !expanded }) {
-                    Icon(
-                        imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.ArrowDropDown,
-                        contentDescription = null
-                    )
-                }
-            }
-
-            Text(text = "$offering For $requesting")
-            Text(text = dateTime)
-
-            AnimatedVisibility(
-                visible = expanded,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
-            ) {
-                Column {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = "Prepare for this upcoming swap! Be sure to bring your A-game.")
                 }
             }
         }
