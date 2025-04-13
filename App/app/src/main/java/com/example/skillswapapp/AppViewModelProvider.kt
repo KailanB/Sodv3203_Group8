@@ -8,6 +8,7 @@ import com.example.skillswapapp.viewModel.FriendViewModel
 import com.example.skillswapapp.viewModel.ProfileViewModel
 import com.example.skillswapapp.viewModel.UserEntryViewModel
 import com.example.skillswapapp.viewModel.HomeViewModel
+import com.example.skillswapapp.viewModel.SkillSwapRequestViewModel
 import com.example.skillswapapp.viewModel.ViewUserProfileViewModel
 //import com.example.skillswapapp.viewModel.FriendViewModel
 import com.example.skillswapappimport.SessionViewModel
@@ -66,6 +67,11 @@ object AppViewModelProvider {
         initializer {
             FriendViewModel(
                 friendshipRepository = skillSwapApplication().container.friendsRepository
+            )
+        }
+        initializer {
+            SkillSwapRequestViewModel(
+                skillrequestRepository = skillSwapApplication().container.skillrequestRepository
             )
         }
     }
