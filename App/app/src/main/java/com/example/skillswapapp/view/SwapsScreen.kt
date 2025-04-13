@@ -46,49 +46,7 @@ import com.example.skillswapappimport.SessionViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 //
-//@Composable
-//fun SwapsScreen(
-//    modifier: Modifier = Modifier
-//){
-//    Column(
-//        modifier = modifier
-//            .fillMaxSize()
-//            .padding(16.dp)
-//    ) {
-//        Text(
-//            text = "Swaps",
-//            style = MaterialTheme.typography.headlineSmall,
-//            modifier = Modifier.padding(bottom = 16.dp)
-//        )
-//
-//        // Swap Requests Section
-//        SwapRequestCard(
-//            name = "Jake Peralta",
-//            offering = "Cooking",
-//            requesting = "Acting",
-//            dateTime = "On May 10, 5:00 p.m.",
-//            message = "Hi I’m Jake! I’d love to learn some Kotlin. Feel free to call me at 555-3344"
-//        )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        // Upcoming Swaps Section
-//        UpcomingSwapCard(
-//            name = "Eleanor Shellstrop",
-//            offering = "Leadership",
-//            requesting = "Improv",
-//            dateTime = "On May 2, 7:30 p.m."
-//        )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        // Previous Swaps Section (Rating)
-//        Text(text = "Rate Previous Skill Swaps", fontSize = 18.sp)
-//        Text(text = "Kate Dibiasky", fontSize = 16.sp)
-//    }
-//}
 @Composable
 fun SwapsScreen(
     navigateToEditUser: () -> Unit,
@@ -101,9 +59,7 @@ fun SwapsScreen(
     val userId = currentUser?.user?.user_id
 
     LaunchedEffect(userId) {
-        userId?.let {
-            viewModel.loadSwapsForUser(it)
-        }
+        userId?.let { viewModel.loadSwapsForUser(it) }
     }
 
     Column(
@@ -127,15 +83,45 @@ fun SwapsScreen(
             }
             is SwapUiState.Success -> {
                 val swaps = (uiState as SwapUiState.Success).swapRequests
-                swaps.forEach { swap ->
-                    SwapRequestCard(
-                        name = swap.name,
-                        offering = "Offering Skill ID: ${swap.user_id_from}",
-                        requesting = "Requesting Skill ID: ${swap.user_id_to}",
-                        dateTime = formatTime(swap.appointment_time),
-                        message = swap.details
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
+                val pendingSwaps = swaps.filter { it.request_status == "pending" }
+                val acceptedSwaps = swaps.filter { it.request_status == "accepted" }
+
+                if (pendingSwaps.isNotEmpty()) {
+                    Text("Pending Requests", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    pendingSwaps.forEach { swap ->
+                        SwapRequestCard(
+                            name = swap.name,
+                            offering = "Offering Skill ID: ${swap.user_id_from}",
+                            requesting = "Requesting Skill ID: ${swap.user_id_to}",
+                            dateTime = formatTime(swap.appointment_time),
+                            message = swap.details,
+                            onAccept = { viewModel.acceptSwapRequest(swap.request_id) },
+                            onDecline = { viewModel.declineSwapRequest(swap.request_id) }
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
+
+                if (acceptedSwaps.isNotEmpty()) {
+                    Text("Accepted Swaps", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    acceptedSwaps.forEach { swap ->
+                        AcceptedSwapCard(
+                            name = swap.name,
+                            offering = "Offering Skill ID: ${swap.user_id_from}",
+                            requesting = "Requesting Skill ID: ${swap.user_id_to}",
+                            dateTime = formatTime(swap.appointment_time),
+                            onViewProfile = {
+                                // navigateToProfile(swap.user_id_to)
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
+
+                if (pendingSwaps.isEmpty() && acceptedSwaps.isEmpty()) {
+                    Text("No current swaps.")
                 }
             }
         }
@@ -148,7 +134,8 @@ fun formatTime(timeMillis: Long): String {
 }
 
 @Composable
-fun SwapRequestCard(name: String, offering: String, requesting: String, dateTime: String, message: String) {
+fun SwapRequestCard(name: String, offering: String, requesting: String, dateTime: String, message: String, onAccept: (() -> Unit)? = null,
+                    onDecline: (() -> Unit)? = null) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -186,18 +173,75 @@ fun SwapRequestCard(name: String, offering: String, requesting: String, dateTime
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Button(
-                            onClick = { /* handle decline */ },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFCDD2))
-                        ) {
-                            Text("Decline")
+                        if (onDecline != null) {
+                            Button(
+                                onClick = onDecline,
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFCDD2))
+                            ) {
+                                Text("Decline")
+                            }
                         }
-                        Button(
-                            onClick = { /* handle accept */ },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFF9C4))
-                        ) {
-                            Text("Accept")
+                        if (onAccept != null) {
+                            Button(
+                                onClick = onAccept,
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFF9C4))
+                            ) {
+                                Text("Accept")
+                            }
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AcceptedSwapCard(
+    name: String,
+    offering: String,
+    requesting: String,
+    dateTime: String,
+    onViewProfile: () -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9))
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = name, style = MaterialTheme.typography.titleMedium)
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(
+                        imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.ArrowDropDown,
+                        contentDescription = null
+                    )
+                }
+            }
+
+            Text(text = "$offering For $requesting")
+            Text(text = dateTime)
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Column {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "Looking forward to this swap!")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(
+                        onClick = onViewProfile,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFBBDEFB))
+                    ) {
+                        Text("View Profile")
                     }
                 }
             }
