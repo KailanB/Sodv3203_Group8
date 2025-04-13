@@ -35,4 +35,7 @@ interface SkillSwapRequestDao {
                 "WHERE u.user_id = :id"
     )
     fun getAllSkillSwapRequestsForUser(id:Int): Flow<List<SkillSwapRequestDetails>>
+
+    @Query("SELECT * FROM skillSwapRequest WHERE user_id_to = :id OR user_id_from = :id")
+    fun getAllSkillSwapRequestsForUserStream(id: Int): Flow<List<SkillSwapRequest>>
 }
