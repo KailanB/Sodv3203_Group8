@@ -34,7 +34,7 @@ interface FriendshipDao {
                 " WHERE f.user_id = :id" +
                 " UNION " +
                 "SELECT u.name, u.email, u.profile_intro, u.user_id, f.status FROM friendship f JOIN user u ON f.user_id = u.user_id" +
-                " WHERE f.friend_id = :id"
+                " WHERE f.friend_id = :id AND f.status = 'pending'"
 
     )
     fun getAllFriendshipsById(id:Int): Flow<List<UserFriendList>>
