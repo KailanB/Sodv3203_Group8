@@ -10,5 +10,4 @@ data class SkillSwapRequestDetails(
     val details: String,
     val name: String,
     val email: String,
-
 )
