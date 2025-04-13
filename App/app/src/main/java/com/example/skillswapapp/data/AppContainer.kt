@@ -9,11 +9,13 @@ import com.example.skillswapapp.data.repository.OfflineCategoryRepository
 import com.example.skillswapapp.data.repository.OfflineFriendshipRepository
 import com.example.skillswapapp.data.repository.OfflineLocationRepository
 import com.example.skillswapapp.data.repository.OfflineSkillRepository
+import com.example.skillswapapp.data.repository.OfflineSkillSwapRequestRepository
 import com.example.skillswapapp.data.repository.OfflineUserRepository
 import com.example.skillswapapp.data.repository.OfflineUserSkillsRepository
 import com.example.skillswapapp.data.repository.OfflineUserSeeksSkillsRepository
 import com.example.skillswapapp.data.repository.iRepositories.FriendshipRepository
 import com.example.skillswapapp.data.repository.iRepositories.SkillRepository
+import com.example.skillswapapp.data.repository.iRepositories.SkillSwapRequestRepository
 import com.example.skillswapapp.data.repository.iRepositories.UserRepository
 import com.example.skillswapapp.data.repository.iRepositories.UserSeeksSkillsRepository
 import com.example.skillswapapp.data.repository.iRepositories.UserSkillsRepository
@@ -30,6 +32,7 @@ interface AppContainer {
     val skillRepository: SkillRepository
     val locationRepository: LocationRepository
     val friendsRepository: FriendshipRepository
+    val skillrequestRepository: SkillSwapRequestRepository
 }
 
 
@@ -71,6 +74,10 @@ class AppDataContainer(private val context: Context) : AppContainer {
 
     override val friendsRepository: FriendshipRepository by lazy{
         OfflineFriendshipRepository(database.friendshipDao())
+    }
+
+    override val skillrequestRepository: SkillSwapRequestRepository by lazy {
+        OfflineSkillSwapRequestRepository(database.skillSwapRequestDao())
     }
 
 }
