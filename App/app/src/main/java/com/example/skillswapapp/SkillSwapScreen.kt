@@ -205,6 +205,9 @@ fun SkillSwapApp(
                 composable(route = "swaps") {
                 SwapsScreen(
                     modifier = Modifier,
+                    navigateToViewUserProfile = {
+                        navController.navigate("${UserDetailsDestination.route}/${it}")
+                    },
                     navigateToEditUser = { navController.navigate("userEntryScreen") },
                     sessionViewModel = sessionViewModel
                 )
