@@ -54,4 +54,7 @@ class SessionViewModel (
             }
         }
     }
+    fun logout() {
+        _currentUser.value = null
+    }
 }
