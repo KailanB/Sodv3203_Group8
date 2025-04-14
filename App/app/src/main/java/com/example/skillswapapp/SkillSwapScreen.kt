@@ -165,7 +165,7 @@ fun SkillSwapApp(
         ) {
             //login part
             composable(route = "LoginScreen") {
-                LoginScreen(navController = navController)
+                LoginScreen(sessionViewModel = sessionViewModel, navController = navController)
             }
             composable(route = "CreateAccount") {
                 CreateAccount(navController = navController)
