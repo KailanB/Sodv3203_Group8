@@ -18,12 +18,15 @@ import com.example.skillswapapp.data.AppDatabase
 import com.example.skillswapapp.data.repository.UserRepositoryImpl
 import com.example.skillswapapp.viewModel.LoginViewModel
 import com.example.skillswapapp.viewModel.LoginViewModelFactory
+import com.example.skillswapappimport.SessionViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController = rememberNavController()) {
+fun LoginScreen(
+    navController: NavHostController = rememberNavController(),
+    sessionViewModel: SessionViewModel = viewModel() ) {
 
     val context = LocalContext.current
-
+    val currentUser by sessionViewModel.currentUser.collectAsState()
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -39,9 +42,8 @@ fun LoginScreen(navController: NavHostController = rememberNavController()) {
     LaunchedEffect(loginState) {
         loginState?.let {
             Toast.makeText(context, "Welcome ${it.name}", Toast.LENGTH_LONG).show()
+            sessionViewModel.getLoggedInUser()
             navController.navigate("HomeScreen")
-        } ?: run {
-
         }
     }
     Column(
@@ -51,6 +53,7 @@ fun LoginScreen(navController: NavHostController = rememberNavController()) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        if (currentUser == null) {
         // Title
         Text(text = "Login", style = MaterialTheme.typography.headlineMedium)
 
@@ -95,6 +98,20 @@ fun LoginScreen(navController: NavHostController = rememberNavController()) {
             Toast.makeText(context, "Navigating to sign up page", Toast.LENGTH_SHORT).show()
         }) {
             Text(text = "Don't have an account? Sign up")
+        }
+    } else {
+            // Logged in UI
+            Text("Hello, ${currentUser?.user?.name}")
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    sessionViewModel.logout()
+                    Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Logout")
+            }
         }
     }
 }
