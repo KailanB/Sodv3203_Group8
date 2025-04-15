@@ -2,16 +2,23 @@ package com.example.skillswapapp
 
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +41,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.room.jarjarred.org.antlr.v4.codegen.model.Sync
 import com.example.skillswapapp.ui.screens.LoginScreen
 import com.example.skillswapapp.view.CreateAccount
 import com.example.skillswapapp.view.FriendsScreen
@@ -87,13 +95,27 @@ fun SkillSwapNavBar(
                 IconButton(
                     onClick = { navController.navigate("swaps") }
                 ) {
-                    Icon(
-                        Icons.Default.Done,
-                        contentDescription = "Swaps",
-                        modifier = Modifier.height(75.dp)
-                            .width(75.dp),
-                        tint = MaterialTheme.colorScheme.primaryContainer
-                    )
+//                    Icon(
+//                        Icons.Default.Done,
+//                        contentDescription = "Swaps",
+//                        modifier = Modifier.height(75.dp)
+//                            .width(75.dp),
+//                        tint = MaterialTheme.colorScheme.primaryContainer
+//                    )
+                    Box(modifier = Modifier.size(75.dp)) {
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier.align(Alignment.TopCenter),
+                            tint = MaterialTheme.colorScheme.primaryContainer
+                        )
+                        Icon(
+                            Icons.Default.ArrowForward,
+                            contentDescription = null,
+                            modifier = Modifier.align(Alignment.BottomCenter),
+                            tint = MaterialTheme.colorScheme.primaryContainer
+                        )
+                    }
                 }
                 IconButton(
                     onClick = { navController.navigate("friends") }
