@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.room.external.antlr)
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.androidx.core.ktx)
