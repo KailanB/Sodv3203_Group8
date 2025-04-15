@@ -1,5 +1,7 @@
 package com.example.skillswapapp.view
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -88,9 +91,34 @@ fun FriendsScreen(
         }
     }
 }
-
+//
+//@Composable
+//fun FriendRequestItem(name: String, onAccept: () -> Unit) {
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(vertical = 8.dp)
+//            .background(Color.LightGray, RoundedCornerShape(8.dp))
+//            .padding(12.dp),
+//        verticalAlignment = Alignment.CenterVertically,
+//        horizontalArrangement = Arrangement.SpaceBetween
+//    ) {
+//        Text(text = name, fontSize = 16.sp)
+//        Button(onClick = onAccept) {
+//            Text(text = "Add Friend")
+//        }
+//    }
+//}
 @Composable
 fun FriendRequestItem(name: String, onAccept: () -> Unit) {
+    var clicked by remember { mutableStateOf(false) }
+
+    // Animate the scale of the button when clicked
+    val scale by animateFloatAsState(
+        targetValue = if (clicked) 1.2f else 1f,
+        animationSpec = tween(durationMillis = 300)
+    )
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -101,11 +129,19 @@ fun FriendRequestItem(name: String, onAccept: () -> Unit) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(text = name, fontSize = 16.sp)
-        Button(onClick = onAccept) {
-            Text(text = "Add Friend")
+
+        Button(
+            onClick = {
+                clicked = true
+                onAccept()
+            },
+            modifier = Modifier.scale(scale)
+        ) {
+            Text(text = if (clicked) "Friend Added" else "Add Friend")
         }
     }
 }
+
 
 @Composable
 fun FriendItem(name: String, onDelete: () -> Unit) {
