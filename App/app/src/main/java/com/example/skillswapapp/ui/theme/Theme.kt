@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -12,8 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val darkScheme = darkColorScheme(
-    primary = primaryDark,
-    onPrimary = onPrimaryDark,
+//    primary = primaryDark,
+//    onPrimary = onPrimaryDark,
+    primary = primaryLight,
+    onPrimary = onPrimaryLight,
+    background = backgroundDark,
+    onBackground = onBackgroundDark,
+    surface = surfaceDark,
+    onSurface = onSurfaceDark,// added
     primaryContainer = primaryContainerDark,
     onPrimaryContainer = onPrimaryContainerDark,
     secondary = secondaryDark,
@@ -28,10 +35,10 @@ private val darkScheme = darkColorScheme(
     onError = onErrorDark,
     errorContainer = errorContainerDark,
     onErrorContainer = onErrorContainerDark,
-    background = backgroundDark,
-    onBackground = onBackgroundDark,
-    surface = surfaceDark,
-    onSurface = onSurfaceDark,
+//    background = backgroundDark,
+//    onBackground = onBackgroundDark,
+//    surface = surfaceDark,
+//    onSurface = onSurfaceDark,
     surfaceVariant = surfaceVariantDark,
     onSurfaceVariant = onSurfaceVariantDark,
     outline = outlineDark,
@@ -57,6 +64,7 @@ private val darkScheme = darkColorScheme(
 //)
 
 private val lightScheme = lightColorScheme(
+
     primary = primaryLight,
     onPrimary = onPrimaryLight,
     primaryContainer = primaryContainerLight,
@@ -94,7 +102,7 @@ private val lightScheme = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLight,
 )
 
-//private val LightColorScheme = lightColorScheme(
+private val LightColorScheme = lightColorScheme(
 //    primary = Purple40,
 //    secondary = PurpleGrey40,
 //    tertiary = Pink40
@@ -108,13 +116,15 @@ private val lightScheme = lightColorScheme(
 //    onBackground = Color(0xFF1C1B1F),
 //    onSurface = Color(0xFF1C1B1F),
 //    */
-//)
+)
 
 @Composable
 fun SkillSwapAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+//    darkTheme: Boolean = isSystemInDarkTheme(),
+//    // Dynamic color is available on Android 12+
+//    dynamicColor: Boolean = true,
+    darkTheme: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -122,13 +132,16 @@ fun SkillSwapAppTheme(
 //            val context = LocalContext.current
 //            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
 //        }
-        darkTheme -> darkScheme
-        else -> lightScheme
+//        darkTheme -> darkScheme
+//        else -> lightScheme
+        else      -> darkScheme
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+//        typography = Typography,
+        typography   = Typography,
+         shapes       = Shapes,
         content = content
     )
 }
