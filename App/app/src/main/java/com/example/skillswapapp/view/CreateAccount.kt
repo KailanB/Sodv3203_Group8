@@ -63,7 +63,7 @@ fun CreateAccount(navController: NavHostController = rememberNavController()) {
     val context = LocalContext.current
 
     val DarkGrayBackground = Color(0xFFD3D3D3) // Adjust as needed
-    val LightTextColor = Color.White
+    val LightTextColor = Color(0xFFFF9800)
     // State variables to store input values
     var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -145,6 +145,16 @@ fun CreateAccount(navController: NavHostController = rememberNavController()) {
                 onClick = {
                     if (password == confirmPassword) {
                         Toast.makeText(context, "Account Created!", Toast.LENGTH_SHORT).show()
+                        // Clear all fields
+                        fullName = ""
+                        email = ""
+                        password = ""
+                        confirmPassword = ""
+                        profileIntro = ""
+                        description = ""
+                        province = ""
+                        city = ""
+                        neighborhood = ""
                     } else {
                         Toast.makeText(context, "Passwords do not match!", Toast.LENGTH_SHORT).show()
                     }
