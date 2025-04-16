@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -60,6 +61,7 @@ fun SkillSwapNavBar(
     //navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ){
+    val greenColor = Color(0xFF4CAF50)
     BottomAppBar(
 //        content = Text(text = "Header")
         actions = {
@@ -77,8 +79,10 @@ fun SkillSwapNavBar(
                         contentDescription = "Home",
                         modifier = Modifier.height(75.dp)
                             .width(75.dp),
-                        tint = MaterialTheme.colorScheme.primaryContainer
-                    )
+//                        tint = MaterialTheme.colorScheme.primaryContainer
+                        tint = greenColor
+                        )
+
                 }
 
                 IconButton(
@@ -89,7 +93,8 @@ fun SkillSwapNavBar(
                         contentDescription = "Profile",
                         modifier = Modifier.height(75.dp)
                             .width(75.dp),
-                        tint = MaterialTheme.colorScheme.primaryContainer
+//                        tint = MaterialTheme.colorScheme.primaryContainer
+                                tint = greenColor
                     )
                 }
                 IconButton(
@@ -107,13 +112,15 @@ fun SkillSwapNavBar(
                             Icons.Default.ArrowBack,
                             contentDescription = null,
                             modifier = Modifier.align(Alignment.TopCenter),
-                            tint = MaterialTheme.colorScheme.primaryContainer
+//                            tint = MaterialTheme.colorScheme.primaryContainer
+                            tint = greenColor
                         )
                         Icon(
                             Icons.Default.ArrowForward,
                             contentDescription = null,
                             modifier = Modifier.align(Alignment.BottomCenter),
-                            tint = MaterialTheme.colorScheme.primaryContainer
+//                            tint = MaterialTheme.colorScheme.primaryContainer
+                            tint = greenColor
                         )
                     }
                 }
@@ -125,7 +132,8 @@ fun SkillSwapNavBar(
                         contentDescription = "Friends",
                         modifier = Modifier.height(75.dp)
                             .width(75.dp),
-                        tint = MaterialTheme.colorScheme.primaryContainer
+//                        tint = MaterialTheme.colorScheme.primaryContainer
+                        tint = greenColor
                     )
                 }
             }
