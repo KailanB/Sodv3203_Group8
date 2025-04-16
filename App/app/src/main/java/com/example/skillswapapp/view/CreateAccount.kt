@@ -39,6 +39,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.graphicsLayer
 
 //import coil.compose.rememberImagePainter
@@ -62,8 +63,8 @@ class RegisterActivity : ComponentActivity() {
 fun CreateAccount(navController: NavHostController = rememberNavController()) {
     val context = LocalContext.current
 
-    val DarkGrayBackground = Color(0xFFD3D3D3) // Adjust as needed
-    val LightTextColor = Color(0xFFFF9800)
+//    val DarkGrayBackground = Color(0xFFD3D3D3) // Adjust as needed
+//    val LightTextColor = Color(0xFFFF9800)
     // State variables to store input values
     var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -89,24 +90,27 @@ fun CreateAccount(navController: NavHostController = rememberNavController()) {
 //        profilePictureUri = uri
 //    }
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Create New Account", color = Color.White) },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    //containerColor = DarkGrayBackground
-                )
-            )
-        }
+        topBar = { /* No top bar */ }
+
+
+
     ) { contentPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DarkGrayBackground)
+//                .background(DarkGrayBackground)
                 .verticalScroll(rememberScrollState()) // added this to scroll the page
                 .padding(16.dp)
                 .padding(contentPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Sign Up",
+                style = MaterialTheme.typography.headlineMedium,
+//                color = MaterialTheme.colors.primary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(value = fullName, onValueChange = { fullName = it }, label = { Text("Full Name", ) })
             OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
             OutlinedTextField(value = password, onValueChange = { password = it }, label = { Text("Password") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
