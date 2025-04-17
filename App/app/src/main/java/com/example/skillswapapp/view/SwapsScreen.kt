@@ -5,6 +5,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -89,19 +90,31 @@ fun SwapsScreen(
                 if (pendingSwaps.isNotEmpty()) {
                     Text("Pending Requests", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(8.dp))
-                    pendingSwaps.forEach { swap ->
-                        SwapRequestCard(
-                            name = swap.name,
-                            offering = "Offering Skill ID: ${swap.user_id_from}",
-                            requesting = "Requesting Skill ID: ${swap.user_id_to}",
-                            dateTime = formatTime(swap.appointment_time),
-                            message = swap.details,
-                            onAccept = { viewModel.acceptSwapRequest(swap.request_id) },
-                            onDecline = { viewModel.declineSwapRequest(swap.request_id) }
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
+//                    Column(
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .background(Color(0xFFF5F5F5))
+//                            .padding(16.dp)
+//                    ) {
+                    Column {
+                        var textColor = Color(0xFFFFFFFF)
+
+                        pendingSwaps.forEach { swap ->
+                            SwapRequestCard(
+                                name = swap.name,
+                                offering = "Offering Skill ID: ${swap.user_id_from}",
+                                requesting = "Requesting Skill ID: ${swap.user_id_to}",
+                                dateTime = formatTime(swap.appointment_time),
+                                message = swap.details,
+                                onAccept = { viewModel.acceptSwapRequest(swap.request_id) },
+                                onDecline = { viewModel.declineSwapRequest(swap.request_id) }
+
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
                     }
                 }
+//                }
 
                 if (acceptedSwaps.isNotEmpty()) {
                     Text("Accepted Swaps", style = MaterialTheme.typography.titleMedium)
@@ -146,7 +159,7 @@ fun SwapRequestCard(
     Card(
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF284677))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -181,7 +194,7 @@ fun SwapRequestCard(
                         if (onDecline != null) {
                             Button(
                                 onClick = onDecline,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFCDD2))
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCF6679))
                             ) {
                                 Text("Decline")
                             }
@@ -189,7 +202,7 @@ fun SwapRequestCard(
                         if (onAccept != null) {
                             Button(
                                 onClick = onAccept,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFF9C4))
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1DB954))
                             ) {
                                 Text("Accept")
                             }
@@ -215,7 +228,7 @@ fun AcceptedSwapCard(
     Card(
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9))
+//        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
