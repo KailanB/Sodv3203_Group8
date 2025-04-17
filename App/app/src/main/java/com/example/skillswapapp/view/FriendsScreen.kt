@@ -123,7 +123,7 @@ fun FriendRequestItem(name: String, onAccept: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .background(Color.LightGray, RoundedCornerShape(8.dp))
+            .background(color = Color(0xFF1D3557), RoundedCornerShape(8.dp))
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -149,7 +149,7 @@ fun FriendItem(name: String, onDelete: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .background(Color.White, RoundedCornerShape(8.dp))
+            .background(color = Color(0xFF1D3557), RoundedCornerShape(8.dp))
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
