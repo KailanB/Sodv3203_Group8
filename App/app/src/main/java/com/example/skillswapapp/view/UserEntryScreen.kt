@@ -23,6 +23,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,6 +36,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,6 +51,7 @@ import com.example.skillswapapp.ui.components.ErrorScreen
 import com.example.skillswapapp.ui.components.LoadingScreen
 import com.example.skillswapapp.ui.components.SkillCard
 import com.example.skillswapapp.ui.theme.SkillSwapAppTheme
+import com.example.skillswapapp.ui.theme.tertiaryLight
 import com.example.skillswapapp.viewModel.LocationDetails
 import com.example.skillswapapp.viewModel.UserDetails
 import com.example.skillswapapp.viewModel.UserEntryViewModel
@@ -130,6 +133,10 @@ fun UserEntryBody(
         modifier = Modifier
             .verticalScroll(scrollState)
             .fillMaxWidth()
+           .background(Color.White)
+//            .background(Color(0xFFF5F5F5))
+//            .background(Color(0xFFE0F2F1))
+
             .padding(12.dp)
     ){
 
@@ -193,16 +200,17 @@ fun UserDetailsInput(
     OutlinedTextField(
         value = userDetails.name,
         onValueChange = {onUserValueChange(userDetails.copy(name = it))},
-        label = { Text(text = "Name") },
+        label = { Text(text = "Name", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
-        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
+        textStyle = TextStyle(color = tertiaryLight),
+
     )
 
     OutlinedTextField(
         value = userDetails.email,
         onValueChange = {onUserValueChange(userDetails.copy(email = it))},
-        label = { Text(text = "Email") },
+        label = { Text(text = "Email", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
         textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
@@ -211,7 +219,7 @@ fun UserDetailsInput(
     OutlinedTextField(
         value = userDetails.password,
         onValueChange = {onUserValueChange(userDetails.copy(password = it))},
-        label = { Text(text = "Password") },
+        label = { Text(text = "Password", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
         textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
@@ -220,7 +228,7 @@ fun UserDetailsInput(
     OutlinedTextField(
         value = userDetails.reTypePassword,
         onValueChange = {onUserValueChange(userDetails.copy(reTypePassword = it))},
-        label = { Text(text = "re-type Password") },
+        label = { Text(text = "re-type Password", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
         textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
@@ -229,7 +237,7 @@ fun UserDetailsInput(
     OutlinedTextField(
         value = userDetails.profileIntro ?: "",
         onValueChange = {onUserValueChange(userDetails.copy(profileIntro = it))},
-        label = { Text(text = "Profile Intro") },
+        label = { Text(text = "Profile Intro", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
         textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
@@ -238,7 +246,7 @@ fun UserDetailsInput(
     OutlinedTextField(
         value = userDetails.description ?: "",
         onValueChange = {onUserValueChange(userDetails.copy(description = it))},
-        label = { Text(text = "Description") },
+        label = { Text(text = "Description", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
         textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
@@ -247,7 +255,7 @@ fun UserDetailsInput(
     OutlinedTextField(
         value = userDetails.preferences ?: "",
         onValueChange = {onUserValueChange(userDetails.copy(description = it))},
-        label = { Text(text = "Preferences") },
+        label = { Text(text = "Preferences", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
         textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
@@ -280,8 +288,10 @@ fun LocationDetailsInput(
         modifier = Modifier.width(150.dp)
     ){
         Text(
-            text = "Province"
-        )
+            text = "Province",
+            color = Color.Black
+
+            )
         Box(){
             OutlinedButton(onClick = { expanded = true }) {
                 Text(
@@ -329,6 +339,7 @@ fun SkillsDisplay(
     {
         Text(
             text = skillListTitle,
+            color = Color.Black,
             style = MaterialTheme.typography.titleLarge
         )
         Column(
@@ -387,6 +398,7 @@ fun SkillInput(
 
     Text(
         text = skillSection,
+        color = Color.Black,
         style = MaterialTheme.typography.titleLarge
     )
     Card(
