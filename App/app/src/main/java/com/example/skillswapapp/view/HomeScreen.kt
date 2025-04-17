@@ -88,27 +88,6 @@ fun HomeScreen(
             is HomeUiState.Error -> ErrorScreen( modifier = modifier.fillMaxSize())
         }
 
-        // Add Sign Up and Login buttons
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        Row(
-//            horizontalArrangement = Arrangement.Center,
-//            modifier = Modifier.fillMaxWidth().padding(16.dp)
-//        ) {
-//            Button(
-//                onClick = { /* Handle Sign Up here */ },
-//                modifier = Modifier.padding(8.dp)
-//            ) {
-//                Text(text = "Sign Up")
-//            }
-//
-//            Button(
-//                onClick = { /* Handle Login here */ },
-//                modifier = Modifier.padding(8.dp)
-//            ) {
-//                Text(text = "Login")
-//            }
-//        }
     }
 
 }
