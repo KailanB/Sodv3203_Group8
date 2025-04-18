@@ -122,17 +122,20 @@ class UserEntryViewModel(
         }
     }
 
-    suspend fun saveUser(){
+    suspend fun saveUser(): Boolean{
         if(isEditing)
         {
             try {
                 if(validateInput(userUiState.userDetails) && validateLocationInput(userUiState.locationDetails)){
                     userRepository.updateUser(userUiState.userDetails.toUser())
                     locationRepository.updateLocation(userUiState.locationDetails.toLocation())
+                    return true
                 }
             } catch (exception: Exception) {
                 Log.d("ERROR", "update user error")
+                return false
             }
+
         }
         else{
             try {
@@ -154,12 +157,16 @@ class UserEntryViewModel(
 
                         userSeeksSkillsRepository.insertUserSeeksSkills(skill.toUserSeeksSkills(insertedUserId))
                     }
+                    return true
 
                 }
+
             }catch (exception: Exception) {
                 Log.d("ERROR", "create user error")
+                return false
             }
         }
+        return false
 
     }
 
