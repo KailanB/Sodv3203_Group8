@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.skillswapapp.data.AppDatabase
+import com.example.skillswapapp.data.repository.UserRepositoryImpl
 import com.example.skillswapapp.viewModel.LoginViewModel
 import com.example.skillswapapp.viewModel.LoginViewModelFactory
 import com.example.skillswapappimport.SessionViewModel
@@ -22,13 +23,29 @@ import com.example.skillswapappimport.SessionViewModel
 @Composable
 fun LoginScreen(
     navController: NavHostController = rememberNavController(),
-    sessionViewModel: SessionViewModel
-) {
+    sessionViewModel: SessionViewModel = viewModel() ) {
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val currentUser by sessionViewModel.currentUser.collectAsState()
+    var email by remember { mutableStateOf(TextFieldValue("")) }
+    var password by remember { mutableStateOf(TextFieldValue("")) }
 
+    // Set up ViewModel with factory
+    val userDao = AppDatabase.getDatabase(context).userDao()
+    val userRepository = UserRepositoryImpl(userDao)
+    val loginViewModel: LoginViewModel = viewModel(
+        factory = LoginViewModelFactory(userRepository)
+    )
 
+    val loginState by loginViewModel.loginState.collectAsState()
+
+    LaunchedEffect(loginState) {
+        loginState?.let {
+            Toast.makeText(context, "Welcome ${it.name}", Toast.LENGTH_LONG).show()
+            sessionViewModel.getLoggedInUser()
+            navController.navigate("HomeScreen")
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,6 +53,8 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        if (currentUser == null) {
+        // Title
         Text(text = "Login", style = MaterialTheme.typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -43,9 +62,9 @@ fun LoginScreen(
         // Email input field
         TextField(
             value = email,
-            onValueChange = { newText -> email = newText },
+            onValueChange = { email = it },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -53,10 +72,10 @@ fun LoginScreen(
         // Password input field
         TextField(
             value = password,
-            onValueChange = { newText -> password = newText },
+            onValueChange = { password = it },
             label = { Text("Password") },
             modifier = Modifier.fillMaxWidth(),
-            // visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -64,8 +83,8 @@ fun LoginScreen(
         // Login Button
         Button(
             onClick = {
-                sessionViewModel.login(email = email, password = password)
-                // Add
+//                Toast.makeText(context, "Logging in...", Toast.LENGTH_SHORT).show()
+                loginViewModel.login(email.text, password.text)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -74,19 +93,31 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        TextButton(
-            onClick = {
-
-            }
-        ) {
+        TextButton(onClick = {
+            // Navigate to sign up screen
+            Toast.makeText(context, "Navigating to sign up page", Toast.LENGTH_SHORT).show()
+        }) {
             Text(text = "Don't have an account? Sign up")
         }
-
+    } else {
+            // Logged in UI
+            Text("Hello, ${currentUser?.user?.name}")
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    sessionViewModel.logout()
+                    Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Logout")
+            }
+        }
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewLoginScreen() {
-//    LoginScreen(navController = rememberNavController())
-//}
+@Preview(showBackground = true)
+@Composable
+fun PreviewLoginScreen() {
+    LoginScreen(navController = rememberNavController())
+}
