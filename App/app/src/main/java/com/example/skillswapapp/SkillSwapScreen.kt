@@ -43,7 +43,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.skillswapapp.ui.screens.LoginScreen
-import com.example.skillswapapp.view.CreateAccount
 import com.example.skillswapapp.view.FriendsScreen
 import com.example.skillswapapp.view.HomeScreen
 import com.example.skillswapapp.view.ProfileScreen
