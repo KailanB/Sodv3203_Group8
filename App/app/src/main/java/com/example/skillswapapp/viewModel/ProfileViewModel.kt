@@ -36,8 +36,6 @@ class ProfileViewModel(
         _currentUser.value = user
     }
 
-
-
     fun setMySkills(skills: List<UserSkillDetails>) {
         _mySkills.value = skills.map { it.toUiDisplaySkill() }
     }
