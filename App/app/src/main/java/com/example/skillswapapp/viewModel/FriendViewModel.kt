@@ -55,4 +55,19 @@ class FriendViewModel(
             loadFriends(userId)
         }
     }
+
+    fun declineFriendRequest(userId: Int, friendId:Int) {
+        viewModelScope.launch {
+            try {
+                // Update status to 'declined' or remove the record as needed
+                friendshipRepository.declineFriendRequest(userId, friendId)
+
+                _friendsUiState.value = FriendsUiState.Loading
+                loadFriends(userId)
+            } catch (e: Exception) {
+                _friendsUiState.value = FriendsUiState.Error(e.message ?: "Unknown error")
+            }
+
+        }
+    }
 }
