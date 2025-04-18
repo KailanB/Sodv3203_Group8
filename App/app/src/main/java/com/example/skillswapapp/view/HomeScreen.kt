@@ -1,7 +1,6 @@
 package com.example.skillswapapp.view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,10 +45,10 @@ fun HomeScreen(
     sessionViewModel: SessionViewModel,
     navigateToViewUserProfile: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModelUser: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    homeViewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 
 ){
-    val homeUiState by viewModelUser.homeUiState.collectAsState()
+    val homeUiState by homeViewModel.homeUiState.collectAsState()
     var searchInput by remember { mutableStateOf("") }
 
     val currentUser by sessionViewModel.currentUser.collectAsState()
@@ -82,7 +81,14 @@ fun HomeScreen(
 
                 UserList(
                     filteredUsers,
-                    onViewProfileClick = navigateToViewUserProfile
+                    onViewProfileClick = navigateToViewUserProfile,
+                    onAddFriendClick = { friendId ->
+                        if(currentUser != null)
+                        {
+                            homeViewModel.addNewFriend(myId = currentUser!!.user.user_id, friendId = friendId)
+                        }
+
+                    }
                 )
             }
             is HomeUiState.Error -> ErrorScreen( modifier = modifier.fillMaxSize())
@@ -97,6 +103,7 @@ fun HomeScreen(
 fun UserList(
     usersList: List<UiUserDisplay>,
     onViewProfileClick: (Int) -> Unit,
+    onAddFriendClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ){
 
@@ -105,7 +112,8 @@ fun UserList(
             UserCard(
                 userWithSkills = user,
                 modifier = Modifier.padding(8.dp),
-                onViewProfileClick = { onViewProfileClick(user.user.user_id)}
+                onViewProfileClick = { onViewProfileClick(user.user.user_id)},
+                onAddFriendClick = { onAddFriendClick(user.user.user_id)}
 
             )
         }
@@ -117,6 +125,7 @@ fun UserList(
 fun UserCard (
     userWithSkills: UiUserDisplay,
     modifier: Modifier = Modifier,
+    onAddFriendClick: (Int) -> Unit,
     onViewProfileClick: (Int) -> Unit
 ){
 
@@ -152,12 +161,21 @@ fun UserCard (
             SkillList(userWithSkills.skills, "My Skills:", modifier)
             SkillList(userWithSkills.seeksSkills, "Seeking Skills:", modifier)
 
-            Button(
-                onClick = { onViewProfileClick(userWithSkills.user.user_id) },
-                modifier = Modifier.padding(10.dp)
-            ){
-                Text(text = "View Profile")
+            Row() {
+                Button(
+                    onClick = { onViewProfileClick(userWithSkills.user.user_id) },
+                    modifier = Modifier.padding(10.dp)
+                ){
+                    Text(text = "View Profile")
+                }
+                Button(
+                    onClick = {onAddFriendClick(userWithSkills.user.user_id)},
+                    modifier = Modifier.padding(10.dp)
+                ){
+                    Text(text = "Add Friend")
+                }
             }
+
         }
     }
 
