@@ -96,9 +96,8 @@ fun UserEntryScreen(
                         if (accountCreated && !isEditing) {
                             navController.navigate("LoginScreen")
                         } else {
-                            // display an error about account creation
+                            navController.navigate("profile")
                         }
-                        // navigateBack()
                     }
                 },
                 onAddNewSkillClick = {
@@ -223,6 +222,7 @@ fun UserDetailsInput(
         enabled = enabled,
         singleLine = true,
         textStyle = TextStyle(color = tertiaryLight),
+        modifier = Modifier.fillMaxWidth()
 
     )
 
@@ -232,16 +232,18 @@ fun UserDetailsInput(
         label = { Text(text = "Email", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
-        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface),
+        modifier = Modifier.fillMaxWidth()
     )
 
     OutlinedTextField(
         value = userDetails.password,
         onValueChange = {onUserValueChange(userDetails.copy(password = it))},
-        label = { Text(text = "Password", color = Color.Black) },
+        label = { Text(text = "Password (minimum 6 characters)", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
-        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface),
+        modifier = Modifier.fillMaxWidth()
     )
 
     OutlinedTextField(
@@ -250,7 +252,8 @@ fun UserDetailsInput(
         label = { Text(text = "re-type Password", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
-        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface),
+        modifier = Modifier.fillMaxWidth()
     )
 
     OutlinedTextField(
@@ -259,7 +262,8 @@ fun UserDetailsInput(
         label = { Text(text = "Profile Intro", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
-        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface),
+        modifier = Modifier.fillMaxWidth()
     )
 
     OutlinedTextField(
@@ -268,7 +272,8 @@ fun UserDetailsInput(
         label = { Text(text = "Description", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
-        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface),
+        modifier = Modifier.fillMaxWidth()
     )
 
     OutlinedTextField(
@@ -277,7 +282,8 @@ fun UserDetailsInput(
         label = { Text(text = "Preferences", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
-        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface),
+        modifier = Modifier.fillMaxWidth()
     )
 }
 
@@ -294,7 +300,8 @@ fun LocationDetailsInput(
         label = { Text(text = "City") },
         enabled = true,
         singleLine = true,
-        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface)
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.surface),
+        modifier = Modifier.fillMaxWidth()
     )
 
     var expanded by remember { mutableStateOf(false) }

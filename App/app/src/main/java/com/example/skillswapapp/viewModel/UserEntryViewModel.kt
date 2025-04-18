@@ -111,7 +111,7 @@ class UserEntryViewModel(
     fun validateInput(uiState: UserDetails = userUiState.userDetails): Boolean {
 
         return with(uiState) {
-            name.isNotBlank() && email.isNotBlank() && password.isNotBlank() && reTypePassword.isNotBlank() &&
+            name.isNotBlank() && email.isNotBlank() && password.isNotBlank() && password.length > 5 && reTypePassword.isNotBlank() &&
                     (password == reTypePassword)
         }
     }
