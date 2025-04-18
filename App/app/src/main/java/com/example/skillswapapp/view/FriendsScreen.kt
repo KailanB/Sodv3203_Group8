@@ -92,7 +92,7 @@ fun FriendsScreen(
 }
 
 @Composable
-fun FriendRequestItem(name: String, onAccept: () -> Unitg) {
+fun FriendRequestItem(name: String, onAccept: () -> Unit) {
     var clicked by remember { mutableStateOf(false) }
 
     // Animate the scale of the button when clicked
