@@ -54,52 +54,52 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center
     ) {
         if (currentUser == null) {
-        // Title
-        Text(text = "Login", style = MaterialTheme.typography.headlineMedium)
+            // Title
+            Text(text = "Login", style = MaterialTheme.typography.headlineMedium)
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // Email input field
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
-        )
+            // Email input field
+            TextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth(),
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // Password input field
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation(),
-        )
+            // Password input field
+            TextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Password") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation(),
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // Login Button
-        Button(
-            onClick = {
+            // Login Button
+            Button(
+                onClick = {
 //                Toast.makeText(context, "Logging in...", Toast.LENGTH_SHORT).show()
-                loginViewModel.login(email.text, password.text)
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Login")
-        }
+                    loginViewModel.login(email.text, password.text)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Login")
+            }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        TextButton(onClick = {
-            // Navigate to sign up screen
-            Toast.makeText(context, "Navigating to sign up page", Toast.LENGTH_SHORT).show()
-        }) {
-            Text(text = "Don't have an account? Sign up")
-        }
-    } else {
+            TextButton(onClick = {
+                // Navigate to sign up screen
+                Toast.makeText(context, "Navigating to sign up page", Toast.LENGTH_SHORT).show()
+            }) {
+                Text(text = "Don't have an account? Sign up")
+            }
+        } else {
             // Logged in UI
             Text("Hello, ${currentUser?.user?.name}")
             Spacer(modifier = Modifier.height(16.dp))
