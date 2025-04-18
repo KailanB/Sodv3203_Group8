@@ -229,8 +229,13 @@ fun SkillSwapApp(
             composable(route = "LoginScreen") {
                 LoginScreen(sessionViewModel = sessionViewModel, navController = navController)
             }
-            composable(route = "CreateAccount") {
-                CreateAccount(navController = navController)
+            composable(route = "createAccount") {
+                //CreateAccount(navController = navController)
+                UserEntryScreen(
+                    navController = navController,
+                    currentUser = null,
+                    isEditing = false
+                )
             }
 
             // Authenticated routes
@@ -264,7 +269,9 @@ fun SkillSwapApp(
             composable(route = "userEntryScreen"){
                 val currentUser = sessionViewModel.currentUser.collectAsState()
                 UserEntryScreen(
-                    currentUser = currentUser.value
+                    currentUser = currentUser.value,
+                    navController = navController,
+                    isEditing = true
                 )
             }
 
