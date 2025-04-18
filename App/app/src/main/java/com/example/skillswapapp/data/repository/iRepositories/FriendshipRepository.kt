@@ -15,6 +15,7 @@ interface FriendshipRepository{
     fun getFriendshipStream(id:Int): Flow<Friendship?>
 
     suspend fun acceptFriendRequest(userId: Int, friendId: Int, status: String)
+    suspend fun declineFriendRequest(userId: Int, friendId: Int)
     suspend fun deleteFriend(userId: Int, friendId: Int)
 
     suspend fun getUserWithFriends(userId: Int): UserWithFriends
