@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    suspend fun insertUser(user: User)
+    suspend fun insertUser(user: User): Long
     suspend fun updateUser(user: User)
     suspend fun deleteUser(user: User)
 
@@ -16,8 +16,8 @@ interface UserRepository {
     fun getUserStream(id:Int): Flow<UserWithoutSecureInfo>
     fun getAllUsersStream(): Flow<List<UserWithoutSecureInfo>>
     fun getUserAllInfoStream(id:Int): Flow<User>
+    fun getUserByEmailStream(email: String): Flow<User>
 
-    suspend fun loginUser(email: String, password: String): User?
 
 }
 

@@ -17,7 +17,7 @@ interface UserDao {
     suspend fun insertUsers(users: List<User>)
 
     @Insert
-    suspend fun insert(user:User)
+    suspend fun insert(user:User): Long
 
     @Update
     suspend fun update(user:User)
@@ -63,14 +63,7 @@ interface UserDao {
     fun getUserAllInfo(id:Int): Flow<User>
 
     // added part for user login -KK
-    @Query("SELECT * FROM user WHERE email = :email AND password = :password")
-    suspend fun getUserByEmailAndPassword(email: String, password: String): User?
-//    abstract fun getUserStream(id: Int): Flow<UserWithoutSecureInfo>
-//    abstract fun insertUser(user: User)
-//    abstract fun updateUser(user: User)
-//    abstract fun deleteUser(user: User)
-//    abstract fun getAllUsersBySkillIdStream(id: Int): Flow<List<UserWithoutSecureInfo>>
-//    abstract fun getAllUsersByLocationIdStream(id: Int): Flow<List<UserWithoutSecureInfo>>
-//    abstract fun getAllUsersStream(): Flow<List<UserWithoutSecureInfo>>
-//    abstract fun getUserAllInfoStream(id: Int): Flow<User>
+    @Query("SELECT * FROM user WHERE email = :email")
+    fun getUserByEmail(email: String): Flow<User>
+
 }

@@ -14,12 +14,12 @@ data class OfflineUserRepository(
     override fun getAllUsersBySkillIdStream(id: Int): Flow<List<UserWithoutSecureInfo>> = userDao.getAllUsersBySkillId(id)
     override fun getAllUsersByLocationIdStream(id: Int): Flow<List<UserWithoutSecureInfo>> = userDao.getAllUsersByLocationId(id)
     override fun getUserAllInfoStream(id: Int): Flow<User> = userDao.getUserAllInfo(id)
+    override fun getUserByEmailStream(email: String): Flow<User> = userDao.getUserByEmail(email)
 
-    override suspend fun insertUser(user: User) = userDao.insert(user)
+    override suspend fun insertUser(user: User): Long = userDao.insert(user)
     override suspend fun deleteUser(user: User) = userDao.delete(user)
     override suspend fun updateUser(user: User) = userDao.update(user)
-    override suspend fun loginUser(email: String, password: String): User? {
-        return userDao.getUserByEmailAndPassword(email, password)
-    }
+
+
 }
 
