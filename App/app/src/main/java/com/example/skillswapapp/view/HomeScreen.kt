@@ -184,7 +184,7 @@ fun SkillList(
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.padding(4.dp)
         ){
-            skills.forEach { skill ->
+            skills.take(3).forEach { skill ->
                 SkillCard(skill)
             }
 
