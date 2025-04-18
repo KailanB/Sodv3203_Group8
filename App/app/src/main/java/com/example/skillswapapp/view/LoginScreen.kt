@@ -15,9 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.skillswapapp.data.AppDatabase
-import com.example.skillswapapp.viewModel.LoginViewModel
-import com.example.skillswapapp.viewModel.LoginViewModelFactory
 import com.example.skillswapappimport.SessionViewModel
 
 @Composable
