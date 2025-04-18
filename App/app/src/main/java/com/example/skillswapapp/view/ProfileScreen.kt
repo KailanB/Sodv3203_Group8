@@ -142,7 +142,7 @@ fun ProfileCard(
             if(currentUser.user.preferences != null ||  currentUser.user.preferences != ""){
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text =  "Description: " + currentUser.user.preferences,
+                    text =  "Preferences: " + currentUser.user.preferences,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = modifier
                 )
