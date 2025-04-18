@@ -1,5 +1,10 @@
 package com.example.skillswapapp.view
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,8 +16,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -128,6 +138,7 @@ fun UserCard (
     onAddFriendClick: (Int) -> Unit,
     onViewProfileClick: (Int) -> Unit
 ){
+    var expanded by remember { mutableStateOf(false) }
 
     Card(
         modifier = modifier
@@ -147,34 +158,65 @@ fun UserCard (
             )
 
             Text(
-                text =  "About Me: " + userWithSkills.user.profile_intro,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = modifier
-            )
-
-            Text(
                 text =  "From: " + userWithSkills.user.city + " " + userWithSkills.user.province,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = modifier
             )
 
             SkillList(userWithSkills.skills, "My Skills:", modifier)
-            SkillList(userWithSkills.seeksSkills, "Seeking Skills:", modifier)
 
-            Row() {
-                Button(
-                    onClick = { onViewProfileClick(userWithSkills.user.user_id) },
-                    modifier = Modifier.padding(10.dp)
-                ){
-                    Text(text = "View Profile")
-                }
-                Button(
-                    onClick = {onAddFriendClick(userWithSkills.user.user_id)},
-                    modifier = Modifier.padding(10.dp)
-                ){
-                    Text(text = "Add Friend")
+            Row()
+            {
+                Text(
+                    text =  "Show More ",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = modifier
+                )
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(
+                        imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                        contentDescription = null
+                    )
                 }
             }
+
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(10.dp)
+                ){
+                    SkillList(userWithSkills.seeksSkills, "Seeking Skills:", modifier)
+
+                    Text(
+                        text =  "About Me: " + userWithSkills.user.profile_intro,
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = modifier
+                    )
+                    Row() {
+                        Button(
+                            onClick = { onViewProfileClick(userWithSkills.user.user_id) },
+                            modifier = Modifier.padding(10.dp)
+                        ){
+                            Text(text = "View Profile")
+                        }
+                        Button(
+                            onClick = {onAddFriendClick(userWithSkills.user.user_id)},
+                            modifier = Modifier.padding(10.dp)
+                        ){
+                            Text(text = "Add Friend")
+                        }
+                    }
+                }
+
+            }
+
 
         }
     }
