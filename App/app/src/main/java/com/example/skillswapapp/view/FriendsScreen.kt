@@ -62,12 +62,19 @@ fun FriendsScreen(
                 if (friendRequests.isNotEmpty()) {
                     Text("New Friend Request!", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                     friendRequests.forEach { friend ->
-                        FriendRequestItem(friend.name) {
-                            userId?.let {
-                                viewModel.acceptFriendRequest(it, friend.user_id)
-                                println("Accepted friend request from ${friend.user_id}")
+                        FriendRequestItem(
+                            friend.name,
+                            onAccept = {
+                                userId?.let{
+                                    viewModel.acceptFriendRequest(it, friend.user_id)
+                                }
+                            },
+                            onDecline = {
+                                userId?.let{
+                                    viewModel.declineFriendRequest(it, friend.user_id)
+                                }
                             }
-                        }
+                        )
                     }
                 }
 
@@ -92,8 +99,9 @@ fun FriendsScreen(
 }
 
 @Composable
-fun FriendRequestItem(name: String, onAccept: () -> Unit) {
+fun FriendRequestItem(name: String, onAccept: () -> Unit, onDecline: () -> Unit) {
     var clicked by remember { mutableStateOf(false) }
+    var declined by remember { mutableStateOf(false) }
 
     // Animate the scale of the button when clicked
     val scale by animateFloatAsState(
@@ -120,6 +128,18 @@ fun FriendRequestItem(name: String, onAccept: () -> Unit) {
             modifier = Modifier.scale(scale)
         ) {
             Text(text = if (clicked) "Friend Added" else "Add Friend")
+        }
+        Button(
+            onClick = {
+                declined = true
+                onDecline()
+            },
+            modifier = Modifier.scale(scale),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+            enabled = !clicked && !declined
+        ){
+            Text(text = "Decline")
+
         }
     }
 }
