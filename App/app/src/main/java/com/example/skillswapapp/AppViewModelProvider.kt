@@ -41,7 +41,8 @@ object AppViewModelProvider {
                 this.createSavedStateHandle(),
                 userRepository =  skillSwapApplication().container.userRepository,
                 userSkillsRepository =  skillSwapApplication().container.userSkillRepository,
-                userSeeksSkillsRepository =  skillSwapApplication().container.userSeeksSkillsRepository
+                userSeeksSkillsRepository =  skillSwapApplication().container.userSeeksSkillsRepository,
+                friendshipRepository = skillSwapApplication().container.friendsRepository
             )
         }
 
@@ -49,9 +50,10 @@ object AppViewModelProvider {
 
         initializer {
             HomeViewModel(
-                skillSwapApplication().container.userRepository,
-                skillSwapApplication().container.userSkillRepository,
-                skillSwapApplication().container.userSeeksSkillsRepository
+                userRepository =  skillSwapApplication().container.userRepository,
+                userSkillsRepository =  skillSwapApplication().container.userSkillRepository,
+                userSeeksSkillsRepository =  skillSwapApplication().container.userSeeksSkillsRepository,
+                friendshipRepository = skillSwapApplication().container.friendsRepository
             )
         }
 
