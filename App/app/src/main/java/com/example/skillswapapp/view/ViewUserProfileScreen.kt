@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +47,7 @@ fun ViewUserProfileScreen(
     viewModelViewProfile: ViewUserProfileViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
 
-
+    val loggedInUser by sessionViewModel.currentUser.collectAsState()
 
     val viewUserProfileUiState by viewModelViewProfile.viewUserProfileUiState.collectAsState()
 
@@ -61,6 +62,13 @@ fun ViewUserProfileScreen(
                     state.userWithSkills,
                     mySkills,
                     skillsSeeking,
+                    onAddFriendClick = { friendId ->
+                        if(loggedInUser != null)
+                        {
+                            viewModelViewProfile.addNewFriend(myId = loggedInUser!!.user.user_id, friendId = friendId)
+                        }
+
+                    },
                     modifier = Modifier.padding(20.dp)
                 )
 
@@ -76,6 +84,7 @@ fun ViewProfileCard(
     currentUser: UiViewUserProfileDisplay,
     mySkills: List<UiDisplaySkill>,
     skillsSeeking: List<UiDisplaySkill>,
+    onAddFriendClick: (Int) -> Unit,
     modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
@@ -132,6 +141,14 @@ fun ViewProfileCard(
             ProfileSkillList(mySkills, "My Skills:")
             Spacer(modifier = Modifier.height(20.dp))
             ProfileSkillList(skillsSeeking, "Seeking Skills:")
+
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(
+                onClick = {onAddFriendClick(currentUser.user.user_id)},
+                modifier = Modifier.padding(10.dp)
+            ){
+                Text(text = "Add Friend")
+            }
 
         }
     }
