@@ -247,7 +247,7 @@ class DatabaseInitializer(private val context: Context) {
                 user_id_to = 4, // User 4 (Weightlifting expert)
                 user_id_from = 1, // User 1 (C++ expert)
                 appointment_time = System.currentTimeMillis(),
-                details = "Hi, I'm Alex Codewell! I’d love to learn weightlifting and I can teach you C++ in return! Let me know if you're interested!"
+                details = "Hi, I'm Alex Codewell! I’d love to learn furniture assembly and I can teach you C++ in return! Let me know if you're interested!"
             ),
 
             // User 2 offers Baking Bread and wants to learn Python from User 1
@@ -257,7 +257,7 @@ class DatabaseInitializer(private val context: Context) {
                 user_id_to = 1, // User 1 (Python expert)
                 user_id_from = 2, // User 2 (Baking Bread expert)
                 appointment_time = System.currentTimeMillis(),
-                details = "Hello, I'm Sarah Baker! I’d love to learn Python, and I can show you how to bake artisan bread! How about it?"
+                details = "Hello, I'm Jamie Pan! I’d love to learn Python, and I can show you how to bake artisan bread! How about it?"
             ),
 
             // User 3 offers Guitar and wants to learn Basic Plumbing from User 4
@@ -267,7 +267,7 @@ class DatabaseInitializer(private val context: Context) {
                 user_id_to = 4, // User 4 (Basic Plumbing expert)
                 user_id_from = 3, // User 3 (Guitar expert)
                 appointment_time = System.currentTimeMillis(),
-                details = "Hey there, I’m Mike Strummer! I’m looking to learn some basic plumbing skills, and I’d be happy to teach you how to play guitar. Interested?"
+                details = "Hey there, I’m Riley Strum! I’m looking to learn some basic plumbing skills, and I’d be happy to teach you how to play guitar. Interested?"
             ),
 
             // User 4 offers Furniture Assembly and wants to learn Guitar from User 3
@@ -277,7 +277,7 @@ class DatabaseInitializer(private val context: Context) {
                 user_id_to = 3, // User 3 (Guitar expert)
                 user_id_from = 4, // User 4 (Furniture Assembly expert)
                 appointment_time = System.currentTimeMillis(),
-                details = "Hi, I’m John Handyman! I’m experienced in furniture assembly and would love to learn how to play guitar. Let me know if you’re up for a swap!"
+                details = "Hi, I’m Morgan Fixit! I’m experienced in furniture assembly and would love to learn how to play guitar. Let me know if you’re up for a swap!"
             )
         )
 
