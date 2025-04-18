@@ -42,7 +42,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.room.jarjarred.org.antlr.v4.codegen.model.Sync
 import com.example.skillswapapp.ui.screens.LoginScreen
 import com.example.skillswapapp.view.CreateAccount
 import com.example.skillswapapp.view.FriendsScreen
@@ -54,6 +53,55 @@ import com.example.skillswapapp.view.UserEntryScreen
 import com.example.skillswapapp.view.ViewUserProfileScreen
 import com.example.skillswapappimport.SessionViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SkillSwapTopAppBar(
+    navController: NavController,
+    isLoggedIn: Boolean,
+    sessionViewModel: SessionViewModel
+
+){
+    TopAppBar(
+        title = { Text(text = "SkillSwap") },
+        actions = {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(end = 16.dp)
+            ) {
+                if(isLoggedIn)
+                {
+                    Button(
+                        onClick = {
+                            navController.navigate("LoginScreen")
+                            sessionViewModel.logout()
+                        },
+                        modifier = Modifier.padding(8.dp)
+                    ) {
+                        Text(text = "Log Out")
+                    }
+                }
+                else
+                {
+                    Button(
+                        onClick = {
+                            navController.navigate("CreateAccount") },
+                        modifier = Modifier.padding(8.dp)
+                    ) {
+                        Text(text = "Sign Up")
+                    }
+                    Button(
+                        onClick = { navController.navigate("LoginScreen") },
+                        modifier = Modifier.padding(8.dp)
+                    ) {
+                        Text(text = "Login")
+                    }
+                }
+
+            }
+        }
+    )
+}
 
 @Composable
 fun SkillSwapNavBar(
@@ -153,53 +201,44 @@ fun SkillSwapApp(
     sessionViewModel: SessionViewModel = viewModel(factory = AppViewModelProvider.Factory),
     navController: NavHostController = rememberNavController()
 ){
+    val isLoggedInState = sessionViewModel.isLoggedIn.collectAsState()
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = "SkillSwap") },
-                actions = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(end = 16.dp)
-                    ) {
-                        Button(
-                            onClick = {
-                                navController.navigate("CreateAccount") },
-                            modifier = Modifier.padding(8.dp)
-                        ) {
-                            Text(text = "Sign Up")
-                        }
-                        Button(
-                            onClick = { navController.navigate("LoginScreen") },
-                            modifier = Modifier.padding(8.dp)
-                        ) {
-                            Text(text = "Login")
-                        }
-                    }
-                }
+
+            SkillSwapTopAppBar(
+                navController = navController,
+                isLoggedIn = isLoggedInState.value,
+                sessionViewModel
             )
+
         },
         bottomBar = {
-            SkillSwapNavBar(
+            if(isLoggedInState.value)SkillSwapNavBar(
                 navController = navController,
             )
         }
     ){ innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "home",
+            startDestination = if(isLoggedInState.value) "home" else "logInScreen",
             modifier = Modifier.padding(innerPadding)
 
         ) {
-            //login part
+            // Unauthenticated routes - login and create
             composable(route = "LoginScreen") {
                 LoginScreen(sessionViewModel = sessionViewModel, navController = navController)
             }
-            composable(route = "CreateAccount") {
-                CreateAccount(navController = navController)
+            composable(route = "createAccount") {
+                //CreateAccount(navController = navController)
+                UserEntryScreen(
+                    navController = navController,
+                    currentUser = null,
+                    isEditing = false
+                )
             }
+
+            // Authenticated routes
             composable(route = "home") {
                 HomeScreen(
 
@@ -230,7 +269,9 @@ fun SkillSwapApp(
             composable(route = "userEntryScreen"){
                 val currentUser = sessionViewModel.currentUser.collectAsState()
                 UserEntryScreen(
-                    currentUser = currentUser.value
+                    currentUser = currentUser.value,
+                    navController = navController,
+                    isEditing = true
                 )
             }
 

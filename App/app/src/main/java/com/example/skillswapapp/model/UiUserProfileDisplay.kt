@@ -12,5 +12,4 @@ class UiUserProfileDisplay(
     val skills: List<UserSkillDetails>,
     val seeksSkills: List<UserSeeksSkillsDetails>,
     val location: Location,
-    friends: List<UserFriendList>
 )

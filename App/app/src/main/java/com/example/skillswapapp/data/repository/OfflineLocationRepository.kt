@@ -9,7 +9,7 @@ data class OfflineLocationRepository(
     private val locationDao: LocationDao
 ): LocationRepository {
 
-    override suspend fun insertLocation(location: Location) = locationDao.insert(location)
+    override suspend fun insertLocation(location: Location): Long = locationDao.insert(location)
     override suspend fun updateLocation(location: Location) = locationDao.update(location)
     override suspend fun deleteLocation(location: Location) = locationDao.delete(location)
 

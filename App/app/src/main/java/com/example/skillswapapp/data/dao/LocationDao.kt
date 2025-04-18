@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface LocationDao {
 
     @Insert
-    suspend fun insert(location: Location)
+    suspend fun insert(location: Location): Long
 
     @Insert
     suspend fun insertLocations(locations: List<Location>)

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.skillswapapp.AppViewModelProvider
 import com.example.skillswapapp.data.relations.CategoryWithSkills
 import com.example.skillswapapp.model.Location
@@ -60,12 +62,13 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun UserEntryScreen(
-    viewModel: UserEntryViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    navController: NavHostController,
     currentUser: UiUserProfileDisplay?,
+    isEditing: Boolean,
     modifier: Modifier = Modifier
 ){
     val coroutineScope = rememberCoroutineScope()
-
+    val viewModel: UserEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
     val categorySkillsUiState by viewModel.categorySkillsUiState.collectAsState()
 
     LaunchedEffect(currentUser) {
@@ -80,6 +83,7 @@ fun UserEntryScreen(
 
             UserEntryBody(
                 viewModel = viewModel,
+                isEditing = isEditing,
                 userUiState = viewModel.userUiState,
                 onUserValueChange = viewModel::updateUiState,
                 onLocationValueChange = viewModel::updateLocationUiState,
@@ -88,7 +92,12 @@ fun UserEntryScreen(
                 categoryWithUserList = state.categories,
                 onSaveClick = {
                     coroutineScope.launch {
-                        viewModel.saveUser()
+                        val accountCreated = viewModel.saveUser()
+                        if (accountCreated && !isEditing) {
+                            navController.navigate("LoginScreen")
+                        } else {
+                            // display an error about account creation
+                        }
                         // navigateBack()
                     }
                 },
@@ -116,6 +125,7 @@ fun UserEntryScreen(
 @Composable
 fun UserEntryBody(
     viewModel: UserEntryViewModel,
+    isEditing: Boolean,
     userUiState: UserUiState,
     onUserValueChange: (UserDetails) -> Unit,
     onLocationValueChange: (LocationDetails) -> Unit,
@@ -153,34 +163,43 @@ fun UserEntryBody(
             onLocationValueChange = onLocationValueChange,
 
             )
-        SkillsDisplay(
-            skillListTitle = "My Skills",
-            skillsList = userUiState.mySkills,
-            onSkillRemove = { skill -> viewModel.deleteMySkill(skill) }
-        )
-        SkillInput(
-            skillSection = "Add New Skills",
-            skillDetails = userUiState.mySkillDetails,
-            categoriesWithSkills = categoryWithUserList,
-            onAddNewSkillClick = onAddNewSkillClick,
-            onSkillChange = onMySkillChange
-        )
-        SkillsDisplay(
-            skillListTitle = "Skills I am Seeking",
-            skillsList = userUiState.skillSeeking,
-            onSkillRemove = { skill -> viewModel.deleteSkillSeeking(skill) }
-        )
-        SkillInput(
-            skillSection = "Add New Skills to Seek",
-            skillDetails = userUiState.skillSeekingDetails,
-            categoriesWithSkills = categoryWithUserList,
-            onAddNewSkillClick = onAddNewSeekingSkillClick,
-            onSkillChange = onSkillSeekingChange
-        )
+        if(isEditing)
+        {
+            SkillsDisplay(
+                skillListTitle = "My Skills",
+                skillsList = userUiState.mySkills,
+                onSkillRemove = { skill -> viewModel.deleteMySkill(skill) }
+            )
+            SkillInput(
+                skillSection = "Add New Skills",
+                skillDetails = userUiState.mySkillDetails,
+                categoriesWithSkills = categoryWithUserList,
+                onAddNewSkillClick = onAddNewSkillClick,
+                onSkillChange = onMySkillChange
+            )
+            SkillsDisplay(
+                skillListTitle = "Skills I am Seeking",
+                skillsList = userUiState.skillSeeking,
+                onSkillRemove = { skill -> viewModel.deleteSkillSeeking(skill) }
+            )
+            SkillInput(
+                skillSection = "Add New Skills to Seek",
+                skillDetails = userUiState.skillSeekingDetails,
+                categoriesWithSkills = categoryWithUserList,
+                onAddNewSkillClick = onAddNewSeekingSkillClick,
+                onSkillChange = onSkillSeekingChange
+            )
+        }
 
         Button(
             onClick = onSaveClick,
-            enabled = userUiState.isEntryValid
+            enabled = userUiState.isEntryValid,
+            colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = Color.Gray,
+            disabledContentColor = Color.White
+        )
         ){
             Text(text = "Save")
         }

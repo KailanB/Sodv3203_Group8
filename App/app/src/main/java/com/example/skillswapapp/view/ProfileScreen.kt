@@ -44,8 +44,8 @@ fun ProfileScreen(
     profileViewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
 
-    val currentUser by sessionViewModel.currentUser.collectAsState()
-    currentUser?.let { user ->
+    val loggedInUser by sessionViewModel.currentUser.collectAsState()
+    loggedInUser?.let { user ->
         LaunchedEffect(user) {
             profileViewModel.setUser(user)
             profileViewModel.setMySkills(user.skills)
@@ -55,6 +55,7 @@ fun ProfileScreen(
 
     val mySkills by profileViewModel.mySkills.collectAsState(initial = emptyList())
     val skillsSeeking by profileViewModel.skillsSeeking.collectAsState(initial = emptyList())
+    val currentUser by profileViewModel.currentUser.collectAsState()
     val scrollState = rememberScrollState()
 
     Box(
@@ -142,7 +143,7 @@ fun ProfileCard(
             if(currentUser.user.preferences != null ||  currentUser.user.preferences != ""){
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text =  "Description: " + currentUser.user.preferences,
+                    text =  "Preferences: " + currentUser.user.preferences,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = modifier
                 )

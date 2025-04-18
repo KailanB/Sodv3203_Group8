@@ -40,6 +40,14 @@ class UserEntryViewModel(
     var userUiState by mutableStateOf(UserUiState())
         private set
 
+    var isEditing by mutableStateOf(false)
+        private set
+
+    private val _mySkillsUiDisplay = MutableStateFlow<List<UiDisplaySkill>>(emptyList())
+    val mySkillsUiDisplay: StateFlow<List<UiDisplaySkill>> = _mySkillsUiDisplay
+
+    private val _skillsSeekingUiDisplay = MutableStateFlow<List<UiDisplaySkill>>(emptyList())
+    val skillsSeekingUiDisplay: StateFlow<List<UiDisplaySkill>> = _skillsSeekingUiDisplay
 
 
     init {
@@ -89,11 +97,22 @@ class UserEntryViewModel(
         )
     }
 
+    fun updateMySkillList(mySkills: List<UiDisplaySkill>) {
+        userUiState = userUiState.copy(
+            mySkills = mySkills
+        )
+    }
+    fun updateSkillsSeekingList(seekingSkills: List<UiDisplaySkill>) {
+        userUiState = userUiState.copy(
+            skillSeeking = seekingSkills
+        )
+    }
+
     fun validateInput(uiState: UserDetails = userUiState.userDetails): Boolean {
 
         return with(uiState) {
             name.isNotBlank() && email.isNotBlank() && password.isNotBlank() && reTypePassword.isNotBlank() &&
-            (password == reTypePassword)
+                    (password == reTypePassword)
         }
     }
     fun validateLocationInput(uiState: LocationDetails = userUiState.locationDetails): Boolean {
@@ -103,90 +122,183 @@ class UserEntryViewModel(
         }
     }
 
-    suspend fun saveUser(){
-        try {
-            if(validateInput(userUiState.userDetails) && validateLocationInput(userUiState.locationDetails)){
-                userRepository.updateUser(userUiState.userDetails.toUser())
-                locationRepository.updateLocation(userUiState.locationDetails.toLocation())
+    suspend fun saveUser(): Boolean{
+        if(isEditing)
+        {
+            try {
+                if(validateInput(userUiState.userDetails) && validateLocationInput(userUiState.locationDetails)){
+                    userRepository.updateUser(userUiState.userDetails.toUser())
+                    locationRepository.updateLocation(userUiState.locationDetails.toLocation())
+                    return true
+                }
+            } catch (exception: Exception) {
+                Log.d("ERROR", "update user error")
+                return false
             }
-        } catch (exception: Exception) {
-            Log.d("ERROR", "update user error")
+
         }
+        else{
+            try {
+                if(validateInput(userUiState.userDetails) && validateLocationInput(userUiState.locationDetails)){
+                    val insertedLocationId = locationRepository.insertLocation(userUiState.locationDetails.toLocation())
+                    val UpdateUserDetails = userUiState.userDetails.copy(
+                        locationId = insertedLocationId.toInt()
+                    )
+                    userUiState = userUiState.copy(
+                        userDetails = UpdateUserDetails
+                    )
+                    val insertedUserId = userRepository.insertUser(userUiState.userDetails.toUser()).toInt()
+
+                    userUiState.mySkills.forEach{skill ->
+
+                        userSkillRepository.insertUserSkills(skill.toUserSkills(insertedUserId))
+                    }
+                    userUiState.skillSeeking.forEach{skill ->
+
+                        userSeeksSkillsRepository.insertUserSeeksSkills(skill.toUserSeeksSkills(insertedUserId))
+                    }
+                    return true
+
+                }
+
+            }catch (exception: Exception) {
+                Log.d("ERROR", "create user error")
+                return false
+            }
+        }
+        return false
+
     }
 
     fun deleteMySkill(skill: UiDisplaySkill) {
-        viewModelScope.launch {
-            try {
-                val currentUserId = userUiState.userDetails.id
-                // just a safety check to be sure.
-                // however a user should not have access to profile page or profile view model unless logged in
-                // this check will be handled before a user navigates to profile
-                val entity = skill.toUserSkills(currentUserId)
-                userSkillRepository.deleteUserSkills(entity)
+        if(isEditing)
+        {
+            viewModelScope.launch {
+                try {
+                    val currentUserId = userUiState.userDetails.id
+                    // just a safety check to be sure.
+                    // however a user should not have access to profile page or profile view model unless logged in
+                    // this check will be handled before a user navigates to profile
+                    val entity = skill.toUserSkills(currentUserId)
+                    userSkillRepository.deleteUserSkills(entity)
 
-            } catch (exception: Exception) {
+                } catch (exception: Exception) {
 
-                Log.d("ERROR", "delete skill error")
+                    Log.d("ERROR", "delete skill error")
+                }
             }
-
-
         }
+        else
+        {
+            val updatedSeekingSkills = userUiState.skillSeeking.filterNot { it.skillName == skill.skillName }
+            updateSkillsSeekingList(updatedSeekingSkills)
+        }
+
     }
     fun deleteSkillSeeking(skill: UiDisplaySkill) {
-        viewModelScope.launch {
-            try {
-                val currentUserId = userUiState.userDetails.id
-                if(currentUserId != null)
-                {
-                    val entity = skill.toUserSeeksSkills(currentUserId)
-                    userSeeksSkillsRepository.deleteUserSeeksSkills(entity)
+        if(isEditing)
+        {
+            viewModelScope.launch {
+                try {
+                    val currentUserId = userUiState.userDetails.id
+                    if(currentUserId != null)
+                    {
+                        val entity = skill.toUserSeeksSkills(currentUserId)
+                        userSeeksSkillsRepository.deleteUserSeeksSkills(entity)
+                    }
+                } catch (exception: Exception) {
+
+                    Log.d("ERROR", "delete skill seeking error")
                 }
-            } catch (exception: Exception) {
-
-                Log.d("ERROR", "delete skill seeking error")
             }
-
         }
+        else
+        {
+            val updatedSkills = userUiState.mySkills.filterNot { it.skillName == skill.skillName }
+            updateMySkillList(updatedSkills)
+        }
+
     }
 
     fun addNewUserSkill() {
-        viewModelScope.launch {
-            try {
-                val currentUserId = userUiState.userDetails.id
-                userSkillRepository.insertUserSkills(
-                    userUiState.mySkillDetails.toUserSkills(currentUserId)
-                )
-            } catch (exception: Exception) {
+        if (isEditing)
+        {
+            viewModelScope.launch {
+                try {
+                    val currentUserId = userUiState.userDetails.id
+                    userSkillRepository.insertUserSkills(
+                        userUiState.mySkillDetails.toUserSkills(currentUserId)
+                    )
 
-                Log.d("ERROR", "add new skill error")
+                } catch (exception: Exception) {
+
+                    Log.d("ERROR", "add new skill error")
+                }
+
             }
-
+        }
+        else {
+            // only update if the skill is not already in the list
+            if(!userUiState.mySkills.any {it.skillName == userUiState.skillSeekingDetails.skillName})
+            {
+                val updatedSkills = userUiState.mySkills.toMutableList().apply {
+                    add(userUiState.mySkillDetails)
+                }
+                updateMySkillList(updatedSkills)
+            }
         }
     }
     fun addNewUserSeekingSkill() {
-        viewModelScope.launch {
-            try {
-                val currentUserId = userUiState.userDetails.id
-                userSeeksSkillsRepository.insertUserSeeksSkills(
-                    userUiState.skillSeekingDetails.toUserSeeksSkills(currentUserId)
-                )
-            } catch (exception: Exception) {
+        if(isEditing)
+        {
+            viewModelScope.launch {
+                try {
+                    val currentUserId = userUiState.userDetails.id
+                    userSeeksSkillsRepository.insertUserSeeksSkills(
+                        userUiState.skillSeekingDetails.toUserSeeksSkills(currentUserId)
+                    )
+                } catch (exception: Exception) {
 
-                Log.d("ERROR", "add new skill seeking error")
+                    Log.d("ERROR", "add new skill seeking error")
+                }
+
+            }
+        }
+        else
+        {
+            if (!userUiState.mySkills.any { it.skillName == userUiState.skillSeekingDetails.skillName })
+            {
+                val updatedseekingSkills = userUiState.mySkills.toMutableList().apply {
+                    add(userUiState.skillSeekingDetails)
+                }
+                updateSkillsSeekingList(updatedseekingSkills)
             }
 
         }
+
     }
 
-
+    private var hasInitialized = false
     fun initializeForEdit(
         user: UiUserProfileDisplay?
     ) {
         if (user != null) {
-            userUiState = toUserUiState(
-                isEntryValid = true,
-                user
-            )
+            if(!hasInitialized)
+            {
+                userUiState = toUserUiState(
+                    isEntryValid = true,
+                    user
+                )
+                isEditing = true
+                hasInitialized = true
+            }
+            else{
+                userUiState = userUiState.copy(
+                    mySkills = user.skills.map { it.toUiDisplaySkill() },
+                    skillSeeking = user.seeksSkills.map { it.toUiDisplaySkill() },
+                )
+            }
+
         }
     }
 
