@@ -41,35 +41,31 @@ class SessionViewModel (
         viewModelScope.launch {
             try {
 
-                val userFlow = userRepository.getUserByEmailStream(email.lowercase()).firstOrNull()
-                if (userFlow != null && userFlow.password == password) {
+                val checkUser = userRepository.getUserByEmailStream(email.lowercase()).firstOrNull()
+                if (checkUser != null && checkUser.password == password) {
 
-                        val userId = userFlow.user_id
+                        val userId = checkUser.user_id
+                        val userFlow = userRepository.getUserAllInfoStream(userId)
                         val skillsFlow = userSkillsRepository.getAllUserSkillsByIdStream(userId)
                         val seeksSkillsFlow = userSeeksSkillsRepository.getAllUserSeeksSkillsByIdStream(userId)
                         val locationFlow = locationRepository.getUserLocationStream(userId)
-                        combine(skillsFlow, seeksSkillsFlow, locationFlow) { skills, seeksSkills, location ->
-                            UiUserProfileDisplay(userFlow, skills, seeksSkills, location)
+                        combine(userFlow, skillsFlow, seeksSkillsFlow, locationFlow) {user, skills, seeksSkills, location ->
+                            UiUserProfileDisplay(user, skills, seeksSkills, location)
                         }.collect { combinedUser ->
                             _currentUser.value = combinedUser
                             _isLoggedIn.value = true
                         }
-
                     }
                 else
                 {
                     _currentUser.value = null
                     _isLoggedIn.value = false
                 }
-
             } catch (exception: Exception) {
                 Log.d("ERROR123", "log in error")
                 _currentUser.value = null
             }
         }
-
-
-
     }
 
     fun logout() {
