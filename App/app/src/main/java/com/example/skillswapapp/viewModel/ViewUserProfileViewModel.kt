@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.skillswapapp.data.entities.Friendship
 import com.example.skillswapapp.data.relations.UserSeeksSkillsDetails
 import com.example.skillswapapp.data.relations.UserSkillDetails
+import com.example.skillswapapp.data.repository.iRepositories.FriendshipRepository
 import com.example.skillswapapp.data.repository.iRepositories.LocationRepository
 import com.example.skillswapapp.data.repository.iRepositories.UserRepository
 import com.example.skillswapapp.data.repository.iRepositories.UserSeeksSkillsRepository
@@ -26,7 +28,8 @@ class ViewUserProfileViewModel(
     savedStateHandle: SavedStateHandle,
     private val userRepository: UserRepository,
     private val userSkillsRepository: UserSkillsRepository,
-    private val userSeeksSkillsRepository: UserSeeksSkillsRepository
+    private val userSeeksSkillsRepository: UserSeeksSkillsRepository,
+    private val friendshipRepository: FriendshipRepository
 ) : ViewModel() {
 
 
@@ -80,6 +83,23 @@ class ViewUserProfileViewModel(
             state.userWithSkills.seeksSkills.map { it.toUiDisplaySkill() }
         } else {
             emptyList()
+        }
+    }
+
+    fun addNewFriend(myId: Int, friendId: Int)
+    {
+        if(myId != friendId)
+        {
+            viewModelScope.launch {
+                try {
+                    val newFriend = Friendship(friendId, myId, "pending")
+                    friendshipRepository.insertFriendship(newFriend)
+
+                } catch (exception: Exception) {
+                    Log.d("ERROR", "add new friend error")
+                }
+
+            }
         }
     }
 

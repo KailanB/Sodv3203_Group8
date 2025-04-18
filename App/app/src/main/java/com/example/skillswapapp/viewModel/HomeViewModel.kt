@@ -3,8 +3,10 @@ package com.example.skillswapapp.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.skillswapapp.data.entities.Friendship
 import com.example.skillswapapp.data.relations.UserSeeksSkillsDetails
 import com.example.skillswapapp.data.relations.UserSkillDetails
+import com.example.skillswapapp.data.repository.iRepositories.FriendshipRepository
 import com.example.skillswapapp.data.repository.iRepositories.UserRepository
 import com.example.skillswapapp.data.repository.iRepositories.UserSeeksSkillsRepository
 import com.example.skillswapapp.data.repository.iRepositories.UserSkillsRepository
@@ -19,7 +21,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel (
     private val userRepository: UserRepository,
     private val userSkillsRepository: UserSkillsRepository,
-    private val userSeeksSkillsRepository: UserSeeksSkillsRepository
+    private val userSeeksSkillsRepository: UserSeeksSkillsRepository,
+    private val friendshipRepository: FriendshipRepository
 ): ViewModel() {
 
     private val _homeUiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
@@ -56,6 +59,24 @@ class HomeViewModel (
                 _homeUiState.value = HomeUiState.Error
             }
         }
+    }
+
+    fun addNewFriend(myId: Int, friendId: Int)
+    {
+        if(myId != friendId)
+        {
+            viewModelScope.launch {
+                try {
+                    val newFriend = Friendship(friendId, myId, "pending")
+                    friendshipRepository.insertFriendship(newFriend)
+
+                } catch (exception: Exception) {
+                    Log.d("ERROR", "add new friend error")
+                }
+
+            }
+        }
+
     }
 
     fun UserSkillDetails.toUiDisplaySkill(): UiDisplaySkill {
