@@ -132,7 +132,7 @@ fun ProfileCard(
                 style = MaterialTheme.typography.titleLarge,
             )
 
-            if(currentUser.user.description != null ||  currentUser.user.description != ""){
+            if(currentUser.user.description != null &&  currentUser.user.description != ""){
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text =  "Description: " + currentUser.user.description,
@@ -140,7 +140,7 @@ fun ProfileCard(
                     modifier = modifier
                 )
             }
-            if(currentUser.user.preferences != null ||  currentUser.user.preferences != ""){
+            if(currentUser.user.preferences != null &&  currentUser.user.preferences != ""){
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text =  "Preferences: " + currentUser.user.preferences,
@@ -148,6 +148,14 @@ fun ProfileCard(
                     modifier = modifier
                 )
             }
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text =  "Location: " + currentUser.location.city + " " + currentUser.location.province,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = modifier
+            )
+
 
             Spacer(modifier = Modifier.height(20.dp))
             ProfileSkillList(mySkills, "My Skills:")
