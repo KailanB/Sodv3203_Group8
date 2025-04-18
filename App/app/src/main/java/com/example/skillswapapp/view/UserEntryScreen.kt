@@ -60,12 +60,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun UserEntryScreen(
-    viewModel: UserEntryViewModel = viewModel(factory = AppViewModelProvider.Factory),
     currentUser: UiUserProfileDisplay?,
     modifier: Modifier = Modifier
 ){
     val coroutineScope = rememberCoroutineScope()
-
+    val viewModel: UserEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
     val categorySkillsUiState by viewModel.categorySkillsUiState.collectAsState()
 
     LaunchedEffect(currentUser) {
