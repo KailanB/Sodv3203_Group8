@@ -44,7 +44,7 @@ interface FriendshipDao {
     )
     fun getFriendship(id:Int): Flow<Friendship>
 
-    @Query("SELECT * FROM friendship WHERE user_id = :userId AND friend_id = :friendId")
+    @Query("SELECT * FROM friendship WHERE (user_id = :userId AND friend_id = :friendId) OR (friend_id = :userId AND user_id = :friendId)")
     fun getFriendshipByUserIdAndFriendId(userId: Int, friendId: Int):  Flow<Friendship>
 
     @Query(

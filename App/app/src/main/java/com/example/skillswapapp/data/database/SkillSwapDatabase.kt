@@ -45,7 +45,7 @@ abstract class SkillSwapDatabase: RoomDatabase() {
         fun getDatabase(context: Context): SkillSwapDatabase {
 
             // ************************* DELETE DATA BASE ON APP LAUNCH *************
-            context.deleteDatabase("skill_swap_database")
+            // context.deleteDatabase("skill_swap_database")
             // ************************* DELETE DATA BASE ON APP LAUNCH *************
 
             return Instance ?: synchronized(this) {
@@ -221,18 +221,12 @@ class DatabaseInitializer(private val context: Context) {
             Friendship(user_id = 1, friend_id = 2, status = "accepted"),  // User 1 is friends with User 2
             Friendship(user_id = 1, friend_id = 3, status = "accepted"),  // User 1 is friends with User 3
             Friendship(user_id = 1, friend_id = 4, status = "pending"),   // User 1 is pending with User 4
-            Friendship(user_id = 1, friend_id = 5, status = "blocked"),   // User 1 has blocked User 5
-
-            // User 2 has 1 friend
-            Friendship(user_id = 2, friend_id = 1, status = "accepted"),  // User 2 is friends with User 1
 
             // User 3 has 3 friends
-            Friendship(user_id = 3, friend_id = 1, status = "accepted"),  // User 3 is friends with User 1
             Friendship(user_id = 3, friend_id = 2, status = "pending"),   // User 3 is pending with User 2
             Friendship(user_id = 3, friend_id = 5, status = "accepted"),  // User 3 is friends with User 5
 
             // User 4 has 2 friends
-            Friendship(user_id = 4, friend_id = 1, status = "accepted"),  // User 4 is friends with User 1
             Friendship(user_id = 4, friend_id = 3, status = "accepted"),  // User 4 is friends with User 3
 
             // User 5 has 1 friend
