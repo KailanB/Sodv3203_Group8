@@ -168,17 +168,6 @@ class DatabaseInitializer(private val context: Context) {
                 preferences = "Mornings only. Outdoor lessons welcome!",
                 location_id = 5,
                 profile_picture = null
-            ),
-            User(
-                user_id = 0,
-                name = "tester",
-                email = "test@gmail.com",
-                password = "test12",
-                profile_intro = "I am a test",
-                description = null,
-                preferences = null,
-                location_id = 6,
-                profile_picture = null
             )
         )
 
