@@ -168,7 +168,7 @@ fun UserCard (
             Row()
             {
                 Text(
-                    text =  "Show More ",
+                    text =  if(!expanded) "Show Details " else "Hide Details ",
                     style = MaterialTheme.typography.titleLarge,
                     modifier = modifier
                 )
