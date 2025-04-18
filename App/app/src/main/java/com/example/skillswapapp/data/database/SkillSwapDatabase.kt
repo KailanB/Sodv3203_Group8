@@ -109,7 +109,8 @@ class DatabaseInitializer(private val context: Context) {
             Location(location_id = 2, city = "Toronto", province = "ON"),
             Location(location_id = 3, city = "Calgary", province = "AB"),
             Location(location_id = 4, city = "Halifax", province = "NS"),
-            Location(location_id = 5, city = "Winnipeg", province = "MB")
+            Location(location_id = 5, city = "Winnipeg", province = "MB"),
+            Location(location_id = 6, city = "Calgary", province = "AB")
         )
 
         val users = listOf(
@@ -166,6 +167,17 @@ class DatabaseInitializer(private val context: Context) {
                 description = "I specialize in composting, urban gardening, and plant care.",
                 preferences = "Mornings only. Outdoor lessons welcome!",
                 location_id = 5,
+                profile_picture = null
+            ),
+            User(
+                user_id = 0,
+                name = "tester",
+                email = "test@gmail.com",
+                password = "test",
+                profile_intro = "I am a test",
+                description = null,
+                preferences = null,
+                location_id = 6,
                 profile_picture = null
             )
         )
