@@ -238,7 +238,7 @@ fun AcceptedSwapCard(
                 Text(text = name, style = MaterialTheme.typography.titleMedium)
                 IconButton(onClick = { expanded = !expanded }) {
                     Icon(
-                        imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.ArrowDropDown,
+                        imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                         contentDescription = null
                     )
                 }
@@ -258,7 +258,7 @@ fun AcceptedSwapCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     Button(
                         onClick = { onViewProfile(userId) },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFBBDEFB))
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1DB954))
                     ) {
                         Text("View Profile")
                     }
