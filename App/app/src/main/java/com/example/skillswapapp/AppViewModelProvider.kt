@@ -22,8 +22,7 @@ object AppViewModelProvider {
                 userRepository =  skillSwapApplication().container.userRepository,
                 userSkillsRepository =  skillSwapApplication().container.userSkillRepository,
                 userSeeksSkillsRepository =  skillSwapApplication().container.userSeeksSkillsRepository,
-                locationRepository =  skillSwapApplication().container.locationRepository,
-                friendshipRepository = skillSwapApplication().container.friendsRepository
+                locationRepository =  skillSwapApplication().container.locationRepository
             )
         }
 
