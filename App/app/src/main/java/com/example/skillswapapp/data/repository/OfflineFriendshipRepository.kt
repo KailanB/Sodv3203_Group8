@@ -42,6 +42,13 @@ data class OfflineFriendshipRepository(
             friendshipDao.update(updatedFriendship)
         }
     }
+    override suspend fun declineFriendRequest(userId: Int, friendId: Int){
+        val friendship = friendshipDao.getFriendshipByUserIdAndFriendId(userId, friendId).first()
+        if (friendship != null) {
+            friendshipDao.delete(friendship)
+        }
+    }
+
     // Delete a friendship by user ID and friend ID
     override suspend fun deleteFriend(userId: Int, friendId: Int) {
         val friendship = friendshipDao.getFriendshipByUserIdAndFriendId(userId, friendId).first()
