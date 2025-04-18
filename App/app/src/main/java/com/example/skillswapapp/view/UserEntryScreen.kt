@@ -278,7 +278,7 @@ fun UserDetailsInput(
 
     OutlinedTextField(
         value = userDetails.preferences ?: "",
-        onValueChange = {onUserValueChange(userDetails.copy(description = it))},
+        onValueChange = {onUserValueChange(userDetails.copy(preferences = it))},
         label = { Text(text = "Preferences", color = Color.Black) },
         enabled = enabled,
         singleLine = true,
