@@ -144,9 +144,11 @@ fun SkillSwapNavBar(
                                 tint = greenColor
                     )
                 }
-                IconButton(
-                    onClick = { navController.navigate("swaps") }
-                ) {
+                // We plan in future updates to add a swap screen functionality
+                // this will allow users coordinate meeting
+//                IconButton(
+//                    onClick = { navController.navigate("swaps") }
+//                ) {
 //                    Icon(
 //                        Icons.Default.Done,
 //                        contentDescription = "Swaps",
@@ -154,23 +156,23 @@ fun SkillSwapNavBar(
 //                            .width(75.dp),
 //                        tint = MaterialTheme.colorScheme.primaryContainer
 //                    )
-                    Box(modifier = Modifier.size(75.dp)) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = null,
-                            modifier = Modifier.align(Alignment.TopCenter),
-//                            tint = MaterialTheme.colorScheme.primaryContainer
-                            tint = greenColor
-                        )
-                        Icon(
-                            Icons.Default.ArrowForward,
-                            contentDescription = null,
-                            modifier = Modifier.align(Alignment.BottomCenter),
-//                            tint = MaterialTheme.colorScheme.primaryContainer
-                            tint = greenColor
-                        )
-                    }
-                }
+//                    Box(modifier = Modifier.size(75.dp)) {
+//                        Icon(
+//                            Icons.Default.ArrowBack,
+//                            contentDescription = null,
+//                            modifier = Modifier.align(Alignment.TopCenter),
+////                            tint = MaterialTheme.colorScheme.primaryContainer
+//                            tint = greenColor
+//                        )
+//                        Icon(
+//                            Icons.Default.ArrowForward,
+//                            contentDescription = null,
+//                            modifier = Modifier.align(Alignment.BottomCenter),
+////                            tint = MaterialTheme.colorScheme.primaryContainer
+//                            tint = greenColor
+//                        )
+//                    }
+//                }
                 IconButton(
                     onClick = { navController.navigate("friends") }
                 ) {
@@ -281,16 +283,17 @@ fun SkillSwapApp(
                     )
                 }
 
-                composable(route = "swaps") {
-                SwapsScreen(
-                    modifier = Modifier,
-                    navigateToViewUserProfile = {
-                        navController.navigate("${UserDetailsDestination.route}/${it}")
-                    },
-                    navigateToEditUser = { navController.navigate("userEntryScreen") },
-                    sessionViewModel = sessionViewModel
-                )
-            }
+            // swaps is planned in the future as a screen to let users coordinate meeting
+//                composable(route = "swaps") {
+//                SwapsScreen(
+//                    modifier = Modifier,
+//                    navigateToViewUserProfile = {
+//                        navController.navigate("${UserDetailsDestination.route}/${it}")
+//                    },
+//                    navigateToEditUser = { navController.navigate("userEntryScreen") },
+//                    sessionViewModel = sessionViewModel
+//                )
+//            }
         }
 
     }
