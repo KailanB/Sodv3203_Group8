@@ -90,26 +90,9 @@ fun FriendsScreen(
         }
     }
 }
-//
-//@Composable
-//fun FriendRequestItem(name: String, onAccept: () -> Unit) {
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(vertical = 8.dp)
-//            .background(Color.LightGray, RoundedCornerShape(8.dp))
-//            .padding(12.dp),
-//        verticalAlignment = Alignment.CenterVertically,
-//        horizontalArrangement = Arrangement.SpaceBetween
-//    ) {
-//        Text(text = name, fontSize = 16.sp)
-//        Button(onClick = onAccept) {
-//            Text(text = "Add Friend")
-//        }
-//    }
-//}
+
 @Composable
-fun FriendRequestItem(name: String, onAccept: () -> Unit) {
+fun FriendRequestItem(name: String, onAccept: () -> Unitg) {
     var clicked by remember { mutableStateOf(false) }
 
     // Animate the scale of the button when clicked
