@@ -21,7 +21,6 @@ import com.example.skillswapapp.data.repository.iRepositories.FriendshipReposito
 import com.example.skillswapapp.model.Friendship
 import com.example.skillswapapp.state.FriendsUiState
 import com.example.skillswapapp.viewModel.FriendViewModel
-import com.example.skillswapapp.viewModel.FriendsViewModel
 import com.example.skillswapappimport.SessionViewModel
 
 @Composable
